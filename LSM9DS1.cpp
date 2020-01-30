@@ -5,14 +5,15 @@ Jim Lindblom @ SparkFun Electronics
 Original Creation Date: February 27, 2015
 https://github.com/sparkfun/LSM9DS1_Breakout
 
+2020, Bernd Porr, mail@berndporr.me.uk
+
 This file implements all functions of the LSM9DS1 class. Functions here range
 from higher level stuff, like reading/writing LSM9DS1 registers to low-level,
 hardware reads and writes. Both SPI and I2C handler functions can be found
 towards the bottom of this file.
 
 Development environment specifics:
-    IDE: Arduino 1.6
-    Hardware Platform: Arduino Uno
+    Hardware Platform: Raspberry PI
     LSM9DS1 Breakout Version: 1.0
 
 This code is beerware; if you see me (or any other SparkFun employee) at the
@@ -60,7 +61,7 @@ void LSM9DS1::init(interface_mode interface, uint8_t xgAddr, uint8_t mAddr)
     // 1 = 14.9    4 = 238
     // 2 = 59.5    5 = 476
     // 3 = 119     6 = 952
-    settings.gyro.sampleRate = 6;
+    settings.gyro.sampleRate = 2;
     // gyro cutoff frequency: value between 0-3
     // Actual value of cutoff frequency depends
     // on sample rate.
@@ -82,12 +83,12 @@ void LSM9DS1::init(interface_mode interface, uint8_t xgAddr, uint8_t mAddr)
     settings.accel.enableY = true;
     settings.accel.enableZ = true;
     // accel scale can be 2, 4, 8, or 16
-    settings.accel.scale = 2;
+    settings.accel.scale = 16;
     // accel sample rate can be 1-6
     // 1 = 10 Hz    4 = 238 Hz
     // 2 = 50 Hz    5 = 476 Hz
     // 3 = 119 Hz   6 = 952 Hz
-    settings.accel.sampleRate = 6;
+    settings.accel.sampleRate = 2;
     // Accel cutoff freqeuncy can be any value between -1 - 3.
     // -1 = bandwidth determined by sample rate
     // 0 = 408 Hz   2 = 105 Hz
@@ -156,7 +157,7 @@ uint16_t LSM9DS1::begin()
     uint16_t whoAmICombined = (xgTest << 8) | mTest;
 
     if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP)) {
-        return 0;
+	    throw "WhoIAm returns wrong result.";
     }
 
     // Gyro initialization stuff:
@@ -168,8 +169,46 @@ uint16_t LSM9DS1::begin()
     // Magnetometer initialization stuff:
     initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
 
-    // Once everything is initialized, return the WHO_AM_I registers we read:
+    calibrate();
+
+    if (lsm9ds1Callback) {
+	    daqThread = new std::thread(run,this);
+    }
     return whoAmICombined;
+}
+
+
+void LSM9DS1::run(LSM9DS1* lsm9ds1) {
+	lsm9ds1->running = 1;
+	do {
+		// better would be a poll command here using the DRDY_M output from the magnetometer
+		// instead of putting a lot of load on the I2C bus!
+		while (!lsm9ds1->gyroAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		lsm9ds1->readGyro();
+		while(!lsm9ds1->accelAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		lsm9ds1->readAccel();
+		while(!lsm9ds1->magAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		lsm9ds1->readMag();
+		lsm9ds1->lsm9ds1Callback->hasSample(
+						    lsm9ds1->gx,
+						    lsm9ds1->calcGyro(lsm9ds1->gy),
+						    lsm9ds1->calcGyro(lsm9ds1->gz),
+						    lsm9ds1->calcAccel(lsm9ds1->ax),
+						    lsm9ds1->calcAccel(lsm9ds1->ay),
+						    lsm9ds1->calcAccel(lsm9ds1->az),
+						    lsm9ds1->calcMag(lsm9ds1->mx),
+						    lsm9ds1->calcMag(lsm9ds1->my),
+						    lsm9ds1->calcMag(lsm9ds1->mz));
+	} while (lsm9ds1->running);
+}
+
+void LSM9DS1::end() {
+	running = 0;
+	if (daqThread) {
+		daqThread->join();
+		delete daqThread;
+		daqThread = NULL;
+	}	
 }
 
 void LSM9DS1::initGyro()
@@ -1114,3 +1153,5 @@ uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * des
     }
     return count;
 }
+
+

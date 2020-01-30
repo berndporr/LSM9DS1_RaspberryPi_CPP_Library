@@ -8,8 +8,7 @@ https://github.com/sparkfun/LSM9DS1_Breakout
 This file defines all types and enumerations used by the LSM9DS1 class.
 
 Development environment specifics:
-	IDE: Arduino 1.6.0
-	Hardware Platform: Arduino Uno
+	Hardware Platform: Raspberry PI
 	LSM9DS1 Breakout Version: 1.0
 
 This code is beerware; if you see me (or any other SparkFun employee) at the

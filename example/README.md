@@ -10,7 +10,7 @@ Pin assignment is below:
 |Pin5|SCL|
 
 ```
+$ cmake .
 $ make
-$ sudo -s
-$ LD_LIBRARY_PATH=../lib ./LSM9DS1_Basic_I2C
+$ sudo LSM9DS1_demo
 ```

@@ -1,4 +1,4 @@
-SparkFun LSM9DS1 RaspberryPI Library
+LSM9DS1 RaspberryPI Library
 ===
 
 Porting [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library) to Raspberry Pi
@@ -14,25 +14,22 @@ This library supports only I2C.
 * [WiringPi](http://wiringpi.com/)
 
 ```
-$ sudo apt-get install libi2c-dev
-$ git clone git://git.drogon.net/wiringPi
-$ cd wiringPi
-$ git pull origin
-$ ./build
+sudo apt-get install wiringpi
 ```
 
 ## Install
 
 ```
-$ git clone https://github.com/akimach/LSM9DS1_RaspberryPi_Library.git
-$ cd LSM9DS1_RaspberryPi_Library
+$ cmake .
 $ make
 $ sudo make install
 ```
 
-## Python version
+## Example / test
 
 ```
-$ cd LSM9DS1_RaspberryPi_Library/example
-$ sudo python LSM9DS1_Basic_I2C.py
+$ cd example
+$ LSM9DS1_demo
 ```
+
+This demo runs with a callback handler and it's called at a sampling rate of 50Hz.
