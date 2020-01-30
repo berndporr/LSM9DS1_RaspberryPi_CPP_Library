@@ -1,7 +1,7 @@
 LSM9DS1 RaspberryPI Library
 ===
 
-Porting [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library) to Raspberry Pi
+Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
 <p align="center"><img src="https://user-images.githubusercontent.com/17570265/29253393-a11ac3a6-80b6-11e7-846f-0d387fa2fbe4.jpeg" alt="LSM9DS1" width="200"/></p>
 

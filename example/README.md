@@ -12,5 +12,5 @@ Pin assignment is below:
 ```
 $ cmake .
 $ make
-$ sudo LSM9DS1_demo
+$ ./LSM9DS1_demo
 ```
