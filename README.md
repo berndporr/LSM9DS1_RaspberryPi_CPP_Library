@@ -1,5 +1,4 @@
-LSM9DS1 RaspberryPI Library
-===
+# LSM9DS1 RaspberryPI Library
 
 Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
@@ -20,16 +19,17 @@ sudo apt-get install wiringpi
 ## Install
 
 ```
-$ cmake .
-$ make
-$ sudo make install
+cmake .
+make
+sudo make install
+sudo ldconfig
 ```
 
 ## Example / test
 
 ```
-$ cd example
-$ LSM9DS1_demo
+cd example
+./LSM9DS1_demo
 ```
 
 This demo runs with a callback handler and it's called at a sampling rate of 50Hz.
