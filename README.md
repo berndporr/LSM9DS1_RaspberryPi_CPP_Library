@@ -1,4 +1,4 @@
-# LSM9DS1 RaspberryPI Library
+# LSM9DS1 RaspberryPI C++ Library
 
 For C++ with callback handler running at 50Hz sampling rate.
 
