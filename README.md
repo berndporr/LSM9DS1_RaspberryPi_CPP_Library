@@ -1,4 +1,6 @@
-# LSM9DS1 RaspberryPI Library (for C++ with callback handler)
+# LSM9DS1 RaspberryPI Library
+
+For C++ with callback handler running at 50Hz sampling rate.
 
 Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
