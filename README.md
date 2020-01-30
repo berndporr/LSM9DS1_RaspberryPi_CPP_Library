@@ -1,4 +1,4 @@
-# LSM9DS1 RaspberryPI Library
+# LSM9DS1 RaspberryPI Library (for C++ with callback handler)
 
 Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
