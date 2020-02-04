@@ -61,7 +61,7 @@ void LSM9DS1::init(interface_mode interface, uint8_t xgAddr, uint8_t mAddr)
     // 1 = 14.9    4 = 238
     // 2 = 59.5    5 = 476
     // 3 = 119     6 = 952
-    settings.gyro.sampleRate = 2;
+    settings.gyro.sampleRate = 3;
     // gyro cutoff frequency: value between 0-3
     // Actual value of cutoff frequency depends
     // on sample rate.
@@ -88,7 +88,7 @@ void LSM9DS1::init(interface_mode interface, uint8_t xgAddr, uint8_t mAddr)
     // 1 = 10 Hz    4 = 238 Hz
     // 2 = 50 Hz    5 = 476 Hz
     // 3 = 119 Hz   6 = 952 Hz
-    settings.accel.sampleRate = 2;
+    settings.accel.sampleRate = 3;
     // Accel cutoff freqeuncy can be any value between -1 - 3.
     // -1 = bandwidth determined by sample rate
     // 0 = 408 Hz   2 = 105 Hz
@@ -171,44 +171,31 @@ uint16_t LSM9DS1::begin()
 
     calibrate();
 
-    if (lsm9ds1Callback) {
-	    daqThread = new std::thread(run,this);
-    }
+    // 20ms => 50Hz
+    start(20*1000*1000);
     return whoAmICombined;
 }
 
 
-void LSM9DS1::run(LSM9DS1* lsm9ds1) {
-	lsm9ds1->running = 1;
-	do {
-		// better would be a poll command here using the DRDY_M output from the magnetometer
-		// instead of putting a lot of load on the I2C bus!
-		while (!lsm9ds1->gyroAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		lsm9ds1->readGyro();
-		while(!lsm9ds1->accelAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		lsm9ds1->readAccel();
-		while(!lsm9ds1->magAvailable()) std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		lsm9ds1->readMag();
-		lsm9ds1->lsm9ds1Callback->hasSample(
-						    lsm9ds1->gx,
-						    lsm9ds1->calcGyro(lsm9ds1->gy),
-						    lsm9ds1->calcGyro(lsm9ds1->gz),
-						    lsm9ds1->calcAccel(lsm9ds1->ax),
-						    lsm9ds1->calcAccel(lsm9ds1->ay),
-						    lsm9ds1->calcAccel(lsm9ds1->az),
-						    lsm9ds1->calcMag(lsm9ds1->mx),
-						    lsm9ds1->calcMag(lsm9ds1->my),
-						    lsm9ds1->calcMag(lsm9ds1->mz));
-	} while (lsm9ds1->running);
+void LSM9DS1::timerEvent() {
+	if (!lsm9ds1Callback) return;
+		readGyro();
+		readAccel();
+		readMag();
+		lsm9ds1Callback->hasSample(
+					   calcGyro(gx),
+					   calcGyro(gy),
+					   calcGyro(gz),
+					   calcAccel(ax),
+					   calcAccel(ay),
+					   calcAccel(az),
+					   calcMag(mx),
+					   calcMag(my),
+					   calcMag(mz));
 }
 
 void LSM9DS1::end() {
-	running = 0;
-	if (daqThread) {
-		daqThread->join();
-		delete daqThread;
-		daqThread = NULL;
-	}	
+	stop();
 }
 
 void LSM9DS1::initGyro()

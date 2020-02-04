@@ -29,6 +29,7 @@ Distributed as-is; no warranty is given.
 #include <thread>
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
+#include "CppTimer.h"
 
 #define LSM9DS1_AG_ADDR(sa0)    ((sa0) == 0 ? 0x6A : 0x6B)
 #define LSM9DS1_M_ADDR(sa1)        ((sa1) == 0 ? 0x1C : 0x1E)
@@ -56,7 +57,7 @@ public:
 			       float mz) = 0;
 };
 
-class LSM9DS1
+class LSM9DS1 : public CppTimer
 {
 public:
 	IMUSettings settings;
@@ -545,9 +546,7 @@ protected:
 	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 
 	LSM9DS1callback* lsm9ds1Callback = NULL;
-	std::thread* daqThread = NULL;
-	static void run(LSM9DS1* lsm9ds1);
-	int running = 0;
+	void timerEvent();
 };
 
 #endif // SFE_LSM9DS1_H //

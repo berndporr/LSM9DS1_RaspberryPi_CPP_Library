@@ -29,7 +29,9 @@ int main(int argc, char *argv[]) {
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
     imu.begin();
-    getchar();
+    do {
+	sleep(1);
+    } while (getchar() != 27);
     imu.end();
     exit(EXIT_SUCCESS);
 }
