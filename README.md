@@ -1,4 +1,4 @@
-# LSM9DS1 RaspberryPI C++ Library
+# LSM9DS1 RaspberryPI C++ Library and circuit boards
 
 For C++ with callback handler running at 50Hz sampling rate.
 
@@ -35,3 +35,9 @@ cd example
 ```
 
 This demo runs with a callback handler and it's called at a sampling rate of 50Hz.
+
+## PCBs
+
+The subdirectory PCBs contains two PCBs: one hat which plugs into the
+raspberry PI and the PCB which contains the IMU. The PCBs are connected
+via a standard telephone cable and can be over 10m long.

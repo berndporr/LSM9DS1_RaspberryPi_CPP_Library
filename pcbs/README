@@ -1,0 +1,3 @@
+PCBs to connect the LSM9DS1 over a long standard telephone cable.
+The hat goes on the Rapberry PI and the imu_board connects
+to it via the telephone cable. 
