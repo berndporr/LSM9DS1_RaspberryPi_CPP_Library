@@ -18,6 +18,10 @@ sudo apt-get install wiringpi
 
 ## Install
 
+Run `raspi-config` and enable i2c.
+
+If you are not the `pi` user make sure that in `/etc/group` you are member of the `i2c`-group.
+
 ```
 cmake .
 make
