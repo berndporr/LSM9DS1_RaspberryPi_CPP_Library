@@ -23,7 +23,7 @@ or make your own PCB (see the `pcbs` folder).
 * [pigpio](http://abyz.me.uk/rpi/pigpio/)
 
 ```
-sudo apt-get install libpigpio-dev
+sudo apt-get install libpigpio-dev libi2c-dev
 ```
 
 ## Install

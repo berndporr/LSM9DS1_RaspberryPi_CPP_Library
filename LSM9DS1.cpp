@@ -376,7 +376,7 @@ uint8_t LSM9DS1::magAvailable(lsm9ds1_axis axis)
 
 void LSM9DS1::readAccel()
 {
-	uint8_t temp[6] = {0,0,0,0,0,0}; // We'll read six bytes from the accelerometer into temp
+	uint8_t temp[32];
 	try {
 		xgReadBytes(OUT_X_L_XL, temp, 6); // Read 6 bytes, beginning at OUT_X_L_XL
 		ax = (temp[1] << 8) | temp[0]; // Store x-axis values into ax
@@ -400,7 +400,7 @@ int16_t LSM9DS1::readAccel(lsm9ds1_axis axis)
 
 void LSM9DS1::readMag()
 {
-	uint8_t temp[6] = {0,0,0,0,0,0}; // We'll read six bytes from the mag into temp
+	uint8_t temp[32];
 	mReadBytes(OUT_X_L_M, temp, 6); // Read 6 bytes, beginning at OUT_X_L_M
 	mx = (temp[1] << 8) | temp[0]; // Store x-axis values into mx
 	my = (temp[3] << 8) | temp[2]; // Store y-axis values into my
@@ -424,7 +424,7 @@ void LSM9DS1::readTemp()
 
 void LSM9DS1::readGyro()
 {
-	uint8_t temp[6] = {0,0,0,0,0,0}; // We'll read six bytes from the gyro into temp
+	uint8_t temp[32];
 	try {
 		xgReadBytes(OUT_X_L_G, temp, 6); // Read 6 bytes, beginning at OUT_X_L_G
 		gx = (temp[1] << 8) | temp[0]; // Store x-axis values into gx
@@ -860,54 +860,55 @@ void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t *dest, uint8_t count)
 	I2CreadBytes(device.mAddress, subAddress, dest, count);
 }
 
-// pigpio read and write protocols
+
+
+// i2c read and write protocols
 void LSM9DS1::I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
-	if (fd < 0) {
+	int fd = I2Copen(address);
+	uint8_t buf[2];
+	buf[0] = subAddress;
+	buf[1] = data;
+	int ret = write(fd, buf, 2);
+	close(fd);
+	if (ret != 2) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,device.i2c_bus,address,subAddress);
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,ret);
 #endif
-		throw could_not_open_i2c;
+		throw "Could not write to i2c.";
 	}
-	i2cWriteByteData(fd, subAddress, data);
-	i2cClose(fd);
 }
 
 uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
-	if (fd < 0) {
+	int fd = I2Copen(address);
+	uint8_t buf[2];
+	buf[0] = subAddress;
+	write(fd, buf, 1);
+	int ret = read(fd, buf, 1);
+	close(fd);
+	if (ret < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x\n",device.i2c_bus,address,subAddress);
-#endif
-		throw could_not_open_i2c;
-	}
-	int data; // `data` will store the register data
-	data = i2cReadByteData(fd, subAddress);
-	if (data < 0) {
-#ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,data);
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,ret);
 #endif
 		throw "Could not read from i2c.";
 	}
-	i2cClose(fd);
-	return data;                             // Return data read from slave register
+	return buf[0];
 }
 
 uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
-	if (fd < 0) {
-#ifdef DEBUG
-		fprintf(stderr,"Could not read %n byte(s) from %02x,%02x,%02x\n",count,device.i2c_bus,address,subAddress);
-#endif
-		throw could_not_open_i2c;
-	}
-	int ret = i2cReadI2CBlockData(fd,subAddress,(char*)dest,count);
-	i2cClose(fd);
+	int fd = I2Copen(address);
+	uint8_t buf[2];
+	buf[0] = subAddress;
+	write(fd, buf, 1);
+	int ret = read(fd, dest, count);
+	close(fd);
 	if (ret != count) {
-		throw "Block read didn't work";
+#ifdef DEBUG
+		fprintf(stderr,"Could not read %d bytes from %02x,%02x,%02x. ret=%d.\n",count,device.i2c_bus,address,subAddress,ret);
+#endif
+		throw "Could not read from i2c.";
 	}
 	return ret;
 }

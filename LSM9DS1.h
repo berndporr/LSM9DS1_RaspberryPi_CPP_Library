@@ -29,6 +29,17 @@ Distributed as-is; no warranty is given.
 #include <thread>
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
+
+// for i2c I/O
+extern "C"
+{
+#include <linux/i2c-dev.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+}
+
 #include <pigpio.h>
 
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
@@ -727,6 +738,22 @@ private:
 	int16_t ax, ay, az; // x, y, and z axis readings of the accelerometer
 	int16_t mx, my, mz; // x, y, and z axis readings of the magnetometer
 	int16_t temperature; // Chip temperature
+
+	inline int I2Copen(uint8_t addr) {
+		char filename[20];
+		snprintf(filename, 19, "/dev/i2c-%d", device.i2c_bus);
+		int fd = open(filename, O_RDWR);
+		if (fd < 0) {
+			/* ERROR HANDLING; you can check errno to see what went wrong */
+			exit(1);
+		}
+		if (ioctl(fd, I2C_SLAVE, addr) < 0) {
+			/* ERROR HANDLING; you can check errno to see what went wrong */
+			exit(1);
+		}
+		return fd;
+
+	}
 };
 
 #endif // SFE_LSM9DS1_H //
