@@ -1,6 +1,6 @@
-# LSM9DS1 RaspberryPI C++ Library and circuit boards
+# LSM9DS1 RaspberryPI C++ Library
 
-For C++ with callback handler
+With C++ callback handler which is called at the sampling rate of the LSM9DS1.
 
 Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
@@ -8,7 +8,15 @@ Included is also a PCB design to connect the IMU with a long cable via level shi
 
 This library supports only I2C.
 
-## Requirement
+## Hardware
+
+Use an LSM9DS1 breakout board from Sparkfun or make your own (see at the bottom of the page).
+
+  - Connect the 3.3V power (pin 1) and GND (pin 9) to the LSM9DS1.
+  - Connect the I2C SDA (pin 3) & I2C SCL (pin 5) to the LSM9DS1.
+  - Connect the GPIO22 (pin 15) to the DRDY output of the LSM9DS1.
+
+## Software requirement
 
 * [pigpio](http://abyz.me.uk/rpi/pigpio/)
 
