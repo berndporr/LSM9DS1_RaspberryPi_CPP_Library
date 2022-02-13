@@ -40,85 +40,27 @@ LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
 	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",
 		device.i2c_bus,device.agAddress,device.mAddress);
 #endif
-	
-	// gyro scale can be 245, 500, or 2000
-	gyro.scale = 245;
-	// gyro sample rate: value between 1-6
-	// 1 = 14.9    4 = 238
-	// 2 = 59.5    5 = 476
-	// 3 = 119     6 = 952
-	gyro.sampleRate = 3;
-	// gyro cutoff frequency: value between 0-3
-	// Actual value of cutoff frequency depends
-	// on sample rate.
-	gyro.bandwidth = 0;
-	gyro.lowPowerEnable = false;
-	gyro.HPFEnable = false;
-	// Gyro HPF cutoff frequency: value between 0-9
-	// Actual value depends on sample rate. Only applies
-	// if gyroHPFEnable is true.
-	gyro.HPFCutoff = 0;
-	gyro.flipX = false;
-	gyro.flipY = false;
-	gyro.flipZ = false;
-	gyro.orientation = 0;
-	gyro.latchInterrupt = true;
-
-	accel.enabled = true;
-	accel.enableX = true;
-	accel.enableY = true;
-	accel.enableZ = true;
-	// accel scale can be 2, 4, 8, or 16
-	accel.scale = 16;
-	// accel sample rate can be 1-6
-	// 1 = 10 Hz    4 = 238 Hz
-	// 2 = 50 Hz    5 = 476 Hz
-	// 3 = 119 Hz   6 = 952 Hz
-	accel.sampleRate = 3;
-	// Accel cutoff freqeuncy can be any value between -1 - 3.
-	// -1 = bandwidth determined by sample rate
-	// 0 = 408 Hz   2 = 105 Hz
-	// 1 = 211 Hz   3 = 50 Hz
-	accel.bandwidth = -1;
-	accel.highResEnable = false;
-	// accelHighResBandwidth can be any value between 0-3
-	// LP cutoff is set to a factor of sample rate
-	// 0 = ODR/50    2 = ODR/9
-	// 1 = ODR/100   3 = ODR/400
-	accel.highResBandwidth = 0;
-
-	mag.enabled = true;
-	// mag scale can be 4, 8, 12, or 16
-	mag.scale = 4;
-	// mag data rate can be 0-7
-	// 0 = 0.625 Hz  4 = 10 Hz
-	// 1 = 1.25 Hz   5 = 20 Hz
-	// 2 = 2.5 Hz    6 = 40 Hz
-	// 3 = 5 Hz      7 = 80 Hz
-	mag.sampleRate = 7;
-	mag.tempCompensationEnable = false;
-	// magPerformance can be any value between 0-3
-	// 0 = Low power mode      2 = high performance
-	// 1 = medium performance  3 = ultra-high performance
-	mag.XYPerformance = 3;
-	mag.ZPerformance = 3;
-	mag.lowPowerEnable = false;
-
-	temp.enabled = true;
-	for (int i=0; i<3; i++)
-		{
-			gBias[i] = 0;
-			aBias[i] = 0;
-			mBias[i] = 0;
-			gBiasRaw[i] = 0;
-			aBiasRaw[i] = 0;
-			mBiasRaw[i] = 0;
-		}
+	for (int i=0; i<3; i++) {
+		gBias[i] = 0;
+		aBias[i] = 0;
+		mBias[i] = 0;
+		gBiasRaw[i] = 0;
+		aBiasRaw[i] = 0;
+		mBiasRaw[i] = 0;
+	}
 	_autoCalc = false;
 }
 
-uint16_t LSM9DS1::begin()
+uint16_t LSM9DS1::begin(AccelSettings accelSettings,
+			GyroSettings gyroSettings,
+			MagSettings magSettings,
+			TemperatureSettings temperatureSettings)
 {
+	accel = accelSettings;
+	gyro = gyroSettings;
+	mag = magSettings;
+	temp = temperatureSettings;
+	
 	if (device.initPIGPIO) {
 		int cfg = gpioCfgGetInternals();
 		cfg |= PI_CFG_NOSIGHANDLER;

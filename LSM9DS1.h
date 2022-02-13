@@ -35,34 +35,6 @@ static const char could_not_open_i2c[] = "Could not open I2C.\n";
 
 #define ISR_TIMEOUT 1000
 
-// Gyroscope settings:
-struct GyroSettings
-{
-	uint8_t enabled = true;
-
-	// gyro scale can be 245, 500, or 2000
-	uint16_t scale = 245;
-
-	// gyro sample rate (Hz): value between 1-6
-	// 1 = 14.9    4 = 238
-	// 2 = 59.5    5 = 476
-	// 3 = 119     6 = 952
-	uint8_t sampleRate;
-	
-	uint8_t bandwidth = 0;
-	uint8_t lowPowerEnable = false;
-	uint8_t HPFEnable = false;	
-	uint8_t HPFCutoff = 0;
-	uint8_t flipX = false;
-	uint8_t flipY = false;
-	uint8_t flipZ = false;
-	uint8_t orientation = 0;
-	uint8_t enableX = true;
-	uint8_t enableY = true;
-	uint8_t enableZ = true;
-	uint8_t latchInterrupt = true;
-};
-
 #define LSM9DS1_AG_ADDR 0x6B
 #define LSM9DS1_M_ADDR  0x1E
 #define LSM9DS1_DEFAULT_I2C_BUS 1
@@ -99,6 +71,34 @@ struct AccelSettings
 	int8_t  bandwidth = -1;
 	uint8_t highResEnable = false;
 	uint8_t highResBandwidth = 0;
+};
+
+// Gyroscope settings:
+struct GyroSettings
+{
+	uint8_t enabled = true;
+
+	// gyro scale can be 245, 500, or 2000
+	uint16_t scale = 245;
+
+	// gyro sample rate (Hz): value between 1-6
+	// 1 = 14.9    4 = 238
+	// 2 = 59.5    5 = 476
+	// 3 = 119     6 = 952
+	uint8_t sampleRate = 2;
+	
+	uint8_t bandwidth = 0;
+	uint8_t lowPowerEnable = false;
+	uint8_t HPFEnable = false;	
+	uint8_t HPFCutoff = 0;
+	uint8_t flipX = false;
+	uint8_t flipY = false;
+	uint8_t flipZ = false;
+	uint8_t orientation = 0;
+	uint8_t enableX = true;
+	uint8_t enableY = true;
+	uint8_t enableZ = true;
+	uint8_t latchInterrupt = true;
 };
 
 // Magnetometer settings:
@@ -180,7 +180,11 @@ public:
 	// begin() -- Initialize the gyro, accelerometer, and magnetometer.
 	// This will set up the scale and output rate of each sensor. The values set
 	// in the IMUSettings struct will take effect after calling this function.
-	uint16_t begin();
+	uint16_t begin(AccelSettings accelSettings = AccelSettings(),
+		       GyroSettings gyroSettings = GyroSettings(),
+		       MagSettings magSettings = MagSettings(),
+		       TemperatureSettings temperatureSettings = TemperatureSettings()
+		       );
 
 	// ends a possible thread in the background
 	void end();
