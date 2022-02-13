@@ -40,16 +40,42 @@ static const char could_not_open_i2c[] = "Could not open I2C.\n";
 #define LSM9DS1_DEFAULT_I2C_BUS 1
 #define LSM9DS1_DRDY_GPIO 22
 
+/**
+ * Hardware related settings
+ **/
 struct DeviceSettings
 {
-	uint8_t agAddress = LSM9DS1_AG_ADDR;	// I2C acc address
-	uint8_t mAddress = LSM9DS1_M_ADDR;	// I2C mag address
-	unsigned i2c_bus = LSM9DS1_DEFAULT_I2C_BUS; // I2C bus
-	unsigned drdy_gpio = LSM9DS1_DRDY_GPIO; // data ready pin (int2)
+	/**
+	 * I2C acceleromter address
+	 **/
+	uint8_t agAddress = LSM9DS1_AG_ADDR;
+
+	/**
+	 * I2C magnetometer address
+	 **/
+	uint8_t mAddress = LSM9DS1_M_ADDR;
+
+	/**
+	 * Default I2C bus number (most likely 1)
+	 **/
+	unsigned i2c_bus = LSM9DS1_DEFAULT_I2C_BUS;
+
+	/**
+	 * Data ready pin (INT2) of the accelerometer
+	 **/
+	unsigned drdy_gpio = LSM9DS1_DRDY_GPIO;
+
+	/**
+	 * If set to true the pigpio library is initialised
+	 * with signals disabled. You can do your own init
+	 * when setting to false before calling begin().
+	 **/
 	bool initPIGPIO = true; // inits pigpio
 };
 
-// Accelerometer settings:
+/**
+ * Accelerometer settings with default values
+ **/
 struct AccelSettings
 {
 	uint8_t enabled = true;
@@ -73,7 +99,9 @@ struct AccelSettings
 	uint8_t highResBandwidth = 0;
 };
 
-// Gyroscope settings:
+/**
+ * Gyroscope settings with default values
+ **/
 struct GyroSettings
 {
 	uint8_t enabled = true;
@@ -101,7 +129,9 @@ struct GyroSettings
 	uint8_t latchInterrupt = true;
 };
 
-// Magnetometer settings:
+/**
+ * Magnetometer settings with default values
+ **/
 struct MagSettings
 {
 	uint8_t enabled = true;
@@ -123,9 +153,11 @@ struct MagSettings
 	uint8_t lowPowerEnable = false;
 };
 
+/**
+ * Temperature sensor settings
+ **/
 struct TemperatureSettings
 {
-	// Temperature settings
 	uint8_t enabled = true;
 };
 
@@ -136,20 +168,27 @@ enum lsm9ds1_axis {
 		   ALL_AXIS
 };
 
+/**
+ * Sample from the LSM9DS1
+ **/
+struct LSM9DS1Sample {
+	float gx = 0;
+	float gy = 0;
+	float gz = 0;
+	float ax = 0;
+	float ay = 0;
+	float az = 0;
+	float mx = 0;
+	float my = 0;
+	float mz = 0;
+}
+
 class LSM9DS1callback {
 public:
         /**
          * Called after a sample has arrived.
          **/
-        virtual void hasSample(float gx,
-			       float gy,
-			       float gz,
-			       float ax,
-			       float ay,
-			       float az,
-			       float mx,
-			       float my,
-			       float mz) = 0;
+        virtual void hasSample(LSM9DS1Sample sample) = 0;
 };
 
 class LSM9DS1

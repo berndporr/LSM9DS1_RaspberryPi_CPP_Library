@@ -112,19 +112,22 @@ uint16_t LSM9DS1::begin(AccelSettings accelSettings,
 
 void LSM9DS1::timerEvent() {
 	if (!lsm9ds1Callback) return;
+	
 	readGyro();
 	readAccel();
 	readMag();
-	lsm9ds1Callback->hasSample(
-				   calcGyro(gx),
-				   calcGyro(gy),
-				   calcGyro(gz),
-				   calcAccel(ax),
-				   calcAccel(ay),
-				   calcAccel(az),
-				   calcMag(mx),
-				   calcMag(my),
-				   calcMag(mz));
+
+	LSM9DS1Sample sample;
+	sample.gx = calcGyro(gx);
+	sample.gy = calcGyro(gy);
+	sample.gz = calcGyro(gz);
+	sample.ax = calcAccel(ax);
+	sample.ay = calcAccel(ay);
+	sample.az = calcAccel(az);
+	sample.mx = calcMag(mx);
+	sample.my = calcMag(my);
+	sample.mz = calcMag(mz);
+	lsm9ds1Callback->hasSample(sample);
 }
 
 void LSM9DS1::end() {
