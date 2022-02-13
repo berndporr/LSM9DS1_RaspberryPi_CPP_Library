@@ -181,7 +181,7 @@ struct LSM9DS1Sample {
 	float mx = 0;
 	float my = 0;
 	float mz = 0;
-}
+};
 
 class LSM9DS1callback {
 public:

@@ -8,18 +8,10 @@
 #include "LSM9DS1.h"
 
 class LSM9DS1printCallback : public LSM9DS1callback {
-	virtual void hasSample(float gx,
-			       float gy,
-			       float gz,
-			       float ax,
-			       float ay,
-			       float az,
-			       float mx,
-			       float my,
-			       float mz) {
-		printf("Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", gx, gy, gz);
-		printf("Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", ax, ay, az);
-		printf("Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", mx, my, mz);
+	virtual void hasSample(LSM9DS1Sample s) {
+		printf("Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", s.gx, s.gy, s.gz);
+		printf("Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", s.ax, s.ay, s.az);
+		printf("Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", s.mx, s.my, s.mz);
 		printf("\n");
 	}
 };
