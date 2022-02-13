@@ -34,88 +34,77 @@ float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 #define DEBUG
 #endif
 
-LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr, uint8_t drdy_gpio) {
-	settings.device.i2c_bus = i2cBUS;
-	settings.device.agAddress = xgAddr;
-	settings.device.mAddress = mAddr;
-	settings.device.drdy_gpio = drdy_gpio;
+LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
+	device = deviceSettings;
 #ifdef DEBUG
-	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",settings.device.i2c_bus,settings.device.agAddress,settings.device.mAddress);
+	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",
+		device.i2c_bus,device.agAddress,device.mAddress);
 #endif
 	
-	settings.gyro.enabled = true;
-	settings.gyro.enableX = true;
-	settings.gyro.enableY = true;
-	settings.gyro.enableZ = true;
 	// gyro scale can be 245, 500, or 2000
-	settings.gyro.scale = 245;
+	gyro.scale = 245;
 	// gyro sample rate: value between 1-6
 	// 1 = 14.9    4 = 238
 	// 2 = 59.5    5 = 476
 	// 3 = 119     6 = 952
-	settings.gyro.sampleRate = 3;
+	gyro.sampleRate = 3;
 	// gyro cutoff frequency: value between 0-3
 	// Actual value of cutoff frequency depends
 	// on sample rate.
-	settings.gyro.bandwidth = 0;
-	settings.gyro.lowPowerEnable = false;
-	settings.gyro.HPFEnable = false;
+	gyro.bandwidth = 0;
+	gyro.lowPowerEnable = false;
+	gyro.HPFEnable = false;
 	// Gyro HPF cutoff frequency: value between 0-9
 	// Actual value depends on sample rate. Only applies
 	// if gyroHPFEnable is true.
-	settings.gyro.HPFCutoff = 0;
-	settings.gyro.flipX = false;
-	settings.gyro.flipY = false;
-	settings.gyro.flipZ = false;
-	settings.gyro.orientation = 0;
-	settings.gyro.latchInterrupt = true;
+	gyro.HPFCutoff = 0;
+	gyro.flipX = false;
+	gyro.flipY = false;
+	gyro.flipZ = false;
+	gyro.orientation = 0;
+	gyro.latchInterrupt = true;
 
-	settings.accel.enabled = true;
-	settings.accel.enableX = true;
-	settings.accel.enableY = true;
-	settings.accel.enableZ = true;
+	accel.enabled = true;
+	accel.enableX = true;
+	accel.enableY = true;
+	accel.enableZ = true;
 	// accel scale can be 2, 4, 8, or 16
-	settings.accel.scale = 16;
+	accel.scale = 16;
 	// accel sample rate can be 1-6
 	// 1 = 10 Hz    4 = 238 Hz
 	// 2 = 50 Hz    5 = 476 Hz
 	// 3 = 119 Hz   6 = 952 Hz
-	settings.accel.sampleRate = 3;
+	accel.sampleRate = 3;
 	// Accel cutoff freqeuncy can be any value between -1 - 3.
 	// -1 = bandwidth determined by sample rate
 	// 0 = 408 Hz   2 = 105 Hz
 	// 1 = 211 Hz   3 = 50 Hz
-	settings.accel.bandwidth = -1;
-	settings.accel.highResEnable = false;
+	accel.bandwidth = -1;
+	accel.highResEnable = false;
 	// accelHighResBandwidth can be any value between 0-3
 	// LP cutoff is set to a factor of sample rate
 	// 0 = ODR/50    2 = ODR/9
 	// 1 = ODR/100   3 = ODR/400
-	settings.accel.highResBandwidth = 0;
+	accel.highResBandwidth = 0;
 
-	settings.mag.enabled = true;
+	mag.enabled = true;
 	// mag scale can be 4, 8, 12, or 16
-	settings.mag.scale = 4;
+	mag.scale = 4;
 	// mag data rate can be 0-7
 	// 0 = 0.625 Hz  4 = 10 Hz
 	// 1 = 1.25 Hz   5 = 20 Hz
 	// 2 = 2.5 Hz    6 = 40 Hz
 	// 3 = 5 Hz      7 = 80 Hz
-	settings.mag.sampleRate = 7;
-	settings.mag.tempCompensationEnable = false;
+	mag.sampleRate = 7;
+	mag.tempCompensationEnable = false;
 	// magPerformance can be any value between 0-3
 	// 0 = Low power mode      2 = high performance
 	// 1 = medium performance  3 = ultra-high performance
-	settings.mag.XYPerformance = 3;
-	settings.mag.ZPerformance = 3;
-	settings.mag.lowPowerEnable = false;
-	// magOperatingMode can be 0-2
-	// 0 = continuous conversion
-	// 1 = single-conversion
-	// 2 = power down
-	settings.mag.operatingMode = 0;
+	mag.XYPerformance = 3;
+	mag.ZPerformance = 3;
+	mag.lowPowerEnable = false;
 
-	settings.temp.enabled = true;
+	temp.enabled = true;
 	for (int i=0; i<3; i++)
 		{
 			gBias[i] = 0;
@@ -130,20 +119,18 @@ LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr, uint8_t drdy_gpi
 
 uint16_t LSM9DS1::begin()
 {
-	//! Todo: don't use _xgAddress or _mAddress, duplicating memory
-	_xgAddress = settings.device.agAddress;
-	_mAddress = settings.device.mAddress;
-
-	int cfg = gpioCfgGetInternals();
-	cfg |= PI_CFG_NOSIGHANDLER;
-	gpioCfgSetInternals(cfg);
-	int r = gpioInitialise();
-	if (r < 0) {
-		char msg[] = "Cannot init pigpio.";
+	if (device.initPIGPIO) {
+		int cfg = gpioCfgGetInternals();
+		cfg |= PI_CFG_NOSIGHANDLER;
+		gpioCfgSetInternals(cfg);
+		int r = gpioInitialise();
+		if (r < 0) {
+			char msg[] = "Cannot init pigpio.";
 #ifdef DEBUG
-		fprintf(stderr,"%s\n",msg);
+			fprintf(stderr,"%s\n",msg);
 #endif
-		throw msg;
+			throw msg;
+		}
 	}
 
 	constrainScales();
@@ -174,8 +161,8 @@ uint16_t LSM9DS1::begin()
 
 	calibrate();
 
-	gpioSetMode(settings.device.drdy_gpio,PI_INPUT);
-	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
+	gpioSetMode(device.drdy_gpio,PI_INPUT);
+	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
 
 	return whoAmICombined;
 }
@@ -199,7 +186,7 @@ void LSM9DS1::timerEvent() {
 }
 
 void LSM9DS1::end() {
-	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
+	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
 	gpioTerminate();
 }
 
@@ -215,10 +202,10 @@ void LSM9DS1::initGyro()
 
 	// To disable gyro, set sample rate bits to 0. We'll only set sample
 	// rate if the gyro is enabled.
-	if (settings.gyro.enabled) {
-		tempRegValue = (settings.gyro.sampleRate & 0x07) << 5;
+	if (gyro.enabled) {
+		tempRegValue = (gyro.sampleRate & 0x07) << 5;
 	}
-	switch (settings.gyro.scale) {
+	switch (gyro.scale) {
         case 500:
 		tempRegValue |= (0x1 << 3);
 		break;
@@ -227,7 +214,7 @@ void LSM9DS1::initGyro()
 		break;
 		// Otherwise we'll set it to 245 dps (0x0 << 4)
 	}
-	tempRegValue |= (settings.gyro.bandwidth & 0x3);
+	tempRegValue |= (gyro.bandwidth & 0x3);
 	xgWriteByte(CTRL_REG1_G, tempRegValue);
 
 	// CTRL_REG2_G (Default value: 0x00)
@@ -241,9 +228,9 @@ void LSM9DS1::initGyro()
 	// LP_mode - Low-power mode enable (0: disabled, 1: enabled)
 	// HP_EN - HPF enable (0:disabled, 1: enabled)
 	// HPCF_G[3:0] - HPF cutoff frequency
-	tempRegValue = settings.gyro.lowPowerEnable ? (1<<7) : 0;
-	if (settings.gyro.HPFEnable) {
-		tempRegValue |= (1<<6) | (settings.gyro.HPFCutoff & 0x0F);
+	tempRegValue = gyro.lowPowerEnable ? (1<<7) : 0;
+	if (gyro.HPFEnable) {
+		tempRegValue |= (1<<6) | (gyro.HPFCutoff & 0x0F);
 	}
 	xgWriteByte(CTRL_REG3_G, tempRegValue);
 
@@ -255,10 +242,10 @@ void LSM9DS1::initGyro()
 	// LIR_XL1 - Latched interrupt (0:not latched, 1:latched)
 	// 4D_XL1 - 4D option on interrupt (0:6D used, 1:4D used)
 	tempRegValue = 0;
-	if (settings.gyro.enableZ) tempRegValue |= (1<<5);
-	if (settings.gyro.enableY) tempRegValue |= (1<<4);
-	if (settings.gyro.enableX) tempRegValue |= (1<<3);
-	if (settings.gyro.latchInterrupt) tempRegValue |= (1<<1);
+	if (gyro.enableZ) tempRegValue |= (1<<5);
+	if (gyro.enableY) tempRegValue |= (1<<4);
+	if (gyro.enableX) tempRegValue |= (1<<3);
+	if (gyro.latchInterrupt) tempRegValue |= (1<<1);
 	xgWriteByte(CTRL_REG4, tempRegValue);
 
 	// ORIENT_CFG_G (Default value: 0x00)
@@ -266,9 +253,9 @@ void LSM9DS1::initGyro()
 	// SignX_G - Pitch axis (X) angular rate sign (0: positive, 1: negative)
 	// Orient [2:0] - Directional user orientation selection
 	tempRegValue = 0;
-	if (settings.gyro.flipX) tempRegValue |= (1<<5);
-	if (settings.gyro.flipY) tempRegValue |= (1<<4);
-	if (settings.gyro.flipZ) tempRegValue |= (1<<3);
+	if (gyro.flipX) tempRegValue |= (1<<5);
+	if (gyro.flipY) tempRegValue |= (1<<4);
+	if (gyro.flipZ) tempRegValue |= (1<<3);
 	xgWriteByte(ORIENT_CFG_G, tempRegValue);
 }
 
@@ -283,9 +270,9 @@ void LSM9DS1::initAccel()
 	//    Zen_XL - Z-axis output enabled
 	//    Yen_XL - Y-axis output enabled
 	//    Xen_XL - X-axis output enabled
-	if (settings.accel.enableZ) tempRegValue |= (1<<5);
-	if (settings.accel.enableY) tempRegValue |= (1<<4);
-	if (settings.accel.enableX) tempRegValue |= (1<<3);
+	if (accel.enableZ) tempRegValue |= (1<<5);
+	if (accel.enableY) tempRegValue |= (1<<4);
+	if (accel.enableX) tempRegValue |= (1<<3);
 
 	xgWriteByte(CTRL_REG5_XL, tempRegValue);
 
@@ -297,11 +284,11 @@ void LSM9DS1::initAccel()
 	// BW_XL[1:0] - Anti-aliasing filter bandwidth selection
 	tempRegValue = 0;
 	// To disable the accel, set the sampleRate bits to 0.
-	if (settings.accel.enabled)
+	if (accel.enabled)
 		{
-			tempRegValue |= (settings.accel.sampleRate & 0x07) << 5;
+			tempRegValue |= (accel.sampleRate & 0x07) << 5;
 		}
-	switch (settings.accel.scale)
+	switch (accel.scale)
 		{
 		case 4:
 			tempRegValue |= (0x2 << 3);
@@ -314,10 +301,10 @@ void LSM9DS1::initAccel()
 			break;
 			// Otherwise it'll be set to 2g (0x0 << 3)
 		}
-	if (settings.accel.bandwidth >= 0)
+	if (accel.bandwidth >= 0)
 		{
 			tempRegValue |= (1<<2); // Set BW_SCAL_ODR
-			tempRegValue |= (settings.accel.bandwidth & 0x03);
+			tempRegValue |= (accel.bandwidth & 0x03);
 		}
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
 
@@ -328,12 +315,17 @@ void LSM9DS1::initAccel()
 	// FDS - Filtered data selection
 	// HPIS1 - HPF enabled for interrupt function
 	tempRegValue = 0;
-	if (settings.accel.highResEnable)
+	if (accel.highResEnable)
 		{
 			tempRegValue |= (1<<7); // Set HR bit
-			tempRegValue |= (settings.accel.highResBandwidth & 0x3) << 5;
+			tempRegValue |= (accel.highResBandwidth & 0x3) << 5;
 		}
 	xgWriteByte(CTRL_REG7_XL, tempRegValue);
+
+	// INT2_CTRL (0Dd)
+	// Enable data ready on the INT2 pin: INT2_DRDY_XL = 1
+	xgWriteByte(INT2_CTRL, 1);
+
 }
 
 // This is a function that uses the FIFO to accumulate sample of accelerometer and gyro data, average
@@ -436,9 +428,9 @@ void LSM9DS1::initMag()
 	//    10: high performance, 11:ultra-high performance
 	// DO[2:0] - Output data rate selection
 	// ST - Self-test enable
-	if (settings.mag.tempCompensationEnable) tempRegValue |= (1<<7);
-	tempRegValue |= (settings.mag.XYPerformance & 0x3) << 5;
-	tempRegValue |= (settings.mag.sampleRate & 0x7) << 2;
+	if (mag.tempCompensationEnable) tempRegValue |= (1<<7);
+	tempRegValue |= (mag.XYPerformance & 0x3) << 5;
+	tempRegValue |= (mag.sampleRate & 0x7) << 2;
 	mWriteByte(CTRL_REG1_M, tempRegValue);
 
 	// CTRL_REG2_M (Default value 0x00)
@@ -447,7 +439,7 @@ void LSM9DS1::initMag()
 	// REBOOT - Reboot memory content (0:normal, 1:reboot)
 	// SOFT_RST - Reset config and user registers (0:default, 1:reset)
 	tempRegValue = 0;
-	switch (settings.mag.scale)
+	switch (mag.scale)
 		{
 		case 8:
 			tempRegValue |= (0x1 << 5);
@@ -471,8 +463,9 @@ void LSM9DS1::initMag()
 	//    00:continuous conversion, 01:single-conversion,
 	//  10,11: Power-down
 	tempRegValue = 0;
-	if (settings.mag.lowPowerEnable) tempRegValue |= (1<<5);
-	tempRegValue |= (settings.mag.operatingMode & 0x3);
+	if (mag.lowPowerEnable) tempRegValue |= (1<<5);
+	const int operatingMode = 0;
+	tempRegValue |= (operatingMode & 0x3);
 	mWriteByte(CTRL_REG3_M, tempRegValue); // Continuous conversion mode
 
 	// CTRL_REG4_M (Default value: 0x00)
@@ -482,7 +475,7 @@ void LSM9DS1::initMag()
 	//    10:high performance, 10:ultra-high performance
 	// BLE - Big/little endian data
 	tempRegValue = 0;
-	tempRegValue = (settings.mag.ZPerformance & 0x3) << 2;
+	tempRegValue = (mag.ZPerformance & 0x3) << 2;
 	mWriteByte(CTRL_REG4_M, tempRegValue);
 
 	// CTRL_REG5_M (Default value: 0x00)
@@ -642,14 +635,14 @@ void LSM9DS1::setGyroScale(uint16_t gScl)
 		{
 		case 500:
 			ctrl1RegValue |= (0x1 << 3);
-			settings.gyro.scale = 500;
+			gyro.scale = 500;
 			break;
 		case 2000:
 			ctrl1RegValue |= (0x3 << 3);
-			settings.gyro.scale = 2000;
+			gyro.scale = 2000;
 			break;
 		default: // Otherwise we'll set it to 245 dps (0x0 << 4)
-			settings.gyro.scale = 245;
+			gyro.scale = 245;
 			break;
 		}
 	xgWriteByte(CTRL_REG1_G, ctrl1RegValue);
@@ -668,18 +661,18 @@ void LSM9DS1::setAccelScale(uint8_t aScl)
 		{
 		case 4:
 			tempRegValue |= (0x2 << 3);
-			settings.accel.scale = 4;
+			accel.scale = 4;
 			break;
 		case 8:
 			tempRegValue |= (0x3 << 3);
-			settings.accel.scale = 8;
+			accel.scale = 8;
 			break;
 		case 16:
 			tempRegValue |= (0x1 << 3);
-			settings.accel.scale = 16;
+			accel.scale = 16;
 			break;
 		default: // Otherwise it'll be set to 2g (0x0 << 3)
-			settings.accel.scale = 2;
+			accel.scale = 2;
 			break;
 		}
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
@@ -699,18 +692,18 @@ void LSM9DS1::setMagScale(uint8_t mScl)
 		{
 		case 8:
 			temp |= (0x1 << 5);
-			settings.mag.scale = 8;
+			mag.scale = 8;
 			break;
 		case 12:
 			temp |= (0x2 << 5);
-			settings.mag.scale = 12;
+			mag.scale = 12;
 			break;
 		case 16:
 			temp |= (0x3 << 5);
-			settings.mag.scale = 16;
+			mag.scale = 16;
 			break;
 		default: // Otherwise we'll default to 4 gauss (00)
-			settings.mag.scale = 4;
+			mag.scale = 4;
 			break;
 		}
 
@@ -735,7 +728,7 @@ void LSM9DS1::setGyroODR(uint8_t gRate)
 			temp &= 0xFF^(0x7 << 5);
 			temp |= (gRate & 0x07) << 5;
 			// Update our settings struct
-			settings.gyro.sampleRate = gRate & 0x07;
+			gyro.sampleRate = gRate & 0x07;
 			// And write the new register value back into CTRL_REG1_G:
 			xgWriteByte(CTRL_REG1_G, temp);
 		}
@@ -752,7 +745,7 @@ void LSM9DS1::setAccelODR(uint8_t aRate)
 			temp &= 0x1F;
 			// Then shift in our new ODR bits:
 			temp |= ((aRate & 0x07) << 5);
-			settings.accel.sampleRate = aRate & 0x07;
+			accel.sampleRate = aRate & 0x07;
 			// And write the new register value back into CTRL_REG1_XM:
 			xgWriteByte(CTRL_REG6_XL, temp);
 		}
@@ -766,25 +759,25 @@ void LSM9DS1::setMagODR(uint8_t mRate)
 	temp &= 0xFF^(0x7 << 2);
 	// Then shift in our new ODR bits:
 	temp |= ((mRate & 0x07) << 2);
-	settings.mag.sampleRate = mRate & 0x07;
+	mag.sampleRate = mRate & 0x07;
 	// And write the new register value back into CTRL_REG5_XM:
 	mWriteByte(CTRL_REG1_M, temp);
 }
 
 void LSM9DS1::calcgRes()
 {
-	gRes = ((float) settings.gyro.scale) / 32768.0;
+	gRes = ((float) gyro.scale) / 32768.0;
 }
 
 void LSM9DS1::calcaRes()
 {
-	aRes = ((float) settings.accel.scale) / 32768.0;
+	aRes = ((float) accel.scale) / 32768.0;
 }
 
 void LSM9DS1::calcmRes()
 {
-	//mRes = ((float) settings.mag.scale) / 32768.0;
-	switch (settings.mag.scale)
+	//mRes = ((float) mag.scale) / 32768.0;
+	switch (mag.scale)
 		{
 		case 4:
 			mRes = magSensitivity[0];
@@ -979,60 +972,60 @@ uint8_t LSM9DS1::getFIFOSamples()
 
 void LSM9DS1::constrainScales()
 {
-	if ((settings.gyro.scale != 245) && (settings.gyro.scale != 500) &&
-	    (settings.gyro.scale != 2000)) {
-		settings.gyro.scale = 245;
+	if ((gyro.scale != 245) && (gyro.scale != 500) &&
+	    (gyro.scale != 2000)) {
+		gyro.scale = 245;
 	}
 
-	if ((settings.accel.scale != 2) && (settings.accel.scale != 4) &&
-	    (settings.accel.scale != 8) && (settings.accel.scale != 16)) {
-		settings.accel.scale = 2;
+	if ((accel.scale != 2) && (accel.scale != 4) &&
+	    (accel.scale != 8) && (accel.scale != 16)) {
+		accel.scale = 2;
 	}
 
-	if ((settings.mag.scale != 4) && (settings.mag.scale != 8) &&
-	    (settings.mag.scale != 12) && (settings.mag.scale != 16)) {
-		settings.mag.scale = 4;
+	if ((mag.scale != 4) && (mag.scale != 8) &&
+	    (mag.scale != 12) && (mag.scale != 16)) {
+		mag.scale = 4;
 	}
 }
 
 void LSM9DS1::xgWriteByte(uint8_t subAddress, uint8_t data)
 {
-	I2CwriteByte(_xgAddress, subAddress, data);
+	I2CwriteByte(device.agAddress, subAddress, data);
 	return ;
 }
 
 void LSM9DS1::mWriteByte(uint8_t subAddress, uint8_t data)
 {
-	return I2CwriteByte(_mAddress, subAddress, data);
+	return I2CwriteByte(device.mAddress, subAddress, data);
 }
 
 uint8_t LSM9DS1::xgReadByte(uint8_t subAddress)
 {
-	return I2CreadByte(_xgAddress, subAddress);
+	return I2CreadByte(device.agAddress, subAddress);
 }
 
 void LSM9DS1::xgReadBytes(uint8_t subAddress, uint8_t *dest, uint8_t count)
 {
-	I2CreadBytes(_xgAddress, subAddress, dest, count);
+	I2CreadBytes(device.agAddress, subAddress, dest, count);
 }
 
 uint8_t LSM9DS1::mReadByte(uint8_t subAddress)
 {
-	return I2CreadByte(_mAddress, subAddress);
+	return I2CreadByte(device.mAddress, subAddress);
 }
 
 void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t *dest, uint8_t count)
 {
-	I2CreadBytes(_mAddress, subAddress, dest, count);
+	I2CreadBytes(device.mAddress, subAddress, dest, count);
 }
 
 // pigpio read and write protocols
 void LSM9DS1::I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 {
-	int fd = i2cOpen(settings.device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address, 0);
 	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,settings.device.i2c_bus,address,subAddress);
+		fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,device.i2c_bus,address,subAddress);
 #endif
 		throw could_not_open_i2c;
 	}
@@ -1042,10 +1035,10 @@ void LSM9DS1::I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 
 uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 {
-	int fd = i2cOpen(settings.device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address, 0);
 	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x\n",settings.device.i2c_bus,address,subAddress);
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x\n",device.i2c_bus,address,subAddress);
 #endif
 		throw could_not_open_i2c;
 	}
@@ -1053,7 +1046,7 @@ uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 	data = i2cReadByteData(fd, subAddress);
 	if (data < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",settings.device.i2c_bus,address,subAddress,data);
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,data);
 #endif
 		throw "Could not read from i2c.";
 	}
@@ -1063,10 +1056,10 @@ uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 
 uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count)
 {
-	int fd = i2cOpen(settings.device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address, 0);
 	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read %n byte(s) from %02x,%02x,%02x\n",count,settings.device.i2c_bus,address,subAddress);
+		fprintf(stderr,"Could not read %n byte(s) from %02x,%02x,%02x\n",count,device.i2c_bus,address,subAddress);
 #endif
 		throw could_not_open_i2c;
 	}

@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.1.0)
 
+set(CMAKE_CXX_STANDARD 11)
+
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif()
 
-project(LSM9DS1_RaspberryPi_Library LANGUAGES CXX)
+project(LSM9DS1_RaspberryPi_Library VERSION 2.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
 add_subdirectory(example)
 

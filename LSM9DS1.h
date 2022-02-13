@@ -31,13 +31,103 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1_Types.h"
 #include <pigpio.h>
 
-#define LSM9DS1_AG_ADDR 0x6B
-#define LSM9DS1_M_ADDR  0x1E
-#define LSM9DS1_DRDY_GPIO 22
-
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
 
 #define ISR_TIMEOUT 1000
+
+// Gyroscope settings:
+struct GyroSettings
+{
+	uint8_t enabled = true;
+
+	// gyro scale can be 245, 500, or 2000
+	uint16_t scale = 245;
+
+	// gyro sample rate (Hz): value between 1-6
+	// 1 = 14.9    4 = 238
+	// 2 = 59.5    5 = 476
+	// 3 = 119     6 = 952
+	uint8_t sampleRate;
+	
+	uint8_t bandwidth = 0;
+	uint8_t lowPowerEnable = false;
+	uint8_t HPFEnable = false;	
+	uint8_t HPFCutoff = 0;
+	uint8_t flipX = false;
+	uint8_t flipY = false;
+	uint8_t flipZ = false;
+	uint8_t orientation = 0;
+	uint8_t enableX = true;
+	uint8_t enableY = true;
+	uint8_t enableZ = true;
+	uint8_t latchInterrupt = true;
+};
+
+#define LSM9DS1_AG_ADDR 0x6B
+#define LSM9DS1_M_ADDR  0x1E
+#define LSM9DS1_DEFAULT_I2C_BUS 1
+#define LSM9DS1_DRDY_GPIO 22
+
+struct DeviceSettings
+{
+	uint8_t agAddress = LSM9DS1_AG_ADDR;	// I2C acc address
+	uint8_t mAddress = LSM9DS1_M_ADDR;	// I2C mag address
+	unsigned i2c_bus = LSM9DS1_DEFAULT_I2C_BUS; // I2C bus
+	unsigned drdy_gpio = LSM9DS1_DRDY_GPIO; // data ready pin (int2)
+	bool initPIGPIO = true; // inits pigpio
+};
+
+// Accelerometer settings:
+struct AccelSettings
+{
+	uint8_t enabled = true;
+	// accel scale (in g) can be 2, 4, 8, or 16
+	uint8_t scale = 16;
+	// accel sample rate (Hz) can be 1-6
+	// 1 = 10 Hz    4 = 238 Hz
+	// 2 = 50 Hz    5 = 476 Hz
+	// 3 = 119 Hz   6 = 952 Hz
+	uint8_t sampleRate = 2;
+	// New accel stuff:
+	uint8_t enableX = true;
+	uint8_t enableY = true;
+	uint8_t enableZ = true;
+	// Accel cutoff freqeuncy can be any value between -1 - 3.
+	// -1 = bandwidth determined by sample rate
+	// 0 = 408 Hz   2 = 105 Hz
+	// 1 = 211 Hz   3 = 50 Hz
+	int8_t  bandwidth = -1;
+	uint8_t highResEnable = false;
+	uint8_t highResBandwidth = 0;
+};
+
+// Magnetometer settings:
+struct MagSettings
+{
+	uint8_t enabled = true;
+	uint8_t scale = 4;
+	// mag data rate can be 0-7
+	// 0 = 0.625 Hz  4 = 10 Hz
+	// 1 = 1.25 Hz   5 = 20 Hz
+	// 2 = 2.5 Hz    6 = 40 Hz
+	// 3 = 5 Hz      7 = 80 Hz	
+	uint8_t sampleRate = 7;
+	
+	// New mag stuff:
+	uint8_t tempCompensationEnable = false;
+	// magPerformance can be any value between 0-3
+	// 0 = Low power mode      2 = high performance
+	// 1 = medium performance  3 = ultra-high performance
+	uint8_t XYPerformance = 3;
+	uint8_t ZPerformance = 3;
+	uint8_t lowPowerEnable = false;
+};
+
+struct TemperatureSettings
+{
+	// Temperature settings
+	uint8_t enabled = true;
+};
 
 enum lsm9ds1_axis {
 		   X_AXIS,
@@ -65,7 +155,11 @@ public:
 class LSM9DS1
 {
 public:
-	IMUSettings settings;
+	DeviceSettings device;
+	MagSettings mag;
+	GyroSettings gyro;
+	AccelSettings accel;
+	TemperatureSettings temp;
 
 	// We'll store the gyro, accel, and magnetometer readings in a series of
 	// public class variables. Each sensor gets three variables -- one for each
@@ -80,17 +174,8 @@ public:
 	int16_t gBiasRaw[3], aBiasRaw[3], mBiasRaw[3];
     
 	// LSM9DS1 -- LSM9DS1 class constructor
-	// The constructor will set up a handful of private variables, and set the
-	// communication mode as well.
-	// Input:
-	//    - xgAddr = I2C address of the accel/gyroscope.
-	//    - mAddr = I2C address of the magnetometer.
-	//    - i2cBUS = i2c bus (0 or 1)
-	LSM9DS1(uint8_t i2cBUS = 1, uint8_t xgAddr = LSM9DS1_AG_ADDR, uint8_t mAddr = LSM9DS1_M_ADDR, uint8_t drdy_gpio = LSM9DS1_DRDY_GPIO);
-
-	~LSM9DS1() {
-		gpioTerminate();
-	}
+	// Input: DeviceSettings
+	LSM9DS1(DeviceSettings deviceSettings = DeviceSettings());
         
 	// begin() -- Initialize the gyro, accelerometer, and magnetometer.
 	// This will set up the scale and output rate of each sensor. The values set
@@ -358,10 +443,6 @@ public:
         
 
 protected:
-	// x_mAddress and gAddress store the I2C address or SPI chip select pin
-	// for each sensor.
-	uint8_t _mAddress, _xgAddress;
-    
 	// gRes, aRes, and mRes store the current resolution for each sensor. 
 	// Units of these values would be DPS (or g's or Gs's) per ADC tick.
 	// This value is calculated as (sensor scale) / (2^15).
