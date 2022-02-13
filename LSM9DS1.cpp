@@ -30,7 +30,9 @@ Distributed as-is; no warranty is given.
 
 float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 
+#ifndef NDEBUG
 #define DEBUG
+#endif
 
 LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr, uint8_t drdy_gpio) {
 	settings.device.i2c_bus = i2cBUS;
@@ -173,7 +175,7 @@ uint16_t LSM9DS1::begin()
 	calibrate();
 
 	gpioSetMode(settings.device.drdy_gpio,PI_INPUT);
-	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,1000,aFunction,(void*)this);
+	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
 
 	return whoAmICombined;
 }

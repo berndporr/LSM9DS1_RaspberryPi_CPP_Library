@@ -17,9 +17,9 @@ class LSM9DS1printCallback : public LSM9DS1callback {
 			       float mx,
 			       float my,
 			       float mz) {
-		printf("Gyro: %f, %f, %f [deg/s]\n", gx, gy, gz);
-		printf("Accel: %f, %f, %f [Gs]\n", ax, ay, az);
-		printf("Mag: %f, %f, %f [gauss]\n", mx, my, mz);
+		printf("Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", gx, gy, gz);
+		printf("Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", ax, ay, az);
+		printf("Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", mx, my, mz);
 		printf("\n");
 	}
 };

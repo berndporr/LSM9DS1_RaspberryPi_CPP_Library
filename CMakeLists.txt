@@ -19,7 +19,7 @@ add_library(lsm9ds1
   )
 
 set_target_properties(lsm9ds1 PROPERTIES
-  SOVERSION 1
+  SOVERSION 2
   PUBLIC_HEADER "${LIBINCLUDE}")
 
 target_link_libraries(lsm9ds1 pigpio)

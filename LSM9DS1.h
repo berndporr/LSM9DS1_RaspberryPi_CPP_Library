@@ -37,6 +37,8 @@ Distributed as-is; no warranty is given.
 
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
 
+#define ISR_TIMEOUT 1000
+
 enum lsm9ds1_axis {
 		   X_AXIS,
 		   Y_AXIS,
@@ -501,9 +503,9 @@ protected:
 	
 	void timerEvent();
 	
-	static void aFunction(int gpio, int level, uint32_t tick, void* userdata)
+	static void gpioISR(int gpio, int level, uint32_t tick, void* userdata)
 	{
-		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
+		//		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
 		if (level) {
 			((LSM9DS1*)userdata)->timerEvent();
 		}
