@@ -32,10 +32,11 @@ float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 
 #define DEBUG
 
-LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr) {
+LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr, uint8_t drdy_gpio) {
 	settings.device.i2c_bus = i2cBUS;
 	settings.device.agAddress = xgAddr;
 	settings.device.mAddress = mAddr;
+	settings.device.drdy_gpio = drdy_gpio;
 #ifdef DEBUG
 	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",settings.device.i2c_bus,settings.device.agAddress,settings.device.mAddress);
 #endif
@@ -171,8 +172,9 @@ uint16_t LSM9DS1::begin()
 
 	calibrate();
 
-	// 20ms => 50Hz
-	start(20*1000*1000);
+	gpioSetMode(settings.device.drdy_gpio,PI_INPUT);
+	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,1000,aFunction,(void*)this);
+
 	return whoAmICombined;
 }
 
@@ -195,7 +197,7 @@ void LSM9DS1::timerEvent() {
 }
 
 void LSM9DS1::end() {
-	stop();
+	gpioSetISRFuncEx(settings.device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
 	gpioTerminate();
 }
 

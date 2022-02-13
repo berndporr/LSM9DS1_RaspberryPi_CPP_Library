@@ -23,15 +23,6 @@ Distributed as-is; no warranty is given.
 #include <stdint.h>
 #include "LSM9DS1_Registers.h"
 
-// The LSM9DS1 functions over both I2C or SPI. This library supports both.
-// But the interface mode used must be sent to the LSM9DS1 constructor. Use
-// one of these two as the first parameter of the constructor.
-enum interface_mode
-{
-	IMU_MODE_SPI,
-	IMU_MODE_I2C,
-};
-
 // accel_scale defines all possible FSR's of the accelerometer:
 enum accel_scale
 {
@@ -200,6 +191,7 @@ struct deviceSettings
 	uint8_t agAddress;	// I2C address
 	uint8_t mAddress;	// I2C address
 	unsigned i2c_bus;
+	unsigned drdy_gpio;
 };
 
 struct accelSettings

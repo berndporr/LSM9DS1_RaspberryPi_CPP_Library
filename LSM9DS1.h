@@ -29,7 +29,6 @@ Distributed as-is; no warranty is given.
 #include <thread>
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
-#include "CppTimer.h"
 #include <pigpio.h>
 
 #define LSM9DS1_AG_ADDR 0x6B
@@ -61,7 +60,7 @@ public:
 			       float mz) = 0;
 };
 
-class LSM9DS1 : public CppTimer
+class LSM9DS1
 {
 public:
 	IMUSettings settings;
@@ -85,7 +84,7 @@ public:
 	//    - xgAddr = I2C address of the accel/gyroscope.
 	//    - mAddr = I2C address of the magnetometer.
 	//    - i2cBUS = i2c bus (0 or 1)
-	LSM9DS1(uint8_t i2cBUS = 1, uint8_t xgAddr = LSM9DS1_AG_ADDR, uint8_t mAddr = LSM9DS1_M_ADDR);
+	LSM9DS1(uint8_t i2cBUS = 1, uint8_t xgAddr = LSM9DS1_AG_ADDR, uint8_t mAddr = LSM9DS1_M_ADDR, uint8_t drdy_gpio = LSM9DS1_DRDY_GPIO);
 
 	~LSM9DS1() {
 		gpioTerminate();
@@ -505,6 +504,9 @@ protected:
 	static void aFunction(int gpio, int level, uint32_t tick, void* userdata)
 	{
 		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
+		if (level) {
+			((LSM9DS1*)userdata)->timerEvent();
+		}
 	}
 
 };
