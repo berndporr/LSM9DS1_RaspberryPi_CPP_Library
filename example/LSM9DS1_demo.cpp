@@ -17,6 +17,7 @@ class LSM9DS1printCallback : public LSM9DS1callback {
 };
 
 int main(int argc, char *argv[]) {
+    fprintf(stderr,"Press <RETURN> any time to stop the acquisition.\n");
     LSM9DS1 imu;
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
