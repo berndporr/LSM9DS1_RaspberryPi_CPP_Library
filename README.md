@@ -10,10 +10,10 @@ This library supports only I2C.
 
 ## Requirement
 
-* [WiringPi](http://wiringpi.com/)
+* [pigpio](http://abyz.me.uk/rpi/pigpio/)
 
 ```
-sudo apt-get install wiringpi
+sudo apt-get install libpigpio-dev
 ```
 
 ## Install
