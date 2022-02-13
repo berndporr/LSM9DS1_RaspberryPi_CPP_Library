@@ -12103,16 +12103,12 @@ diameter 3 mm, horizontal, grid 12.7 mm</description>
 </net>
 <net name="N$46" class="0">
 <segment>
-<pinref part="J1" gate="G$1" pin="5"/>
-<wire x1="-185.42" y1="76.2" x2="-175.26" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="-175.26" y1="76.2" x2="-175.26" y2="78.74" width="0.1524" layer="91"/>
 <wire x1="-175.26" y1="78.74" x2="-175.26" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="-175.26" y1="114.3" x2="-152.4" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="R8" gate="G$1" pin="2"/>
 <wire x1="-152.4" y1="86.36" x2="-152.4" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="J1" gate="G$1" pin="6"/>
 <wire x1="-185.42" y1="78.74" x2="-175.26" y2="78.74" width="0.1524" layer="91"/>
-<junction x="-175.26" y="78.74"/>
 <pinref part="R7" gate="G$1" pin="2"/>
 <wire x1="-144.78" y1="86.36" x2="-144.78" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="-152.4" y1="114.3" x2="-144.78" y2="114.3" width="0.1524" layer="91"/>
@@ -12175,6 +12171,17 @@ diameter 3 mm, horizontal, grid 12.7 mm</description>
 <pinref part="R10" gate="G$1" pin="2"/>
 <wire x1="-170.18" y1="68.58" x2="-170.18" y2="71.12" width="0.1524" layer="91"/>
 <junction x="-170.18" y="71.12"/>
+</segment>
+</net>
+<net name="N$3" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="5"/>
+<wire x1="-185.42" y1="76.2" x2="-167.64" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-167.64" y1="76.2" x2="-167.64" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-167.64" y1="124.46" x2="-58.42" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="124.46" x2="-58.42" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="DRDY_M"/>
+<wire x1="-58.42" y1="55.88" x2="15.24" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
