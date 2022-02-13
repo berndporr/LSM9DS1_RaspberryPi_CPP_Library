@@ -1,16 +1,18 @@
-# LSM9DS1 RaspberryPI C++ Library
+# I2C LSM9DS1 RaspberryPI C++ Library
 
-With C++ callback handler which is called at the sampling rate of the accelerometer of the LSM9DS1.
+![alt tag](sparkfun_LSM9DS1.jpg)
 
-Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
+This is a C++11 library for the LSM9DS1 on a Raspberry PI using a callback handler for the data.
+The callback handler is called at the sampling rate of the accelerometer of the LSM9DS1.
+
+It's based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
 Included is also a PCB design to connect the IMU with a long cable via level shifters to the Raspberry PI.
 
-This library supports only I2C.
-
 ## Hardware
 
-Use an LSM9DS1 breakout board from Sparkfun or make your own (see at the bottom of the page).
+You can use the [SparkFun 9DoF IMU Breakout board](https://www.sparkfun.com/products/13284)
+or make your own PCB (see the `pcbs` folder).
 
   - Connect the 3.3V power (pin 1) and GND (pin 9) to the LSM9DS1.
   - Connect the I2C SDA (pin 3) & I2C SCL (pin 5) to the LSM9DS1.
@@ -44,7 +46,7 @@ cd example
 ./LSM9DS1_demo
 ```
 
-This demo runs with a callback handler and it's called at a sampling rate of 50Hz.
+This demo runs with a callback handler and it's called at the default sampling rate of 50Hz.
 
 ## PCBs
 

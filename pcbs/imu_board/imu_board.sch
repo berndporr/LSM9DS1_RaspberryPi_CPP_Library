@@ -12179,9 +12179,9 @@ diameter 3 mm, horizontal, grid 12.7 mm</description>
 <wire x1="-185.42" y1="76.2" x2="-167.64" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="-167.64" y1="76.2" x2="-167.64" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="-167.64" y1="124.46" x2="-58.42" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="-58.42" y1="124.46" x2="-58.42" y2="55.88" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="DRDY_M"/>
-<wire x1="-58.42" y1="55.88" x2="15.24" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="124.46" x2="-58.42" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="INT2_A/G"/>
+<wire x1="15.24" y1="63.5" x2="-58.42" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
