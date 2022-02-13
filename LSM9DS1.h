@@ -5,7 +5,7 @@ Jim Lindblom @ SparkFun Electronics
 Original Creation Date: February 27, 2015
 https://github.com/sparkfun/LSM9DS1_Breakout
 
-2020, Bernd Porr, mail@berndporr.me.uk
+2020-2022, Bernd Porr, mail@berndporr.me.uk
 
 This file prototypes the LSM9DS1 class, implemented in SFE_LSM9DS1.cpp. In
 addition, it defines every register in the LSM9DS1 (both the Gyro and Accel/
@@ -13,7 +13,7 @@ Magnetometer registers).
 
 Development environment specifics:
     Hardware Platform: Raspberry PI
-    LSM9DS1 Breakout Version: 1.0
+    LSM9DS1
 
 This code is beerware; if you see me (or any other SparkFun employee) at the
 local, and you've found our code helpful, please buy us a round!
@@ -79,22 +79,32 @@ struct DeviceSettings
 struct AccelSettings
 {
 	uint8_t enabled = true;
-	// accel scale (in g) can be 2, 4, 8, or 16
+	
+	/**
+	 * accel scale (in g) can be 2, 4, 8, or 16
+	 **/
 	uint8_t scale = 16;
-	// accel sample rate (Hz) can be 1-6
-	// 1 = 10 Hz    4 = 238 Hz
-	// 2 = 50 Hz    5 = 476 Hz
-	// 3 = 119 Hz   6 = 952 Hz
+	
+	/**
+	 * accel sample rate (Hz) can be 1-6
+	 * 1 = 10 Hz    4 = 238 Hz
+	 * 2 = 50 Hz    5 = 476 Hz
+	 * 3 = 119 Hz   6 = 952 Hz
+	 **/
 	uint8_t sampleRate = 2;
-	// New accel stuff:
+	
 	uint8_t enableX = true;
 	uint8_t enableY = true;
 	uint8_t enableZ = true;
-	// Accel cutoff freqeuncy can be any value between -1 - 3.
-	// -1 = bandwidth determined by sample rate
-	// 0 = 408 Hz   2 = 105 Hz
-	// 1 = 211 Hz   3 = 50 Hz
+
+	/**
+	 * Accel cutoff freqeuncy can be any value between -1 - 3.
+	 * -1 = bandwidth determined by sample rate
+	 * 0 = 408 Hz   2 = 105 Hz
+	 * 1 = 211 Hz   3 = 50 Hz
+	 **/
 	int8_t  bandwidth = -1;
+	
 	uint8_t highResEnable = false;
 	uint8_t highResBandwidth = 0;
 };
@@ -106,13 +116,17 @@ struct GyroSettings
 {
 	uint8_t enabled = true;
 
-	// gyro scale can be 245, 500, or 2000
+	/**
+	 * gyro scale can be 245, 500, or 2000
+	 **/
 	uint16_t scale = 245;
 
-	// gyro sample rate (Hz): value between 1-6
-	// 1 = 14.9    4 = 238
-	// 2 = 59.5    5 = 476
-	// 3 = 119     6 = 952
+	/** 
+	 * gyro sample rate (Hz): value between 1-6
+	 * 1 = 14.9    4 = 238
+	 * 2 = 59.5    5 = 476
+	 * 3 = 119     6 = 952
+	 **/
 	uint8_t sampleRate = 2;
 	
 	uint8_t bandwidth = 0;
@@ -136,18 +150,23 @@ struct MagSettings
 {
 	uint8_t enabled = true;
 	uint8_t scale = 4;
-	// mag data rate can be 0-7
-	// 0 = 0.625 Hz  4 = 10 Hz
-	// 1 = 1.25 Hz   5 = 20 Hz
-	// 2 = 2.5 Hz    6 = 40 Hz
-	// 3 = 5 Hz      7 = 80 Hz	
+	
+	/**
+	 * mag data rate can be 0-7
+	 * 0 = 0.625 Hz  4 = 10 Hz
+	 * 1 = 1.25 Hz   5 = 20 Hz
+	 * 2 = 2.5 Hz    6 = 40 Hz
+	 * 3 = 5 Hz      7 = 80 Hz
+	 **/	
 	uint8_t sampleRate = 7;
 	
-	// New mag stuff:
 	uint8_t tempCompensationEnable = false;
-	// magPerformance can be any value between 0-3
-	// 0 = Low power mode      2 = high performance
-	// 1 = medium performance  3 = ultra-high performance
+
+	/**
+	 * magPerformance can be any value between 0-3
+	 * 0 = Low power mode      2 = high performance
+	 * 1 = medium performance  3 = ultra-high performance
+	 **/
 	uint8_t XYPerformance = 3;
 	uint8_t ZPerformance = 3;
 	uint8_t lowPowerEnable = false;
@@ -172,17 +191,56 @@ enum lsm9ds1_axis {
  * Sample from the LSM9DS1
  **/
 struct LSM9DS1Sample {
-	float gx = 0;
-	float gy = 0;
-	float gz = 0;
+	/**
+	 * X Acceleration in m/s^2
+	 **/
 	float ax = 0;
+
+	/**
+	 * Y Acceleration in m/s^2
+	 **/
 	float ay = 0;
+
+	/**
+	 * Z Acceleration in m/s^2
+	 **/
 	float az = 0;
+
+	/**
+	 * X Rotation in deg/s
+	 **/
+	float gx = 0;
+
+	/**
+	 * Y Rotation in deg/s
+	 **/
+	float gy = 0;
+
+	/**
+	 * Z Rotation in deg/s
+	 **/
+	float gz = 0;
+
+	/**
+	 * X Magnetic field in Gauss
+	 **/
 	float mx = 0;
+
+	/**
+	 * Y Magnetic field in Gauss
+	 **/
 	float my = 0;
+
+	/**
+	 * Z Magnetic field in Gauss
+	 **/
 	float mz = 0;
 };
 
+/**
+ * Callback interface where the callback needs to be
+ * implemented by the host application.
+ **/
 class LSM9DS1callback {
 public:
         /**
@@ -191,78 +249,182 @@ public:
         virtual void hasSample(LSM9DS1Sample sample) = 0;
 };
 
+/**
+ * Main class for the LSM9DS1 acceleromter which manages the data acquisition
+ * via pigpio and calls the main program via a callback handler.
+ * The constructor and the begin() function have default settings
+ * so that in the simplest case just a callback needs to be registered
+ * and then begin be called. To stop the data acquistion call end().
+ **/
 class LSM9DS1
 {
 public:
-	DeviceSettings device;
-	MagSettings mag;
-	GyroSettings gyro;
-	AccelSettings accel;
-	TemperatureSettings temp;
-
-	// We'll store the gyro, accel, and magnetometer readings in a series of
-	// public class variables. Each sensor gets three variables -- one for each
-	// axis. Call readGyro(), readAccel(), and readMag() first, before using
-	// these variables!
-	// These values are the RAW signed 16-bit readings from the sensors.
-	int16_t gx, gy, gz; // x, y, and z axis readings of the gyroscope
-	int16_t ax, ay, az; // x, y, and z axis readings of the accelerometer
-	int16_t mx, my, mz; // x, y, and z axis readings of the magnetometer
-	int16_t temperature; // Chip temperature
-	float gBias[3], aBias[3], mBias[3];
-	int16_t gBiasRaw[3], aBiasRaw[3], mBiasRaw[3];
-    
-	// LSM9DS1 -- LSM9DS1 class constructor
-	// Input: DeviceSettings
+	/** 
+	 * LSM9DS1 class constructor
+	 * \param deviceSettings is defined in DeviceSettings
+	 * The deviceSettings has default values for standard wiring.
+	 **/
 	LSM9DS1(DeviceSettings deviceSettings = DeviceSettings());
         
-	// begin() -- Initialize the gyro, accelerometer, and magnetometer.
-	// This will set up the scale and output rate of each sensor. The values set
-	// in the IMUSettings struct will take effect after calling this function.
+	/**
+	 * Initializes the gyro, accelerometer, magnetometer and starts the acquistion.
+	 * This will set up the scale and output rate of each sensor.
+	 * \param accelSettings Accelerometer settings with default settings.
+	 * \param gyroSettings Gyroscope settings with default settings.
+	 * \param magSettings Magnetometer settings with default settings.
+	 * \param temperatureSettings Temperature sensor settings with default settings.
+	 **/
 	uint16_t begin(AccelSettings accelSettings = AccelSettings(),
 		       GyroSettings gyroSettings = GyroSettings(),
 		       MagSettings magSettings = MagSettings(),
 		       TemperatureSettings temperatureSettings = TemperatureSettings()
 		       );
 
-	// ends a possible thread in the background
+	/**
+	 * Ends the data acquisition and closes all IO.
+	 **/
 	void end();
 
+	/**
+	 * Sets the callback which receives the samples at the sampling rate.
+	 * \param cb Callback interface.
+	 **/
 	void setCallback(LSM9DS1callback* cb) {
 		lsm9ds1Callback = cb;
 	}
-    
-	void calibrate(bool autoCalc = true);
-	void calibrateMag(bool loadIn = true);
-	void magOffset(uint8_t axis, int16_t offset);
-    
-	// accelAvailable() -- Polls the accelerometer status register to check
-	// if new data is available.
-	// Output:    1 - New data available
-	//            0 - No new data available
+
+	/** 
+	 * Polls the accelerometer status register to check
+	 * if new data is available.
+	 * Output:    1 - New data available
+	 *            0 - No new data available
+	 **/
 	uint8_t accelAvailable();
     
-	// gyroAvailable() -- Polls the gyroscope status register to check
-	// if new data is available.
-	// Output:    1 - New data available
-	//            0 - No new data available
+	/** 
+	 * Polls the gyroscope status register to check
+	 * if new data is available.
+	 * Output:    1 - New data available
+	 *            0 - No new data available
+	 **/
 	uint8_t gyroAvailable();
     
-	// gyroAvailable() -- Polls the temperature status register to check
-	// if new data is available.
-	// Output:    1 - New data available
-	//            0 - No new data available
+	/** 
+	 * Polls the temperature status register to check
+	 * if new data is available.
+	 * Output:    1 - New data available
+	 *            0 - No new data available
+	 **/
 	uint8_t tempAvailable();
     
-	// magAvailable() -- Polls the accelerometer status register to check
-	// if new data is available.
-	// Input:
-	//    - axis can be either X_AXIS, Y_AXIS, Z_AXIS, to check for new data
-	//      on one specific axis. Or ALL_AXIS (default) to check for new data
-	//      on all axes.
-	// Output:    1 - New data available
-	//            0 - No new data available
+	/** 
+	 * Polls the magnetometer status register to check
+	 * if new data is available.
+	 * \param axis can be either X_AXIS, Y_AXIS, Z_AXIS, to check for new data
+	 *      on one specific axis. Or ALL_AXIS (default) to check for new data
+	 *      on all axes.
+	 * Output:    1 - New data available
+	 *            0 - No new data available
+	 **/
 	uint8_t magAvailable(lsm9ds1_axis axis = ALL_AXIS);
+    
+	/** 
+	 * Read a specific axis of the gyroscope.
+	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
+	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 **/
+	int16_t readGyro(lsm9ds1_axis axis);
+    
+	/**
+	 * Read a specific axis of the accelerometer.
+	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
+	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 **/
+	int16_t readAccel(lsm9ds1_axis axis);
+    
+	/**
+	 * Read a specific axis of the magnetometer.
+	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
+	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 **/
+	int16_t readMag(lsm9ds1_axis axis);
+
+	/**
+	 * Sets the magnetometer offset.
+	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
+	 * \param offset in raw units
+	 **/
+	void magOffset(uint8_t axis, int16_t offset);
+    
+	/** 
+	 * Convert from RAW signed 16-bit value to degrees per second
+	 * This function reads in a signed 16-bit value and returns the scaled
+	 * DPS. This function relies on gScale and gRes being correct.
+	 * \param gyro A signed 16-bit raw reading from the gyroscope.
+	 **/
+	float calcGyro(int16_t gyro);
+    
+	/** 
+	 * Convert from RAW signed 16-bit value to gravity (g's).
+	 * This function reads in a signed 16-bit value and returns the scaled
+	 * g's. This function relies on aScale and aRes being correct.
+	 * \param accel A signed 16-bit raw reading from the accelerometer.
+	 **/
+	float calcAccel(int16_t accel);
+    
+	/** 
+	 * Convert from RAW signed 16-bit value to Gauss (Gs)
+	 * This function reads in a signed 16-bit value and returns the scaled
+	 * Gs. This function relies on mScale and mRes being correct.
+	 * \param mag A signed 16-bit raw reading from the magnetometer.
+	 **/
+	float calcMag(int16_t mag);
+    
+	/** 
+	 * Get contents of Gyroscope interrupt source register
+	 **/
+	uint8_t getGyroIntSrc();
+    
+	/**
+	 * Get contents of accelerometer interrupt source register
+	 **/
+	uint8_t getAccelIntSrc();
+    
+	/**
+	 * Get contents of magnetometer interrupt source register
+	 **/
+	uint8_t getMagIntSrc();
+    
+	/** 
+	 * Get status of inactivity interrupt
+	 **/
+	uint8_t getInactivity();
+    
+	/**
+	 * Get number of FIFO samples
+	 **/
+	uint8_t getFIFOSamples();
+        
+
+private:
+	// gRes, aRes, and mRes store the current resolution for each sensor. 
+	// Units of these values would be DPS (or g's or Gs's) per ADC tick.
+	// This value is calculated as (sensor scale) / (2^15).
+	float gRes, aRes, mRes;
+    
+	// initGyro() -- Sets up the gyroscope to begin reading.
+	// This function steps through all five gyroscope control registers.
+	// Upon exit, the following parameters will be set:
+	//    - CTRL_REG1_G = 0x0F: Normal operation mode, all axes enabled. 
+	//        95 Hz ODR, 12.5 Hz cutoff frequency.
+	//    - CTRL_REG2_G = 0x00: HPF set to normal mode, cutoff frequency
+	//        set to 7.2 Hz (depends on ODR).
+	//    - CTRL_REG3_G = 0x88: Interrupt enabled on INT_G (set to push-pull and
+	//        active high). Data-ready output enabled on DRDY_G.
+	//    - CTRL_REG4_G = 0x00: Continuous update mode. Data LSB stored in lower
+	//        address. Scale set to 245 DPS.
+	//    - CTRL_REG5_G = 0x00: FIFO disabled. HPF disabled.
+	void initGyro();
     
 	// readGyro() -- Read the gyroscope output registers.
 	// This function will read all six gyroscope output registers.
@@ -270,13 +432,15 @@ public:
 	// those _after_ calling readGyro().
 	void readGyro();
     
-	// int16_t readGyro(axis) -- Read a specific axis of the gyroscope.
-	// [axis] can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	// Input:
-	//    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
-	// Output:
-	//    A 16-bit signed integer with sensor data on requested axis.
-	int16_t readGyro(lsm9ds1_axis axis);
+	// initAccel() -- Sets up the accelerometer to begin reading.
+	// This function steps through all accelerometer related control registers.
+	// Upon exit these registers will be set as:
+	//    - CTRL_REG0_XM = 0x00: FIFO disabled. HPF bypassed. Normal mode.
+	//    - CTRL_REG1_XM = 0x57: 100 Hz data rate. Continuous update.
+	//        all axes enabled.
+	//    - CTRL_REG2_XM = 0x00:  2g scale. 773 Hz anti-alias filter BW.
+	//    - CTRL_REG3_XM = 0x04: Accel data ready signal on INT1_XM pin.
+	void initAccel();
     
 	// readAccel() -- Read the accelerometer output registers.
 	// This function will read all six accelerometer output registers.
@@ -284,13 +448,16 @@ public:
 	// those _after_ calling readAccel().
 	void readAccel();
     
-	// int16_t readAccel(axis) -- Read a specific axis of the accelerometer.
-	// [axis] can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	// Input:
-	//    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
-	// Output:
-	//    A 16-bit signed integer with sensor data on requested axis.
-	int16_t readAccel(lsm9ds1_axis axis);
+	// initMag() -- Sets up the magnetometer to begin reading.
+	// This function steps through all magnetometer-related control registers.
+	// Upon exit these registers will be set as:
+	//    - CTRL_REG4_XM = 0x04: Mag data ready signal on INT2_XM pin.
+	//    - CTRL_REG5_XM = 0x14: 100 Hz update rate. Low resolution. Interrupt
+	//        requests don't latch. Temperature sensor disabled.
+	//    - CTRL_REG6_XM = 0x00:  2 Gs scale.
+	//    - CTRL_REG7_XM = 0x00: Continuous conversion mode. Normal HPF mode.
+	//    - INT_CTRL_REG_M = 0x09: Interrupt active-high. Enable interrupts.
+	void initMag();
     
 	// readMag() -- Read the magnetometer output registers.
 	// This function will read all six magnetometer output registers.
@@ -298,41 +465,117 @@ public:
 	// those _after_ calling readMag().
 	void readMag();
     
-	// int16_t readMag(axis) -- Read a specific axis of the magnetometer.
-	// [axis] can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	// Input:
-	//    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
-	// Output:
-	//    A 16-bit signed integer with sensor data on requested axis.
-	int16_t readMag(lsm9ds1_axis axis);
-
 	// readTemp() -- Read the temperature output register.
 	// This function will read two temperature output registers.
 	// The combined readings are stored in the class' temperature variables. Read
 	// those _after_ calling readTemp().
 	void readTemp();
     
-	// calcGyro() -- Convert from RAW signed 16-bit value to degrees per second
-	// This function reads in a signed 16-bit value and returns the scaled
-	// DPS. This function relies on gScale and gRes being correct.
+	// gReadByte() -- Reads a byte from a specified gyroscope register.
 	// Input:
-	//    - gyro = A signed 16-bit raw reading from the gyroscope.
-	float calcGyro(int16_t gyro);
+	//     - subAddress = Register to be read from.
+	// Output:
+	//     - An 8-bit value read from the requested address.
+	uint8_t mReadByte(uint8_t subAddress);
     
-	// calcAccel() -- Convert from RAW signed 16-bit value to gravity (g's).
-	// This function reads in a signed 16-bit value and returns the scaled
-	// g's. This function relies on aScale and aRes being correct.
+	// gReadBytes() -- Reads a number of bytes -- beginning at an address
+	// and incrementing from there -- from the gyroscope.
 	// Input:
-	//    - accel = A signed 16-bit raw reading from the accelerometer.
-	float calcAccel(int16_t accel);
+	//     - subAddress = Register to be read from.
+	//     - * dest = A pointer to an array of uint8_t's. Values read will be
+	//        stored in here on return.
+	//    - count = The number of bytes to be read.
+	// Output: No value is returned, but the `dest` array will store
+	//     the data read upon exit.
+	void mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count);
     
-	// calcMag() -- Convert from RAW signed 16-bit value to Gauss (Gs)
-	// This function reads in a signed 16-bit value and returns the scaled
-	// Gs. This function relies on mScale and mRes being correct.
+	// gWriteByte() -- Write a byte to a register in the gyroscope.
 	// Input:
-	//    - mag = A signed 16-bit raw reading from the magnetometer.
-	float calcMag(int16_t mag);
+	//    - subAddress = Register to be written to.
+	//    - data = data to be written to the register.
+	void mWriteByte(uint8_t subAddress, uint8_t data);
     
+	// xmReadByte() -- Read a byte from a register in the accel/mag sensor
+	// Input:
+	//    - subAddress = Register to be read from.
+	// Output:
+	//    - An 8-bit value read from the requested register.
+	uint8_t xgReadByte(uint8_t subAddress);
+    
+	// xmReadBytes() -- Reads a number of bytes -- beginning at an address
+	// and incrementing from there -- from the accelerometer/magnetometer.
+	// Input:
+	//     - subAddress = Register to be read from.
+	//     - * dest = A pointer to an array of uint8_t's. Values read will be
+	//        stored in here on return.
+	//    - count = The number of bytes to be read.
+	// Output: No value is returned, but the `dest` array will store
+	//     the data read upon exit.
+	void xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count);
+    
+	// xmWriteByte() -- Write a byte to a register in the accel/mag sensor.
+	// Input:
+	//    - subAddress = Register to be written to.
+	//    - data = data to be written to the register.
+	void xgWriteByte(uint8_t subAddress, uint8_t data);
+    
+	// calcgRes() -- Calculate the resolution of the gyroscope.
+	// This function will set the value of the gRes variable. gScale must
+	// be set prior to calling this function.
+	void calcgRes();
+    
+	// calcmRes() -- Calculate the resolution of the magnetometer.
+	// This function will set the value of the mRes variable. mScale must
+	// be set prior to calling this function.
+	void calcmRes();
+    
+	// calcaRes() -- Calculate the resolution of the accelerometer.
+	// This function will set the value of the aRes variable. aScale must
+	// be set prior to calling this function.
+	void calcaRes();
+    
+	//////////////////////
+	// Helper Functions //
+	//////////////////////
+	void constrainScales();
+    
+	// I2CwriteByte() -- Write a byte out of I2C to a register in the device
+	// Input:
+	//    - address = The 7-bit I2C address of the slave device.
+	//    - subAddress = The register to be written to.
+	//    - data = Byte to be written to the register.
+	void I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data);
+    
+	// I2CreadByte() -- Read a single byte from a register over I2C.
+	// Input:
+	//    - address = The 7-bit I2C address of the slave device.
+	//    - subAddress = The register to be read from.
+	// Output:
+	//    - The byte read from the requested address.
+	uint8_t I2CreadByte(uint8_t address, uint8_t subAddress);
+    
+	// I2CreadBytes() -- Read a series of bytes, starting at a register via SPI
+	// Input:
+	//    - address = The 7-bit I2C address of the slave device.
+	//    - subAddress = The register to begin reading.
+	//     - * dest = Pointer to an array where we'll store the readings.
+	//    - count = Number of registers to be read.
+	// Output: No value is returned by the function, but the registers read are
+	//         all stored in the *dest array given.
+	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
+
+	LSM9DS1callback* lsm9ds1Callback = NULL;
+	
+	void timerEvent();
+	
+	static void gpioISR(int gpio, int level, uint32_t tick, void* userdata)
+	{
+		//		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
+		if (level) {
+			((LSM9DS1*)userdata)->timerEvent();
+		}
+	}
+
 	// setGyroScale() -- Set the full-scale range of the gyroscope.
 	// This function can be called to set the scale of the gyroscope to 
 	// 245, 500, or 200 degrees per second.
@@ -451,18 +694,6 @@ public:
 	//      Value is equivalent to raw magnetometer value.
 	void configMagThs(uint16_t threshold);
     
-	// getGyroIntSrc() -- Get contents of Gyroscope interrupt source register
-	uint8_t getGyroIntSrc();
-    
-	// getGyroIntSrc() -- Get contents of accelerometer interrupt source register
-	uint8_t getAccelIntSrc();
-    
-	// getGyroIntSrc() -- Get contents of magnetometer interrupt source register
-	uint8_t getMagIntSrc();
-    
-	// getGyroIntSrc() -- Get status of inactivity interrupt
-	uint8_t getInactivity();
-    
 	// sleepGyro() -- Sleep or wake the gyroscope
 	// Input:
 	//    - enable: True = sleep gyro. False = wake gyro.
@@ -481,160 +712,21 @@ public:
 	//      Any value from 0-0x1F is acceptable.
 	void setFIFO(fifoMode_type fifoMode, uint8_t fifoThs);
     
-	// getFIFOSamples() - Get number of FIFO samples
-	uint8_t getFIFOSamples();
-        
+	DeviceSettings device;
+	MagSettings mag;
+	GyroSettings gyro;
+	AccelSettings accel;
+	TemperatureSettings temp;
 
-protected:
-	// gRes, aRes, and mRes store the current resolution for each sensor. 
-	// Units of these values would be DPS (or g's or Gs's) per ADC tick.
-	// This value is calculated as (sensor scale) / (2^15).
-	float gRes, aRes, mRes;
-    
-	// _autoCalc keeps track of whether we're automatically subtracting off
-	// accelerometer and gyroscope bias calculated in calibrate().
-	bool _autoCalc;
-    
-	// initGyro() -- Sets up the gyroscope to begin reading.
-	// This function steps through all five gyroscope control registers.
-	// Upon exit, the following parameters will be set:
-	//    - CTRL_REG1_G = 0x0F: Normal operation mode, all axes enabled. 
-	//        95 Hz ODR, 12.5 Hz cutoff frequency.
-	//    - CTRL_REG2_G = 0x00: HPF set to normal mode, cutoff frequency
-	//        set to 7.2 Hz (depends on ODR).
-	//    - CTRL_REG3_G = 0x88: Interrupt enabled on INT_G (set to push-pull and
-	//        active high). Data-ready output enabled on DRDY_G.
-	//    - CTRL_REG4_G = 0x00: Continuous update mode. Data LSB stored in lower
-	//        address. Scale set to 245 DPS.
-	//    - CTRL_REG5_G = 0x00: FIFO disabled. HPF disabled.
-	void initGyro();
-    
-	// initAccel() -- Sets up the accelerometer to begin reading.
-	// This function steps through all accelerometer related control registers.
-	// Upon exit these registers will be set as:
-	//    - CTRL_REG0_XM = 0x00: FIFO disabled. HPF bypassed. Normal mode.
-	//    - CTRL_REG1_XM = 0x57: 100 Hz data rate. Continuous update.
-	//        all axes enabled.
-	//    - CTRL_REG2_XM = 0x00:  2g scale. 773 Hz anti-alias filter BW.
-	//    - CTRL_REG3_XM = 0x04: Accel data ready signal on INT1_XM pin.
-	void initAccel();
-    
-	// initMag() -- Sets up the magnetometer to begin reading.
-	// This function steps through all magnetometer-related control registers.
-	// Upon exit these registers will be set as:
-	//    - CTRL_REG4_XM = 0x04: Mag data ready signal on INT2_XM pin.
-	//    - CTRL_REG5_XM = 0x14: 100 Hz update rate. Low resolution. Interrupt
-	//        requests don't latch. Temperature sensor disabled.
-	//    - CTRL_REG6_XM = 0x00:  2 Gs scale.
-	//    - CTRL_REG7_XM = 0x00: Continuous conversion mode. Normal HPF mode.
-	//    - INT_CTRL_REG_M = 0x09: Interrupt active-high. Enable interrupts.
-	void initMag();
-    
-	// gReadByte() -- Reads a byte from a specified gyroscope register.
-	// Input:
-	//     - subAddress = Register to be read from.
-	// Output:
-	//     - An 8-bit value read from the requested address.
-	uint8_t mReadByte(uint8_t subAddress);
-    
-	// gReadBytes() -- Reads a number of bytes -- beginning at an address
-	// and incrementing from there -- from the gyroscope.
-	// Input:
-	//     - subAddress = Register to be read from.
-	//     - * dest = A pointer to an array of uint8_t's. Values read will be
-	//        stored in here on return.
-	//    - count = The number of bytes to be read.
-	// Output: No value is returned, but the `dest` array will store
-	//     the data read upon exit.
-	void mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count);
-    
-	// gWriteByte() -- Write a byte to a register in the gyroscope.
-	// Input:
-	//    - subAddress = Register to be written to.
-	//    - data = data to be written to the register.
-	void mWriteByte(uint8_t subAddress, uint8_t data);
-    
-	// xmReadByte() -- Read a byte from a register in the accel/mag sensor
-	// Input:
-	//    - subAddress = Register to be read from.
-	// Output:
-	//    - An 8-bit value read from the requested register.
-	uint8_t xgReadByte(uint8_t subAddress);
-    
-	// xmReadBytes() -- Reads a number of bytes -- beginning at an address
-	// and incrementing from there -- from the accelerometer/magnetometer.
-	// Input:
-	//     - subAddress = Register to be read from.
-	//     - * dest = A pointer to an array of uint8_t's. Values read will be
-	//        stored in here on return.
-	//    - count = The number of bytes to be read.
-	// Output: No value is returned, but the `dest` array will store
-	//     the data read upon exit.
-	void xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count);
-    
-	// xmWriteByte() -- Write a byte to a register in the accel/mag sensor.
-	// Input:
-	//    - subAddress = Register to be written to.
-	//    - data = data to be written to the register.
-	void xgWriteByte(uint8_t subAddress, uint8_t data);
-    
-	// calcgRes() -- Calculate the resolution of the gyroscope.
-	// This function will set the value of the gRes variable. gScale must
-	// be set prior to calling this function.
-	void calcgRes();
-    
-	// calcmRes() -- Calculate the resolution of the magnetometer.
-	// This function will set the value of the mRes variable. mScale must
-	// be set prior to calling this function.
-	void calcmRes();
-    
-	// calcaRes() -- Calculate the resolution of the accelerometer.
-	// This function will set the value of the aRes variable. aScale must
-	// be set prior to calling this function.
-	void calcaRes();
-    
-	//////////////////////
-	// Helper Functions //
-	//////////////////////
-	void constrainScales();
-    
-	// I2CwriteByte() -- Write a byte out of I2C to a register in the device
-	// Input:
-	//    - address = The 7-bit I2C address of the slave device.
-	//    - subAddress = The register to be written to.
-	//    - data = Byte to be written to the register.
-	void I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data);
-    
-	// I2CreadByte() -- Read a single byte from a register over I2C.
-	// Input:
-	//    - address = The 7-bit I2C address of the slave device.
-	//    - subAddress = The register to be read from.
-	// Output:
-	//    - The byte read from the requested address.
-	uint8_t I2CreadByte(uint8_t address, uint8_t subAddress);
-    
-	// I2CreadBytes() -- Read a series of bytes, starting at a register via SPI
-	// Input:
-	//    - address = The 7-bit I2C address of the slave device.
-	//    - subAddress = The register to begin reading.
-	//     - * dest = Pointer to an array where we'll store the readings.
-	//    - count = Number of registers to be read.
-	// Output: No value is returned by the function, but the registers read are
-	//         all stored in the *dest array given.
-	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
-
-	LSM9DS1callback* lsm9ds1Callback = NULL;
-	
-	void timerEvent();
-	
-	static void gpioISR(int gpio, int level, uint32_t tick, void* userdata)
-	{
-		//		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
-		if (level) {
-			((LSM9DS1*)userdata)->timerEvent();
-		}
-	}
-
+	// We'll store the gyro, accel, and magnetometer readings in a series of
+	// public class variables. Each sensor gets three variables -- one for each
+	// axis. Call readGyro(), readAccel(), and readMag() first, before using
+	// these variables!
+	// These values are the RAW signed 16-bit readings from the sensors.
+	int16_t gx, gy, gz; // x, y, and z axis readings of the gyroscope
+	int16_t ax, ay, az; // x, y, and z axis readings of the accelerometer
+	int16_t mx, my, mz; // x, y, and z axis readings of the magnetometer
+	int16_t temperature; // Chip temperature
 };
 
 #endif // SFE_LSM9DS1_H //

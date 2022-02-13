@@ -40,15 +40,6 @@ LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
 	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",
 		device.i2c_bus,device.agAddress,device.mAddress);
 #endif
-	for (int i=0; i<3; i++) {
-		gBias[i] = 0;
-		aBias[i] = 0;
-		mBias[i] = 0;
-		gBiasRaw[i] = 0;
-		aBiasRaw[i] = 0;
-		mBiasRaw[i] = 0;
-	}
-	_autoCalc = false;
 }
 
 uint16_t LSM9DS1::begin(AccelSettings accelSettings,
@@ -132,7 +123,9 @@ void LSM9DS1::timerEvent() {
 
 void LSM9DS1::end() {
 	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
-	gpioTerminate();
+	if (device.initPIGPIO) {
+		gpioTerminate();
+	}
 }
 
 void LSM9DS1::initGyro()
@@ -273,83 +266,6 @@ void LSM9DS1::initAccel()
 
 }
 
-// This is a function that uses the FIFO to accumulate sample of accelerometer and gyro data, average
-// them, scales them to  gs and deg/s, respectively, and then passes the biases to the main sketch
-// for subtraction from all subsequent data. There are no gyro and accelerometer bias registers to store
-// the data as there are in the ADXL345, a precursor to the LSM9DS0, or the MPU-9150, so we have to
-// subtract the biases ourselves. This results in a more accurate measurement in general and can
-// remove errors due to imprecise or varying initial placement. Calibration of sensor data in this manner
-// is good practice.
-void LSM9DS1::calibrate(bool autoCalc)
-{
-	// uint8_t data[6] = {0, 0, 0, 0, 0, 0};
-	uint8_t samples = 0;
-	int ii;
-	int32_t aBiasRawTemp[3] = {0, 0, 0};
-	int32_t gBiasRawTemp[3] = {0, 0, 0};
-
-	// Turn on FIFO and set threshold to 32 samples
-	enableFIFO(true);
-	setFIFO(FIFO_THS, 0x1F);
-	while (samples < 0x1F)
-		{
-			samples = (xgReadByte(FIFO_SRC) & 0x3F); // Read number of stored samples
-		}
-	for(ii = 0; ii < samples ; ii++)
-		{    // Read the gyro data stored in the FIFO
-			readGyro();
-			gBiasRawTemp[0] += gx;
-			gBiasRawTemp[1] += gy;
-			gBiasRawTemp[2] += gz;
-			readAccel();
-			aBiasRawTemp[0] += ax;
-			aBiasRawTemp[1] += ay;
-			aBiasRawTemp[2] += az - (int16_t)(1./aRes); // Assumes sensor facing up!
-		}
-	for (ii = 0; ii < 3; ii++)
-		{
-			gBiasRaw[ii] = gBiasRawTemp[ii] / samples;
-			gBias[ii] = calcGyro(gBiasRaw[ii]);
-			aBiasRaw[ii] = aBiasRawTemp[ii] / samples;
-			aBias[ii] = calcAccel(aBiasRaw[ii]);
-		}
-
-	enableFIFO(false);
-	setFIFO(FIFO_OFF, 0x00);
-
-	if (autoCalc) _autoCalc = true;
-}
-
-void LSM9DS1::calibrateMag(bool loadIn)
-{
-	int i, j;
-	int16_t magMin[3] = {0, 0, 0};
-	int16_t magMax[3] = {0, 0, 0}; // The road warrior
-
-	for (i=0; i<128; i++)
-		{
-			while (!magAvailable())
-				;
-			readMag();
-			int16_t magTemp[3] = {0, 0, 0};
-			magTemp[0] = mx;
-			magTemp[1] = my;
-			magTemp[2] = mz;
-			for (j = 0; j < 3; j++)
-				{
-					if (magTemp[j] > magMax[j]) magMax[j] = magTemp[j];
-					if (magTemp[j] < magMin[j]) magMin[j] = magTemp[j];
-				}
-		}
-	for (j = 0; j < 3; j++)
-		{
-			mBiasRaw[j] = (magMax[j] + magMin[j]) / 2;
-			mBias[j] = calcMag(mBiasRaw[j]);
-			if (loadIn)
-				magOffset(j, mBiasRaw[j]);
-		}
-
-}
 void LSM9DS1::magOffset(uint8_t axis, int16_t offset)
 {
 	if (axis > 2)

@@ -1,0 +1,61 @@
+\hypertarget{structAccelSettings}{}\doxysection{Accel\+Settings Struct Reference}
+\label{structAccelSettings}\index{AccelSettings@{AccelSettings}}
+
+
+Accelerometer settings with default values.  
+
+
+
+
+{\ttfamily \#include $<$L\+S\+M9\+D\+S1.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structAccelSettings_ad0f58f45b233318c85acb7647e16f15d}\label{structAccelSettings_ad0f58f45b233318c85acb7647e16f15d}} 
+uint8\+\_\+t {\bfseries enabled} = true
+\item 
+\mbox{\Hypertarget{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}\label{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}} 
+uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}{scale}} = 16
+\begin{DoxyCompactList}\small\item\em accel scale (in g) can be 2, 4, 8, or 16 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAccelSettings_a26dfe657aeb9c82ed821890eded9744f}\label{structAccelSettings_a26dfe657aeb9c82ed821890eded9744f}} 
+uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_a26dfe657aeb9c82ed821890eded9744f}{sample\+Rate}} = 2
+\begin{DoxyCompactList}\small\item\em accel sample rate (Hz) can be 1-\/6 1 = 10 Hz 4 = 238 Hz 2 = 50 Hz 5 = 476 Hz 3 = 119 Hz 6 = 952 Hz \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAccelSettings_a8bf34ff635af7dbf3092a97f69553ebc}\label{structAccelSettings_a8bf34ff635af7dbf3092a97f69553ebc}} 
+uint8\+\_\+t {\bfseries enableX} = true
+\item 
+\mbox{\Hypertarget{structAccelSettings_a08a80d20c2097924b886d7b33a3ced13}\label{structAccelSettings_a08a80d20c2097924b886d7b33a3ced13}} 
+uint8\+\_\+t {\bfseries enableY} = true
+\item 
+\mbox{\Hypertarget{structAccelSettings_ada2c1a0b933519b3a31c5949776eb4d1}\label{structAccelSettings_ada2c1a0b933519b3a31c5949776eb4d1}} 
+uint8\+\_\+t {\bfseries enableZ} = true
+\item 
+int8\+\_\+t \mbox{\hyperlink{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}{bandwidth}} = -\/1
+\begin{DoxyCompactList}\small\item\em Accel cutoff freqeuncy can be any value between -\/1 -\/ 3. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAccelSettings_a74a1c9d4aa1b6d22401c8a2953d07fd9}\label{structAccelSettings_a74a1c9d4aa1b6d22401c8a2953d07fd9}} 
+uint8\+\_\+t {\bfseries high\+Res\+Enable} = false
+\item 
+\mbox{\Hypertarget{structAccelSettings_ad954a137d5a713271e03e6fe3a7b5e12}\label{structAccelSettings_ad954a137d5a713271e03e6fe3a7b5e12}} 
+uint8\+\_\+t {\bfseries high\+Res\+Bandwidth} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Accelerometer settings with default values. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}\label{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}} 
+\index{AccelSettings@{AccelSettings}!bandwidth@{bandwidth}}
+\index{bandwidth@{bandwidth}!AccelSettings@{AccelSettings}}
+\doxysubsubsection{\texorpdfstring{bandwidth}{bandwidth}}
+{\footnotesize\ttfamily int8\+\_\+t Accel\+Settings\+::bandwidth = -\/1}
+
+
+
+Accel cutoff freqeuncy can be any value between -\/1 -\/ 3. 
+
+-\/1 = bandwidth determined by sample rate 0 = 408 Hz 2 = 105 Hz 1 = 211 Hz 3 = 50 Hz 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+S\+M9\+D\+S1.\+h\end{DoxyCompactItemize}
