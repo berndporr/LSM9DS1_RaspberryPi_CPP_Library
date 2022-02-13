@@ -1,6 +1,6 @@
 # LSM9DS1 RaspberryPI C++ Library and circuit boards
 
-For C++ with callback handler running at 50Hz sampling rate.
+For C++ with callback handler
 
 Based on the [SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)
 
@@ -10,10 +10,10 @@ This library supports only I2C.
 
 ## Requirement
 
-* [WiringPi](http://wiringpi.com/)
+* [pigpio](http://abyz.me.uk/rpi/pigpio/)
 
 ```
-sudo apt-get install wiringpi
+sudo apt-get install libpigpio-dev
 ```
 
 ## Install
