@@ -564,7 +564,7 @@ private:
 	//         all stored in the *dest array given.
 	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 
-	LSM9DS1callback* lsm9ds1Callback = NULL;
+	LSM9DS1callback* lsm9ds1Callback = nullptr;
 	
 	void timerEvent();
 	

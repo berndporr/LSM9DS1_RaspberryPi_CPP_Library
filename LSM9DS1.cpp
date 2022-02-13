@@ -24,6 +24,7 @@ Distributed as-is; no warranty is given.
 
 #include <time.h>
 #include <unistd.h>
+#include <assert.h>
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
@@ -91,8 +92,6 @@ uint16_t LSM9DS1::begin(AccelSettings accelSettings,
 
 	// Magnetometer initialization stuff:
 	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
-
-	calibrate();
 
 	gpioSetMode(device.drdy_gpio,PI_INPUT);
 	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
@@ -349,30 +348,29 @@ void LSM9DS1::initMag()
 
 uint8_t LSM9DS1::accelAvailable()
 {
-	uint8_t status = xgReadByte(STATUS_REG_1);
-
+	assert(nullptr == lsm9ds1Callback);
+	const uint8_t status = xgReadByte(STATUS_REG_1);
 	return (status & (1<<0));
 }
 
 uint8_t LSM9DS1::gyroAvailable()
 {
-	uint8_t status = xgReadByte(STATUS_REG_1);
-
+	assert(nullptr == lsm9ds1Callback);
+	const uint8_t status = xgReadByte(STATUS_REG_1);
 	return ((status & (1<<1)) >> 1);
 }
 
 uint8_t LSM9DS1::tempAvailable()
 {
-	uint8_t status = xgReadByte(STATUS_REG_1);
-
+	assert(nullptr == lsm9ds1Callback);
+	const uint8_t status = xgReadByte(STATUS_REG_1);
 	return ((status & (1<<2)) >> 2);
 }
 
 uint8_t LSM9DS1::magAvailable(lsm9ds1_axis axis)
 {
-	uint8_t status;
-	status = mReadByte(STATUS_REG_M);
-
+	assert(nullptr == lsm9ds1Callback);
+	const uint8_t status = mReadByte(STATUS_REG_M);
 	return ((status & (1<<axis)) >> axis);
 }
 
@@ -388,25 +386,15 @@ void LSM9DS1::readAccel()
 		ax = ay = az = 999;
 		return;
 	}
-
-	if (_autoCalc)
-		{
-			ax -= aBiasRaw[X_AXIS];
-			ay -= aBiasRaw[Y_AXIS];
-			az -= aBiasRaw[Z_AXIS];
-		}
 }
 
 int16_t LSM9DS1::readAccel(lsm9ds1_axis axis)
 {
+	assert(nullptr == lsm9ds1Callback);
 	uint8_t temp[2] = {0, 0};
 	int16_t value;
 	xgReadBytes(OUT_X_L_XL + (2 * axis), temp, 2);
 	value = (temp[1] << 8) | temp[0];
-
-	if (_autoCalc)
-		value -= aBiasRaw[axis];
-
 	return value;
 }
 
@@ -421,6 +409,7 @@ void LSM9DS1::readMag()
 
 int16_t LSM9DS1::readMag(lsm9ds1_axis axis)
 {
+	assert(nullptr == lsm9ds1Callback);
 	uint8_t temp[2] = {0,0};
 	mReadBytes(OUT_X_L_M + (2 * axis), temp, 2);
 	return (temp[1] << 8) | temp[0];
@@ -445,26 +434,17 @@ void LSM9DS1::readGyro()
 		gx = gy = gz = 9999;
 		return;
 	}
-	if (_autoCalc)
-		{
-			gx -= gBiasRaw[X_AXIS];
-			gy -= gBiasRaw[Y_AXIS];
-			gz -= gBiasRaw[Z_AXIS];
-		}
 }
 
 int16_t LSM9DS1::readGyro(lsm9ds1_axis axis)
 {
+	assert(nullptr == lsm9ds1Callback);
 	uint8_t temp[2] = {0,0};
 	int16_t value;
 
 	xgReadBytes(OUT_X_L_G + (2 * axis), temp, 2);
 
 	value = (temp[1] << 8) | temp[0];
-
-	if (_autoCalc)
-		value -= gBiasRaw[axis];
-
 	return value;
 }
 

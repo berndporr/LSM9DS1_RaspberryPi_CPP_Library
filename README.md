@@ -46,6 +46,12 @@ cd example
 ./LSM9DS1_demo
 ```
 
+## Documentation
+
+The relevant public sections of the header files have docstrings.
+
+The online documentation is here: https://berndporr.github.io/LSM9DS1_RaspberryPi_CPP_Library/
+
 This demo runs with a callback handler and it's called at the default sampling rate of 50Hz.
 
 ## PCBs
