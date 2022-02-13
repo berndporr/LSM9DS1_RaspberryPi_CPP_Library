@@ -25,7 +25,7 @@ class LSM9DS1printCallback : public LSM9DS1callback {
 };
 
 int main(int argc, char *argv[]) {
-    LSM9DS1 imu(IMU_MODE_I2C, 0x6b, 0x1e);
+    LSM9DS1 imu;
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
     imu.begin();

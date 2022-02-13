@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
@@ -22,7 +22,7 @@ set_target_properties(lsm9ds1 PROPERTIES
   SOVERSION 1
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1 wiringPi)
+target_link_libraries(lsm9ds1 pigpio)
 
 install(TARGETS lsm9ds1 EXPORT lsm9ds1-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -39,7 +39,7 @@ add_library(lsm9ds1_static
 set_target_properties(lsm9ds1_static PROPERTIES
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1_static wiringPi)
+target_link_libraries(lsm9ds1_static pigpio)
 
 install(TARGETS lsm9ds1_static EXPORT lsm9ds1_static-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

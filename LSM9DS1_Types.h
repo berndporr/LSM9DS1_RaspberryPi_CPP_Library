@@ -197,9 +197,9 @@ struct gyroSettings
 
 struct deviceSettings
 {
-    uint8_t commInterface; // Can be I2C, SPI 4-wire or SPI 3-wire
-    uint8_t agAddress;	// I2C address or SPI CS pin
-	uint8_t mAddress;	// I2C address or SPI CS pin
+	uint8_t agAddress;	// I2C address
+	uint8_t mAddress;	// I2C address
+	unsigned i2c_bus;
 };
 
 struct accelSettings
