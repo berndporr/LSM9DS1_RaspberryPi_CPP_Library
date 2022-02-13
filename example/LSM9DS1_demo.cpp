@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     imu.begin();
     do {
 	sleep(1);
-    } while (getchar() != 27);
+    } while (getchar() < 10);
     imu.end();
     exit(EXIT_SUCCESS);
 }

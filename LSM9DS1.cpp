@@ -24,7 +24,6 @@ Distributed as-is; no warranty is given.
 
 #include <time.h>
 #include <unistd.h>
-#include <pigpio.h>
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
@@ -34,23 +33,11 @@ float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 #define DEBUG
 
 LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr) {
-	int cfg = gpioCfgGetInternals();
-	cfg |= PI_CFG_NOSIGHANDLER;
-	gpioCfgSetInternals(cfg);
-	int r = gpioInitialise();
-	if (r < 0) {
-		char msg[] = "Cannot init pigpio.";
-#ifdef DEBUG
-		fprintf(stderr,"%s\n",msg);
-#endif
-		throw msg;
-	}
-	
 	settings.device.i2c_bus = i2cBUS;
 	settings.device.agAddress = xgAddr;
 	settings.device.mAddress = mAddr;
 #ifdef DEBUG
-	fprintf(stderr,"Opened: bus=%02x, agAddr=%02x, mAddr=%02x\n",settings.device.i2c_bus,settings.device.agAddress,settings.device.mAddress);
+	fprintf(stderr,"LSM9DS1: bus=%02x, agAddr=%02x, mAddr=%02x\n",settings.device.i2c_bus,settings.device.agAddress,settings.device.mAddress);
 #endif
 	
 	settings.gyro.enabled = true;
@@ -140,10 +127,21 @@ LSM9DS1::LSM9DS1(uint8_t i2cBUS, uint8_t xgAddr, uint8_t mAddr) {
 
 uint16_t LSM9DS1::begin()
 {
-
 	//! Todo: don't use _xgAddress or _mAddress, duplicating memory
 	_xgAddress = settings.device.agAddress;
 	_mAddress = settings.device.mAddress;
+
+	int cfg = gpioCfgGetInternals();
+	cfg |= PI_CFG_NOSIGHANDLER;
+	gpioCfgSetInternals(cfg);
+	int r = gpioInitialise();
+	if (r < 0) {
+		char msg[] = "Cannot init pigpio.";
+#ifdef DEBUG
+		fprintf(stderr,"%s\n",msg);
+#endif
+		throw msg;
+	}
 
 	constrainScales();
 	// Once we have the scale values, we can calculate the resolution
@@ -198,6 +196,7 @@ void LSM9DS1::timerEvent() {
 
 void LSM9DS1::end() {
 	stop();
+	gpioTerminate();
 }
 
 void LSM9DS1::initGyro()

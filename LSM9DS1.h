@@ -30,9 +30,11 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
 #include "CppTimer.h"
+#include <pigpio.h>
 
 #define LSM9DS1_AG_ADDR 0x6B
 #define LSM9DS1_M_ADDR  0x1E
+#define LSM9DS1_DRDY_GPIO 22
 
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
 
@@ -83,7 +85,11 @@ public:
 	//    - xgAddr = I2C address of the accel/gyroscope.
 	//    - mAddr = I2C address of the magnetometer.
 	//    - i2cBUS = i2c bus (0 or 1)
-	LSM9DS1(uint8_t i2cBUS = 1, uint8_t xgAddr = 0x6B, uint8_t mAddr = 0x1E);
+	LSM9DS1(uint8_t i2cBUS = 1, uint8_t xgAddr = LSM9DS1_AG_ADDR, uint8_t mAddr = LSM9DS1_M_ADDR);
+
+	~LSM9DS1() {
+		gpioTerminate();
+	}
         
 	// begin() -- Initialize the gyro, accelerometer, and magnetometer.
 	// This will set up the scale and output rate of each sensor. The values set
@@ -493,7 +499,14 @@ protected:
 	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 
 	LSM9DS1callback* lsm9ds1Callback = NULL;
+	
 	void timerEvent();
+	
+	static void aFunction(int gpio, int level, uint32_t tick, void* userdata)
+	{
+		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
+	}
+
 };
 
 #endif // SFE_LSM9DS1_H //
