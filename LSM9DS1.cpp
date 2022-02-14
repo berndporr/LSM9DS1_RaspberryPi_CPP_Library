@@ -123,7 +123,7 @@ void LSM9DS1::run(LSM9DS1* instance) {
                         fprintf(stderr,"Poll error %d\n",ret);
                 }
 	}
-	dataReadyGPIO.gpio_fd_close(sysfs_fd);
+	close(sysfs_fd);
 }
 
 void LSM9DS1::end() {

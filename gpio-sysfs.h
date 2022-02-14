@@ -1,5 +1,5 @@
-#ifndef GPIOSYSFS
-#define GPIOSYSFS
+#ifndef __GPIOSYSFS
+#define __GPIOSYSFS
 
 /* Copyright (c) 2011, RidgeRun
  * Copyright (c) 2014-2022, Bernd Porr
@@ -14,15 +14,15 @@
  *    documentation and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *    This product includes software developed by the RidgeRun.
+ *    This product includes software developed by the RidgeRun and Bernd Porr.
  * 4. Neither the name of the RidgeRun nor the
  *    names of its contributors may be used to endorse or promote products
  *    derived from this software without specific prior written permission.
  * 
- * THIS SOFTWARE IS PROVIDED BY RIDGERUN ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY RIDGERUN AND BERND PORR ''AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL RIDGERUN BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL RIDGERUN OR BERND PORR BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -88,11 +88,6 @@ class SysGPIO {
 	 * Gets a file descriptor on the "value" of the port.
 	 ****************************************************************/
 	int gpio_fd_open();
-	
-	/****************************************************************
-	 * Closes the fd on "value" of the port.
-	 ****************************************************************/
-	int gpio_fd_close(int fd);
 	
 	/****************************************************************
 	 * Puts the current thread to sleep until a change is detected
