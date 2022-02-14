@@ -20,10 +20,8 @@ or make your own PCB (see the `pcbs` folder).
 
 ## Software requirement
 
-* [pigpio](http://abyz.me.uk/rpi/pigpio/)
-
 ```
-sudo apt-get install libpigpio-dev libi2c-dev
+sudo apt-get install libi2c-dev
 ```
 
 ## Install

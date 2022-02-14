@@ -52,21 +52,9 @@ uint16_t LSM9DS1::begin(AccelSettings accelSettings,
 	gyro = gyroSettings;
 	mag = magSettings;
 	temp = temperatureSettings;
-	
-	if (device.initPIGPIO) {
-		int cfg = gpioCfgGetInternals();
-		cfg |= PI_CFG_NOSIGHANDLER;
-		gpioCfgSetInternals(cfg);
-		int r = gpioInitialise();
-		if (r < 0) {
-			char msg[] = "Cannot init pigpio.";
-#ifdef DEBUG
-			fprintf(stderr,"%s\n",msg);
-#endif
-			throw msg;
-		}
-	}
 
+	assert(nullptr == daqThread);
+	
 	constrainScales();
 	// Once we have the scale values, we can calculate the resolution
 	// of each sensor. That's what these functions are for. One for each sensor
@@ -93,38 +81,49 @@ uint16_t LSM9DS1::begin(AccelSettings accelSettings,
 	// Magnetometer initialization stuff:
 	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
 
-	gpioSetMode(device.drdy_gpio,PI_INPUT);
-	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
-
+	daqThread = new std::thread(run,this);
+	
 	return whoAmICombined;
 }
 
 
-void LSM9DS1::timerEvent() {
-	if (!lsm9ds1Callback) return;
-	
-	readGyro();
-	readAccel();
-	readMag();
-
-	LSM9DS1Sample sample;
-	sample.gx = calcGyro(gx);
-	sample.gy = calcGyro(gy);
-	sample.gz = calcGyro(gz);
-	sample.ax = calcAccel(ax);
-	sample.ay = calcAccel(ay);
-	sample.az = calcAccel(az);
-	sample.mx = calcMag(mx);
-	sample.my = calcMag(my);
-	sample.mz = calcMag(mz);
-	lsm9ds1Callback->hasSample(sample);
+void LSM9DS1::run(LSM9DS1* instance) {
+	fprintf(stderr,"Running\n");
+	instance->running = true;
+	SysGPIO sysGPIO(instance->device.drdy_gpio);
+	sysGPIO.set_dir(false);
+	sysGPIO.set_edge(SysGPIO::falling);
+	while (instance->running) {
+		int ret = sysGPIO.interrupt(ISR_TIMEOUT);
+		if (ret<0) {
+                        fprintf(stderr,"Poll error %d\n",ret);
+                }
+		if (instance->lsm9ds1Callback) {
+			instance->readGyro();
+			instance->readAccel();
+			instance->readMag();
+			
+			LSM9DS1Sample sample;
+			sample.gx = instance->calcGyro(instance->gx);
+			sample.gy = instance->calcGyro(instance->gy);
+			sample.gz = instance->calcGyro(instance->gz);
+			sample.ax = instance->calcAccel(instance->ax);
+			sample.ay = instance->calcAccel(instance->ay);
+			sample.az = instance->calcAccel(instance->az);
+			sample.mx = instance->calcMag(instance->mx);
+			sample.my = instance->calcMag(instance->my);
+			sample.mz = instance->calcMag(instance->mz);
+			instance->lsm9ds1Callback->hasSample(sample);
+		}
+	}
 }
 
 void LSM9DS1::end() {
-	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
-	if (device.initPIGPIO) {
-		gpioTerminate();
-	}
+	running = false;
+	if (nullptr == daqThread) return;
+	daqThread->join();
+	delete daqThread;
+	daqThread = nullptr;
 }
 
 void LSM9DS1::initGyro()

@@ -40,7 +40,9 @@ extern "C"
 #include <fcntl.h>
 }
 
-#include <pigpio.h>
+#include "gpio-sysfs.h"
+
+#include <thread>  
 
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
 
@@ -295,6 +297,10 @@ public:
 	 * Ends the data acquisition and closes all IO.
 	 **/
 	void end();
+
+	~LSM9DS1() {
+		end();
+	}
 
 	/**
 	 * Sets the callback which receives the samples at the sampling rate.
@@ -576,17 +582,11 @@ private:
 	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 
 	LSM9DS1callback* lsm9ds1Callback = nullptr;
-	
-	void timerEvent();
-	
-	static void gpioISR(int gpio, int level, uint32_t tick, void* userdata)
-	{
-		//		fprintf(stderr,"GPIO %d became %d at %d. userdata = %x", gpio, level, tick, userdata);
-		if (level) {
-			((LSM9DS1*)userdata)->timerEvent();
-		}
-	}
 
+	static void run(LSM9DS1* instance);
+	std::thread* daqThread = NULL;
+	bool running = true;
+	
 	// setGyroScale() -- Set the full-scale range of the gyroscope.
 	// This function can be called to set the scale of the gyroscope to 
 	// 245, 500, or 200 degrees per second.

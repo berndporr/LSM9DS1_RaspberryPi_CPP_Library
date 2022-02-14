@@ -8,12 +8,15 @@ endif()
 
 project(LSM9DS1_RaspberryPi_Library VERSION 2.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
+
+find_package (Threads)
+
 add_subdirectory(example)
 
 # add_compile_options(-Wall -Wconversion -Wextra -pedantic)
 
 set(LIBSRC LSM9DS1.cpp)
-set(LIBINCLUDE LSM9DS1.h LSM9DS1_Registers.h LSM9DS1_Types.h)
+set(LIBINCLUDE LSM9DS1.h LSM9DS1_Registers.h LSM9DS1_Types.h gpio-sysfs.h)
 
 add_library(lsm9ds1
   SHARED
@@ -24,7 +27,7 @@ set_target_properties(lsm9ds1 PROPERTIES
   SOVERSION 2
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1 pigpio i2c)
+target_link_libraries(lsm9ds1 ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS lsm9ds1 EXPORT lsm9ds1-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -41,7 +44,7 @@ add_library(lsm9ds1_static
 set_target_properties(lsm9ds1_static PROPERTIES
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1_static pigpio i2c)
+target_link_libraries(lsm9ds1_static ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS lsm9ds1_static EXPORT lsm9ds1_static-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

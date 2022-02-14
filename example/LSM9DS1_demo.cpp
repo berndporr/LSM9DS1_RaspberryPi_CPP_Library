@@ -9,19 +9,21 @@
 
 class LSM9DS1printCallback : public LSM9DS1callback {
 	virtual void hasSample(LSM9DS1Sample s) {
-		printf("Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", s.gx, s.gy, s.gz);
-		printf("Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", s.ax, s.ay, s.az);
-		printf("Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", s.mx, s.my, s.mz);
-		printf("\n");
+		fprintf(stderr,"Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", s.gx, s.gy, s.gz);
+		fprintf(stderr,"Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", s.ax, s.ay, s.az);
+		fprintf(stderr,"Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", s.mx, s.my, s.mz);
+		fprintf(stderr,"\n");
 	}
 };
 
 int main(int argc, char *argv[]) {
     fprintf(stderr,"Press <RETURN> any time to stop the acquisition.\n");
+    AccelSettings accelSettings;
+    accelSettings.sampleRate = 1;
     LSM9DS1 imu;
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
-    imu.begin();
+    imu.begin(accelSettings);
     do {
 	sleep(1);
     } while (getchar() < 10);
