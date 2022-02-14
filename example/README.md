@@ -2,13 +2,13 @@
 
 Pin assignment is below: 
 
-|RasPi|IMU|
+|RasPi|LSM9DS1|
 |:-:|:-:|
 |GND|GND|
 |3.3VDC Power|VDD|
 |Pin3|SDA|
 |Pin5|SCL|
-|Pin15|GPIO22|
+|Pin15 (GPIO22)|INT2|
 
 ```
 make
