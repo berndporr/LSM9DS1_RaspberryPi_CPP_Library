@@ -14,20 +14,20 @@ Main class for the \mbox{\hyperlink{classLSM9DS1}{L\+S\+M9\+D\+S1}} acceleromter
 \item 
 \mbox{\hyperlink{classLSM9DS1_af9c03c60d074d9faa452255299b43d5e}{L\+S\+M9\+D\+S1}} (\mbox{\hyperlink{structDeviceSettings}{Device\+Settings}} device\+Settings=\mbox{\hyperlink{structDeviceSettings}{Device\+Settings}}())
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classLSM9DS1}{L\+S\+M9\+D\+S1}} class constructor. \end{DoxyCompactList}\item 
-uint16\+\_\+t \mbox{\hyperlink{classLSM9DS1_a67ef8de97ad4e80ff21f09720ee43479}{begin}} (\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}} gyro\+Settings=\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}(), \mbox{\hyperlink{structAccelSettings}{Accel\+Settings}} accel\+Settings=\mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}(), \mbox{\hyperlink{structMagSettings}{Mag\+Settings}} mag\+Settings=\mbox{\hyperlink{structMagSettings}{Mag\+Settings}}(), \mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}} temperature\+Settings=\mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}())
+void \mbox{\hyperlink{classLSM9DS1_a7c4ae3f3a5f52b1638b1bbf15dc65066}{begin}} (\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}} gyro\+Settings=\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}(), \mbox{\hyperlink{structAccelSettings}{Accel\+Settings}} accel\+Settings=\mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}(), \mbox{\hyperlink{structMagSettings}{Mag\+Settings}} mag\+Settings=\mbox{\hyperlink{structMagSettings}{Mag\+Settings}}(), \mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}} temperature\+Settings=\mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}())
 \begin{DoxyCompactList}\small\item\em Initializes the gyro, accelerometer, magnetometer and starts the acquistion. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classLSM9DS1_ae1948644d70a0356f3da4949023afb31}\label{classLSM9DS1_ae1948644d70a0356f3da4949023afb31}} 
 void \mbox{\hyperlink{classLSM9DS1_ae1948644d70a0356f3da4949023afb31}{end}} ()
 \begin{DoxyCompactList}\small\item\em Ends the data acquisition and closes all IO. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classLSM9DS1_a3102ea02c253af39e3b43ee55b94d716}{set\+Callback}} (\mbox{\hyperlink{classLSM9DS1callback}{L\+S\+M9\+D\+S1callback}} $\ast$cb)
 \begin{DoxyCompactList}\small\item\em Sets the callback which receives the samples at the sampling rate. \end{DoxyCompactList}\item 
-uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_a515ce6f5c199a86c6aa5be353b2a3a13}{accel\+Available}} ()
+bool \mbox{\hyperlink{classLSM9DS1_a31b5054a985a895fb88d8828e85243a9}{accel\+Available}} ()
 \begin{DoxyCompactList}\small\item\em Polls the accelerometer status register to check if new data is available. \end{DoxyCompactList}\item 
-uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_a65b71a03a30f4e8ed1ffd46de3db0560}{gyro\+Available}} ()
+bool \mbox{\hyperlink{classLSM9DS1_aebe2365e8126f8aa6fd2c716d558419b}{gyro\+Available}} ()
 \begin{DoxyCompactList}\small\item\em Polls the gyroscope status register to check if new data is available. \end{DoxyCompactList}\item 
-uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_aaf6683c6f3f0281d5222b74f580f321b}{temp\+Available}} ()
+bool \mbox{\hyperlink{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}{temp\+Available}} ()
 \begin{DoxyCompactList}\small\item\em Polls the temperature status register to check if new data is available. \end{DoxyCompactList}\item 
-uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_a85afd29e95bead7b3f0083a9a235d1df}{mag\+Available}} (lsm9ds1\+\_\+axis axis=A\+L\+L\+\_\+\+A\+X\+IS)
+bool \mbox{\hyperlink{classLSM9DS1_a6e638bfef3ba1316ba9a35e2b7d77bf6}{mag\+Available}} (lsm9ds1\+\_\+axis axis=A\+L\+L\+\_\+\+A\+X\+IS)
 \begin{DoxyCompactList}\small\item\em Polls the magnetometer status register to check if new data is available. \end{DoxyCompactList}\item 
 int16\+\_\+t \mbox{\hyperlink{classLSM9DS1_adc1b37609a6c850328b16da4f911cefd}{read\+Gyro}} (lsm9ds1\+\_\+axis axis)
 \begin{DoxyCompactList}\small\item\em Read a specific axis of the gyroscope. \end{DoxyCompactList}\item 
@@ -63,7 +63,7 @@ uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_ac03ef2ff928a25c4a80af7707cd92dc8}{ge
 \doxysubsection{Detailed Description}
 Main class for the \mbox{\hyperlink{classLSM9DS1}{L\+S\+M9\+D\+S1}} acceleromter which manages the data acquisition via pigpio and calls the main program via a callback handler. 
 
-The constructor and the \mbox{\hyperlink{classLSM9DS1_a67ef8de97ad4e80ff21f09720ee43479}{begin()}} function have default settings so that in the simplest case just a callback needs to be registered and then begin be called. To stop the data acquistion call \mbox{\hyperlink{classLSM9DS1_ae1948644d70a0356f3da4949023afb31}{end()}}. 
+The constructor and the \mbox{\hyperlink{classLSM9DS1_a7c4ae3f3a5f52b1638b1bbf15dc65066}{begin()}} function have default settings so that in the simplest case just a callback needs to be registered and then begin be called. To stop the data acquistion call \mbox{\hyperlink{classLSM9DS1_ae1948644d70a0356f3da4949023afb31}{end()}}. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classLSM9DS1_af9c03c60d074d9faa452255299b43d5e}\label{classLSM9DS1_af9c03c60d074d9faa452255299b43d5e}} 
@@ -84,21 +84,24 @@ The constructor and the \mbox{\hyperlink{classLSM9DS1_a67ef8de97ad4e80ff21f09720
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classLSM9DS1_a515ce6f5c199a86c6aa5be353b2a3a13}\label{classLSM9DS1_a515ce6f5c199a86c6aa5be353b2a3a13}} 
+\mbox{\Hypertarget{classLSM9DS1_a31b5054a985a895fb88d8828e85243a9}\label{classLSM9DS1_a31b5054a985a895fb88d8828e85243a9}} 
 \index{LSM9DS1@{LSM9DS1}!accelAvailable@{accelAvailable}}
 \index{accelAvailable@{accelAvailable}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{accelAvailable()}{accelAvailable()}}
-{\footnotesize\ttfamily uint8\+\_\+t L\+S\+M9\+D\+S1\+::accel\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool L\+S\+M9\+D\+S1\+::accel\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
 Polls the accelerometer status register to check if new data is available. 
 
-Output\+: 1 -\/ New data available 0 -\/ No new data available \mbox{\Hypertarget{classLSM9DS1_a67ef8de97ad4e80ff21f09720ee43479}\label{classLSM9DS1_a67ef8de97ad4e80ff21f09720ee43479}} 
+\begin{DoxyReturn}{Returns}
+true if data is available. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLSM9DS1_a7c4ae3f3a5f52b1638b1bbf15dc65066}\label{classLSM9DS1_a7c4ae3f3a5f52b1638b1bbf15dc65066}} 
 \index{LSM9DS1@{LSM9DS1}!begin@{begin}}
 \index{begin@{begin}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{begin()}{begin()}}
-{\footnotesize\ttfamily uint16\+\_\+t L\+S\+M9\+D\+S1\+::begin (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}}]{gyro\+Settings = {\ttfamily \mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}()},  }\item[{\mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}}]{accel\+Settings = {\ttfamily \mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}()},  }\item[{\mbox{\hyperlink{structMagSettings}{Mag\+Settings}}}]{mag\+Settings = {\ttfamily \mbox{\hyperlink{structMagSettings}{Mag\+Settings}}()},  }\item[{\mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}}]{temperature\+Settings = {\ttfamily \mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}()} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void L\+S\+M9\+D\+S1\+::begin (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}}]{gyro\+Settings = {\ttfamily \mbox{\hyperlink{structGyroSettings}{Gyro\+Settings}}()},  }\item[{\mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}}]{accel\+Settings = {\ttfamily \mbox{\hyperlink{structAccelSettings}{Accel\+Settings}}()},  }\item[{\mbox{\hyperlink{structMagSettings}{Mag\+Settings}}}]{mag\+Settings = {\ttfamily \mbox{\hyperlink{structMagSettings}{Mag\+Settings}}()},  }\item[{\mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}}]{temperature\+Settings = {\ttfamily \mbox{\hyperlink{structTemperatureSettings}{Temperature\+Settings}}()} }\end{DoxyParamCaption})}
 
 
 
@@ -130,6 +133,9 @@ This function reads in a signed 16-\/bit value and returns the scaled g\textquot
 {\em accel} & A signed 16-\/bit raw reading from the accelerometer. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Acceleration in m/s$^\wedge$2. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_a76707323565bc4170ea8e27a932c95e4}\label{classLSM9DS1_a76707323565bc4170ea8e27a932c95e4}} 
 \index{LSM9DS1@{LSM9DS1}!calcGyro@{calcGyro}}
 \index{calcGyro@{calcGyro}!LSM9DS1@{LSM9DS1}}
@@ -145,6 +151,9 @@ This function relies on g\+Scale and g\+Res being correct.
 {\em gyro} & A signed 16-\/bit raw reading from the gyroscope. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Rotation in deg/s. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_a7d0b0740497b1a10cd3e46a282a143ec}\label{classLSM9DS1_a7d0b0740497b1a10cd3e46a282a143ec}} 
 \index{LSM9DS1@{LSM9DS1}!calcMag@{calcMag}}
 \index{calcMag@{calcMag}!LSM9DS1@{LSM9DS1}}
@@ -160,21 +169,27 @@ This function relies on m\+Scale and m\+Res being correct.
 {\em mag} & A signed 16-\/bit raw reading from the magnetometer. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classLSM9DS1_a65b71a03a30f4e8ed1ffd46de3db0560}\label{classLSM9DS1_a65b71a03a30f4e8ed1ffd46de3db0560}} 
+\begin{DoxyReturn}{Returns}
+Magnetic field strength in Gauss. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLSM9DS1_aebe2365e8126f8aa6fd2c716d558419b}\label{classLSM9DS1_aebe2365e8126f8aa6fd2c716d558419b}} 
 \index{LSM9DS1@{LSM9DS1}!gyroAvailable@{gyroAvailable}}
 \index{gyroAvailable@{gyroAvailable}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{gyroAvailable()}{gyroAvailable()}}
-{\footnotesize\ttfamily uint8\+\_\+t L\+S\+M9\+D\+S1\+::gyro\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool L\+S\+M9\+D\+S1\+::gyro\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
 Polls the gyroscope status register to check if new data is available. 
 
-Output\+: 1 -\/ New data available 0 -\/ No new data available \mbox{\Hypertarget{classLSM9DS1_a85afd29e95bead7b3f0083a9a235d1df}\label{classLSM9DS1_a85afd29e95bead7b3f0083a9a235d1df}} 
+\begin{DoxyReturn}{Returns}
+true if data is available. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLSM9DS1_a6e638bfef3ba1316ba9a35e2b7d77bf6}\label{classLSM9DS1_a6e638bfef3ba1316ba9a35e2b7d77bf6}} 
 \index{LSM9DS1@{LSM9DS1}!magAvailable@{magAvailable}}
 \index{magAvailable@{magAvailable}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{magAvailable()}{magAvailable()}}
-{\footnotesize\ttfamily uint8\+\_\+t L\+S\+M9\+D\+S1\+::mag\+Available (\begin{DoxyParamCaption}\item[{lsm9ds1\+\_\+axis}]{axis = {\ttfamily ALL\+\_\+AXIS} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool L\+S\+M9\+D\+S1\+::mag\+Available (\begin{DoxyParamCaption}\item[{lsm9ds1\+\_\+axis}]{axis = {\ttfamily ALL\+\_\+AXIS} }\end{DoxyParamCaption})}
 
 
 
@@ -182,9 +197,12 @@ Polls the magnetometer status register to check if new data is available.
 
 
 \begin{DoxyParams}{Parameters}
-{\em axis} & can be either X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, Z\+\_\+\+A\+X\+IS, to check for new data on one specific axis. Or A\+L\+L\+\_\+\+A\+X\+IS (default) to check for new data on all axes. Output\+: 1 -\/ New data available 0 -\/ No new data available \\
+{\em axis} & can be either X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, Z\+\_\+\+A\+X\+IS, to check for new data on one specific axis. Or A\+L\+L\+\_\+\+A\+X\+IS (default) to check for new data on all axes. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data is available. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_a0d461614bd058b082c94481dc916c18b}\label{classLSM9DS1_a0d461614bd058b082c94481dc916c18b}} 
 \index{LSM9DS1@{LSM9DS1}!magOffset@{magOffset}}
 \index{magOffset@{magOffset}!LSM9DS1@{LSM9DS1}}
@@ -214,9 +232,12 @@ Read a specific axis of the accelerometer.
 
 
 \begin{DoxyParams}{Parameters}
-{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. Output\+: A 16-\/bit signed integer with sensor data on requested axis. \\
+{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A 16-\/bit signed integer with sensor data on requested axis. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_adc1b37609a6c850328b16da4f911cefd}\label{classLSM9DS1_adc1b37609a6c850328b16da4f911cefd}} 
 \index{LSM9DS1@{LSM9DS1}!readGyro@{readGyro}}
 \index{readGyro@{readGyro}!LSM9DS1@{LSM9DS1}}
@@ -229,9 +250,12 @@ Read a specific axis of the gyroscope.
 
 
 \begin{DoxyParams}{Parameters}
-{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. Output\+: A 16-\/bit signed integer with sensor data on requested axis. \\
+{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A 16-\/bit signed integer with sensor data on requested axis. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_a615fd3ab32a9af833ef9899663100330}\label{classLSM9DS1_a615fd3ab32a9af833ef9899663100330}} 
 \index{LSM9DS1@{LSM9DS1}!readMag@{readMag}}
 \index{readMag@{readMag}!LSM9DS1@{LSM9DS1}}
@@ -244,9 +268,12 @@ Read a specific axis of the magnetometer.
 
 
 \begin{DoxyParams}{Parameters}
-{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. Output\+: A 16-\/bit signed integer with sensor data on requested axis. \\
+{\em axis} & can be any of X\+\_\+\+A\+X\+IS, Y\+\_\+\+A\+X\+IS, or Z\+\_\+\+A\+X\+IS. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A 16-\/bit signed integer with sensor data on requested axis. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classLSM9DS1_a3102ea02c253af39e3b43ee55b94d716}\label{classLSM9DS1_a3102ea02c253af39e3b43ee55b94d716}} 
 \index{LSM9DS1@{LSM9DS1}!setCallback@{setCallback}}
 \index{setCallback@{setCallback}!LSM9DS1@{LSM9DS1}}
@@ -262,17 +289,20 @@ Sets the callback which receives the samples at the sampling rate.
 {\em cb} & Callback interface. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classLSM9DS1_aaf6683c6f3f0281d5222b74f580f321b}\label{classLSM9DS1_aaf6683c6f3f0281d5222b74f580f321b}} 
+\mbox{\Hypertarget{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}\label{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}} 
 \index{LSM9DS1@{LSM9DS1}!tempAvailable@{tempAvailable}}
 \index{tempAvailable@{tempAvailable}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{tempAvailable()}{tempAvailable()}}
-{\footnotesize\ttfamily uint8\+\_\+t L\+S\+M9\+D\+S1\+::temp\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool L\+S\+M9\+D\+S1\+::temp\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
 Polls the temperature status register to check if new data is available. 
 
-Output\+: 1 -\/ New data available 0 -\/ No new data available 
+\begin{DoxyReturn}{Returns}
+true if data is available. 
+\end{DoxyReturn}
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

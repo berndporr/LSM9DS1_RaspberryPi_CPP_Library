@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['magsettings_53',['MagSettings',['../structMagSettings.html',1,'']]]
+  ['magsettings_54',['MagSettings',['../structMagSettings.html',1,'']]]
 ];

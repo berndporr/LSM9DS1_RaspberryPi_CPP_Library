@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['accelsettings_47',['AccelSettings',['../structAccelSettings.html',1,'']]]
+  ['accelsettings_48',['AccelSettings',['../structAccelSettings.html',1,'']]]
 ];

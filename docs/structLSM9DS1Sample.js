@@ -8,5 +8,6 @@ var structLSM9DS1Sample =
     [ "gz", "structLSM9DS1Sample.html#ae39ba34a5abfb51dcb60161bbacc1a24", null ],
     [ "mx", "structLSM9DS1Sample.html#a4bd4a25247e97565ab1ef9c3f1450dff", null ],
     [ "my", "structLSM9DS1Sample.html#a97863976642da1e77344be774d71da30", null ],
-    [ "mz", "structLSM9DS1Sample.html#aa0891a22db3ce7348015fa152a04d223", null ]
+    [ "mz", "structLSM9DS1Sample.html#aa0891a22db3ce7348015fa152a04d223", null ],
+    [ "temperature", "structLSM9DS1Sample.html#a638457f71377b81f6dd9389c26b467dc", null ]
 ];

@@ -7,7 +7,7 @@ var searchData=
   ['getmagintsrc_18',['getMagIntSrc',['../classLSM9DS1.html#a2bc92a37db982059b89e0a06e7d05a95',1,'LSM9DS1']]],
   ['gx_19',['gx',['../structLSM9DS1Sample.html#a30b5bda7940cec19db9da99b0a419f37',1,'LSM9DS1Sample']]],
   ['gy_20',['gy',['../structLSM9DS1Sample.html#a403a6077e7f0e34f5b9901ebb582aa3e',1,'LSM9DS1Sample']]],
-  ['gyroavailable_21',['gyroAvailable',['../classLSM9DS1.html#a65b71a03a30f4e8ed1ffd46de3db0560',1,'LSM9DS1']]],
+  ['gyroavailable_21',['gyroAvailable',['../classLSM9DS1.html#aebe2365e8126f8aa6fd2c716d558419b',1,'LSM9DS1']]],
   ['gyrosettings_22',['GyroSettings',['../structGyroSettings.html',1,'']]],
   ['gz_23',['gz',['../structLSM9DS1Sample.html#ae39ba34a5abfb51dcb60161bbacc1a24',1,'LSM9DS1Sample']]]
 ];

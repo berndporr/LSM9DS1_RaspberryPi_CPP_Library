@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['temperaturesettings_54',['TemperatureSettings',['../structTemperatureSettings.html',1,'']]]
+  ['temperaturesettings_55',['TemperatureSettings',['../structTemperatureSettings.html',1,'']]]
 ];

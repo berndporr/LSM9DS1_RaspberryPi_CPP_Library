@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xyperformance_93',['XYPerformance',['../structMagSettings.html#a774456200b5a527eef05a195dd44ed94',1,'MagSettings']]]
+  ['temperature_94',['temperature',['../structLSM9DS1Sample.html#a638457f71377b81f6dd9389c26b467dc',1,'LSM9DS1Sample']]]
 ];

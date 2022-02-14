@@ -99,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9c03c60d074d9faa452255299b43d5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#af9c03c60d074d9faa452255299b43d5e">LSM9DS1</a> (<a class="el" href="structDeviceSettings.html">DeviceSettings</a> deviceSettings=<a class="el" href="structDeviceSettings.html">DeviceSettings</a>())</td></tr>
 <tr class="memdesc:af9c03c60d074d9faa452255299b43d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classLSM9DS1.html" title="Main class for the LSM9DS1 acceleromter which manages the data acquisition via pigpio and calls the m...">LSM9DS1</a> class constructor.  <a href="classLSM9DS1.html#af9c03c60d074d9faa452255299b43d5e">More...</a><br /></td></tr>
 <tr class="separator:af9c03c60d074d9faa452255299b43d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ef8de97ad4e80ff21f09720ee43479"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a67ef8de97ad4e80ff21f09720ee43479">begin</a> (<a class="el" href="structGyroSettings.html">GyroSettings</a> gyroSettings=<a class="el" href="structGyroSettings.html">GyroSettings</a>(), <a class="el" href="structAccelSettings.html">AccelSettings</a> accelSettings=<a class="el" href="structAccelSettings.html">AccelSettings</a>(), <a class="el" href="structMagSettings.html">MagSettings</a> magSettings=<a class="el" href="structMagSettings.html">MagSettings</a>(), <a class="el" href="structTemperatureSettings.html">TemperatureSettings</a> temperatureSettings=<a class="el" href="structTemperatureSettings.html">TemperatureSettings</a>())</td></tr>
-<tr class="memdesc:a67ef8de97ad4e80ff21f09720ee43479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the gyro, accelerometer, magnetometer and starts the acquistion.  <a href="classLSM9DS1.html#a67ef8de97ad4e80ff21f09720ee43479">More...</a><br /></td></tr>
-<tr class="separator:a67ef8de97ad4e80ff21f09720ee43479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c4ae3f3a5f52b1638b1bbf15dc65066"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a7c4ae3f3a5f52b1638b1bbf15dc65066">begin</a> (<a class="el" href="structGyroSettings.html">GyroSettings</a> gyroSettings=<a class="el" href="structGyroSettings.html">GyroSettings</a>(), <a class="el" href="structAccelSettings.html">AccelSettings</a> accelSettings=<a class="el" href="structAccelSettings.html">AccelSettings</a>(), <a class="el" href="structMagSettings.html">MagSettings</a> magSettings=<a class="el" href="structMagSettings.html">MagSettings</a>(), <a class="el" href="structTemperatureSettings.html">TemperatureSettings</a> temperatureSettings=<a class="el" href="structTemperatureSettings.html">TemperatureSettings</a>())</td></tr>
+<tr class="memdesc:a7c4ae3f3a5f52b1638b1bbf15dc65066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the gyro, accelerometer, magnetometer and starts the acquistion.  <a href="classLSM9DS1.html#a7c4ae3f3a5f52b1638b1bbf15dc65066">More...</a><br /></td></tr>
+<tr class="separator:a7c4ae3f3a5f52b1638b1bbf15dc65066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1948644d70a0356f3da4949023afb31"><td class="memItemLeft" align="right" valign="top"><a id="ae1948644d70a0356f3da4949023afb31"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#ae1948644d70a0356f3da4949023afb31">end</a> ()</td></tr>
 <tr class="memdesc:ae1948644d70a0356f3da4949023afb31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ends the data acquisition and closes all IO. <br /></td></tr>
@@ -109,18 +109,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3102ea02c253af39e3b43ee55b94d716"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a3102ea02c253af39e3b43ee55b94d716">setCallback</a> (<a class="el" href="classLSM9DS1callback.html">LSM9DS1callback</a> *cb)</td></tr>
 <tr class="memdesc:a3102ea02c253af39e3b43ee55b94d716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the callback which receives the samples at the sampling rate.  <a href="classLSM9DS1.html#a3102ea02c253af39e3b43ee55b94d716">More...</a><br /></td></tr>
 <tr class="separator:a3102ea02c253af39e3b43ee55b94d716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a515ce6f5c199a86c6aa5be353b2a3a13"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a515ce6f5c199a86c6aa5be353b2a3a13">accelAvailable</a> ()</td></tr>
-<tr class="memdesc:a515ce6f5c199a86c6aa5be353b2a3a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the accelerometer status register to check if new data is available.  <a href="classLSM9DS1.html#a515ce6f5c199a86c6aa5be353b2a3a13">More...</a><br /></td></tr>
-<tr class="separator:a515ce6f5c199a86c6aa5be353b2a3a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65b71a03a30f4e8ed1ffd46de3db0560"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a65b71a03a30f4e8ed1ffd46de3db0560">gyroAvailable</a> ()</td></tr>
-<tr class="memdesc:a65b71a03a30f4e8ed1ffd46de3db0560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the gyroscope status register to check if new data is available.  <a href="classLSM9DS1.html#a65b71a03a30f4e8ed1ffd46de3db0560">More...</a><br /></td></tr>
-<tr class="separator:a65b71a03a30f4e8ed1ffd46de3db0560"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf6683c6f3f0281d5222b74f580f321b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#aaf6683c6f3f0281d5222b74f580f321b">tempAvailable</a> ()</td></tr>
-<tr class="memdesc:aaf6683c6f3f0281d5222b74f580f321b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the temperature status register to check if new data is available.  <a href="classLSM9DS1.html#aaf6683c6f3f0281d5222b74f580f321b">More...</a><br /></td></tr>
-<tr class="separator:aaf6683c6f3f0281d5222b74f580f321b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85afd29e95bead7b3f0083a9a235d1df"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a85afd29e95bead7b3f0083a9a235d1df">magAvailable</a> (lsm9ds1_axis axis=ALL_AXIS)</td></tr>
-<tr class="memdesc:a85afd29e95bead7b3f0083a9a235d1df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the magnetometer status register to check if new data is available.  <a href="classLSM9DS1.html#a85afd29e95bead7b3f0083a9a235d1df">More...</a><br /></td></tr>
-<tr class="separator:a85afd29e95bead7b3f0083a9a235d1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b5054a985a895fb88d8828e85243a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a31b5054a985a895fb88d8828e85243a9">accelAvailable</a> ()</td></tr>
+<tr class="memdesc:a31b5054a985a895fb88d8828e85243a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the accelerometer status register to check if new data is available.  <a href="classLSM9DS1.html#a31b5054a985a895fb88d8828e85243a9">More...</a><br /></td></tr>
+<tr class="separator:a31b5054a985a895fb88d8828e85243a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebe2365e8126f8aa6fd2c716d558419b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#aebe2365e8126f8aa6fd2c716d558419b">gyroAvailable</a> ()</td></tr>
+<tr class="memdesc:aebe2365e8126f8aa6fd2c716d558419b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the gyroscope status register to check if new data is available.  <a href="classLSM9DS1.html#aebe2365e8126f8aa6fd2c716d558419b">More...</a><br /></td></tr>
+<tr class="separator:aebe2365e8126f8aa6fd2c716d558419b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad67be7463a42fa5b7cbcdad1215f0078"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#ad67be7463a42fa5b7cbcdad1215f0078">tempAvailable</a> ()</td></tr>
+<tr class="memdesc:ad67be7463a42fa5b7cbcdad1215f0078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the temperature status register to check if new data is available.  <a href="classLSM9DS1.html#ad67be7463a42fa5b7cbcdad1215f0078">More...</a><br /></td></tr>
+<tr class="separator:ad67be7463a42fa5b7cbcdad1215f0078"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e638bfef3ba1316ba9a35e2b7d77bf6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a6e638bfef3ba1316ba9a35e2b7d77bf6">magAvailable</a> (lsm9ds1_axis axis=ALL_AXIS)</td></tr>
+<tr class="memdesc:a6e638bfef3ba1316ba9a35e2b7d77bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the magnetometer status register to check if new data is available.  <a href="classLSM9DS1.html#a6e638bfef3ba1316ba9a35e2b7d77bf6">More...</a><br /></td></tr>
+<tr class="separator:a6e638bfef3ba1316ba9a35e2b7d77bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc1b37609a6c850328b16da4f911cefd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#adc1b37609a6c850328b16da4f911cefd">readGyro</a> (lsm9ds1_axis axis)</td></tr>
 <tr class="memdesc:adc1b37609a6c850328b16da4f911cefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a specific axis of the gyroscope.  <a href="classLSM9DS1.html#adc1b37609a6c850328b16da4f911cefd">More...</a><br /></td></tr>
 <tr class="separator:adc1b37609a6c850328b16da4f911cefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,7 +165,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main class for the <a class="el" href="classLSM9DS1.html" title="Main class for the LSM9DS1 acceleromter which manages the data acquisition via pigpio and calls the m...">LSM9DS1</a> acceleromter which manages the data acquisition via pigpio and calls the main program via a callback handler. </p>
-<p>The constructor and the <a class="el" href="classLSM9DS1.html#a67ef8de97ad4e80ff21f09720ee43479" title="Initializes the gyro, accelerometer, magnetometer and starts the acquistion.">begin()</a> function have default settings so that in the simplest case just a callback needs to be registered and then begin be called. To stop the data acquistion call <a class="el" href="classLSM9DS1.html#ae1948644d70a0356f3da4949023afb31" title="Ends the data acquisition and closes all IO.">end()</a>. </p>
+<p>The constructor and the <a class="el" href="classLSM9DS1.html#a7c4ae3f3a5f52b1638b1bbf15dc65066" title="Initializes the gyro, accelerometer, magnetometer and starts the acquistion.">begin()</a> function have default settings so that in the simplest case just a callback needs to be registered and then begin be called. To stop the data acquistion call <a class="el" href="classLSM9DS1.html#ae1948644d70a0356f3da4949023afb31" title="Ends the data acquisition and closes all IO.">end()</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af9c03c60d074d9faa452255299b43d5e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9c03c60d074d9faa452255299b43d5e">&#9670;&nbsp;</a></span>LSM9DS1()</h2>
@@ -194,14 +194,14 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a515ce6f5c199a86c6aa5be353b2a3a13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a515ce6f5c199a86c6aa5be353b2a3a13">&#9670;&nbsp;</a></span>accelAvailable()</h2>
+<a id="a31b5054a985a895fb88d8828e85243a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31b5054a985a895fb88d8828e85243a9">&#9670;&nbsp;</a></span>accelAvailable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t LSM9DS1::accelAvailable </td>
+          <td class="memname">bool LSM9DS1::accelAvailable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -210,18 +210,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Polls the accelerometer status register to check if new data is available. </p>
-<p>Output: 1 - New data available 0 - No new data available </p>
+<dl class="section return"><dt>Returns</dt><dd>true if data is available. </dd></dl>
 
 </div>
 </div>
-<a id="a67ef8de97ad4e80ff21f09720ee43479"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67ef8de97ad4e80ff21f09720ee43479">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a7c4ae3f3a5f52b1638b1bbf15dc65066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c4ae3f3a5f52b1638b1bbf15dc65066">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t LSM9DS1::begin </td>
+          <td class="memname">void LSM9DS1::begin </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structGyroSettings.html">GyroSettings</a>&#160;</td>
           <td class="paramname"><em>gyroSettings</em> = <code><a class="el" href="structGyroSettings.html">GyroSettings</a>()</code>, </td>
@@ -288,6 +288,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Acceleration in m/s^2. </dd></dl>
 
 </div>
 </div>
@@ -314,6 +315,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Rotation in deg/s. </dd></dl>
 
 </div>
 </div>
@@ -340,17 +342,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Magnetic field strength in Gauss. </dd></dl>
 
 </div>
 </div>
-<a id="a65b71a03a30f4e8ed1ffd46de3db0560"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65b71a03a30f4e8ed1ffd46de3db0560">&#9670;&nbsp;</a></span>gyroAvailable()</h2>
+<a id="aebe2365e8126f8aa6fd2c716d558419b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe2365e8126f8aa6fd2c716d558419b">&#9670;&nbsp;</a></span>gyroAvailable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t LSM9DS1::gyroAvailable </td>
+          <td class="memname">bool LSM9DS1::gyroAvailable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -359,18 +362,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Polls the gyroscope status register to check if new data is available. </p>
-<p>Output: 1 - New data available 0 - No new data available </p>
+<dl class="section return"><dt>Returns</dt><dd>true if data is available. </dd></dl>
 
 </div>
 </div>
-<a id="a85afd29e95bead7b3f0083a9a235d1df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85afd29e95bead7b3f0083a9a235d1df">&#9670;&nbsp;</a></span>magAvailable()</h2>
+<a id="a6e638bfef3ba1316ba9a35e2b7d77bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e638bfef3ba1316ba9a35e2b7d77bf6">&#9670;&nbsp;</a></span>magAvailable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t LSM9DS1::magAvailable </td>
+          <td class="memname">bool LSM9DS1::magAvailable </td>
           <td>(</td>
           <td class="paramtype">lsm9ds1_axis&#160;</td>
           <td class="paramname"><em>axis</em> = <code>ALL_AXIS</code></td><td>)</td>
@@ -382,10 +385,11 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Polls the magnetometer status register to check if new data is available. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">axis</td><td>can be either X_AXIS, Y_AXIS, Z_AXIS, to check for new data on one specific axis. Or ALL_AXIS (default) to check for new data on all axes. Output: 1 - New data available 0 - No new data available </td></tr>
+    <tr><td class="paramname">axis</td><td>can be either X_AXIS, Y_AXIS, Z_AXIS, to check for new data on one specific axis. Or ALL_AXIS (default) to check for new data on all axes. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>true if data is available. </dd></dl>
 
 </div>
 </div>
@@ -445,10 +449,11 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Read a specific axis of the accelerometer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. Output: A 16-bit signed integer with sensor data on requested axis. </td></tr>
+    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A 16-bit signed integer with sensor data on requested axis. </dd></dl>
 
 </div>
 </div>
@@ -471,10 +476,11 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Read a specific axis of the gyroscope. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. Output: A 16-bit signed integer with sensor data on requested axis. </td></tr>
+    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A 16-bit signed integer with sensor data on requested axis. </dd></dl>
 
 </div>
 </div>
@@ -497,10 +503,11 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Read a specific axis of the magnetometer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. Output: A 16-bit signed integer with sensor data on requested axis. </td></tr>
+    <tr><td class="paramname">axis</td><td>can be any of X_AXIS, Y_AXIS, or Z_AXIS. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A 16-bit signed integer with sensor data on requested axis. </dd></dl>
 
 </div>
 </div>
@@ -538,14 +545,14 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="aaf6683c6f3f0281d5222b74f580f321b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf6683c6f3f0281d5222b74f580f321b">&#9670;&nbsp;</a></span>tempAvailable()</h2>
+<a id="ad67be7463a42fa5b7cbcdad1215f0078"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad67be7463a42fa5b7cbcdad1215f0078">&#9670;&nbsp;</a></span>tempAvailable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t LSM9DS1::tempAvailable </td>
+          <td class="memname">bool LSM9DS1::tempAvailable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -554,7 +561,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Polls the temperature status register to check if new data is available. </p>
-<p>Output: 1 - New data available 0 - No new data available </p>
+<dl class="section return"><dt>Returns</dt><dd>true if data is available. </dd></dl>
 
 </div>
 </div>
