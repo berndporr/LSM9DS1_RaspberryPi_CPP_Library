@@ -8,9 +8,9 @@ Pin assignment is below:
 |3.3VDC Power|VDD|
 |Pin3|SDA|
 |Pin5|SCL|
+|Pin15|GPIO22|
 
 ```
-$ cmake .
-$ make
-$ ./LSM9DS1_demo
+make
+./LSM9DS1_demo
 ```

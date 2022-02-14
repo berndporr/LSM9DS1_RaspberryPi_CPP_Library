@@ -124,6 +124,7 @@ void LSM9DS1::run(LSM9DS1* instance) {
                 }
 	}
 	close(sysfs_fd);
+        dataReadyGPIO.gpio_unexport();
 }
 
 void LSM9DS1::end() {
