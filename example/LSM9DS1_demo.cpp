@@ -12,6 +12,7 @@ class LSM9DS1printCallback : public LSM9DS1callback {
 		fprintf(stderr,"Gyro:\t%3.10f,\t%3.10f,\t%3.10f [deg/s]\n", s.gx, s.gy, s.gz);
 		fprintf(stderr,"Accel:\t%3.10f,\t%3.10f,\t%3.10f [Gs]\n", s.ax, s.ay, s.az);
 		fprintf(stderr,"Mag:\t%3.10f,\t%3.10f,\t%3.10f [gauss]\n", s.mx, s.my, s.mz);
+		fprintf(stderr,"Temperature: %f\n",s.temperature);
 		fprintf(stderr,"\n");
 	}
 };

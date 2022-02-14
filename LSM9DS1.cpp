@@ -43,7 +43,7 @@ LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
 #endif
 }
 
-uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
+void LSM9DS1::begin(GyroSettings gyroSettings,
 			AccelSettings accelSettings,
 			MagSettings magSettings,
 			TemperatureSettings temperatureSettings)
@@ -95,8 +95,6 @@ uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
 
 	gpioSetMode(device.drdy_gpio,PI_INPUT);
 	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
-	
-	return whoAmICombined;
 }
 
 void LSM9DS1::dataReady() {
@@ -105,6 +103,7 @@ void LSM9DS1::dataReady() {
 	readGyro();
 	readAccel();
 	readMag();
+	readTemp();
 	
 	LSM9DS1Sample sample;
 	sample.gx = calcGyro(gx);
@@ -116,6 +115,7 @@ void LSM9DS1::dataReady() {
 	sample.mx = calcMag(mx);
 	sample.my = calcMag(my);
 	sample.mz = calcMag(mz);
+	sample.temperature = temperature/16 + 25;
 	lsm9ds1Callback->hasSample(sample);
 }
 
@@ -337,32 +337,32 @@ void LSM9DS1::initMag()
 	mWriteByte(CTRL_REG5_M, tempRegValue);
 }
 
-uint8_t LSM9DS1::accelAvailable()
+bool LSM9DS1::accelAvailable()
 {
 	assert(nullptr == lsm9ds1Callback);
 	const uint8_t status = xgReadByte(STATUS_REG_1);
-	return (status & (1<<0));
+	return (status & (1<<0)) > 0;
 }
 
-uint8_t LSM9DS1::gyroAvailable()
+bool LSM9DS1::gyroAvailable()
 {
 	assert(nullptr == lsm9ds1Callback);
 	const uint8_t status = xgReadByte(STATUS_REG_1);
-	return ((status & (1<<1)) >> 1);
+	return (status & (1<<1)) > 0;
 }
 
-uint8_t LSM9DS1::tempAvailable()
+bool LSM9DS1::tempAvailable()
 {
 	assert(nullptr == lsm9ds1Callback);
 	const uint8_t status = xgReadByte(STATUS_REG_1);
-	return ((status & (1<<2)) >> 2);
+	return (status & (1<<2)) > 0;
 }
 
-uint8_t LSM9DS1::magAvailable(lsm9ds1_axis axis)
+bool LSM9DS1::magAvailable(lsm9ds1_axis axis)
 {
 	assert(nullptr == lsm9ds1Callback);
 	const uint8_t status = mReadByte(STATUS_REG_M);
-	return ((status & (1<<axis)) >> axis);
+	return (status & (1<<axis)) > 0;
 }
 
 void LSM9DS1::readAccel()
@@ -391,6 +391,7 @@ int16_t LSM9DS1::readAccel(lsm9ds1_axis axis)
 
 void LSM9DS1::readMag()
 {
+	if (!mag.enabled) return;
 	uint8_t temp[32];
 	mReadBytes(OUT_X_L_M, temp, 6); // Read 6 bytes, beginning at OUT_X_L_M
 	mx = (temp[1] << 8) | temp[0]; // Store x-axis values into mx
@@ -408,6 +409,7 @@ int16_t LSM9DS1::readMag(lsm9ds1_axis axis)
 
 void LSM9DS1::readTemp()
 {
+	if (!temp.enabled) return;
 	uint8_t temp[2] = {0,0}; // We'll read two bytes from the temperature sensor into temp
 	xgReadBytes(OUT_TEMP_L, temp, 2); // Read 2 bytes, beginning at OUT_TEMP_L
 	temperature = ((int16_t)temp[1] << 8) | temp[0];

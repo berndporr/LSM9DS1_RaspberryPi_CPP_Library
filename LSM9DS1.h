@@ -223,6 +223,11 @@ struct LSM9DS1Sample {
 	 * Z Magnetic field in Gauss
 	 **/
 	float mz = 0;
+
+	/**
+	 * Chip temperature
+	 **/
+	float temperature = 0;
 };
 
 /**
@@ -262,12 +267,12 @@ public:
 	 * \param magSettings Magnetometer settings with default settings.
 	 * \param temperatureSettings Temperature sensor settings with default settings.
 	 **/
-	uint16_t begin(GyroSettings gyroSettings = GyroSettings(),
-		       AccelSettings accelSettings = AccelSettings(),
-		       MagSettings magSettings = MagSettings(),
-		       TemperatureSettings temperatureSettings = TemperatureSettings()
-		       );
-
+	void begin(GyroSettings gyroSettings = GyroSettings(),
+		   AccelSettings accelSettings = AccelSettings(),
+		   MagSettings magSettings = MagSettings(),
+		   TemperatureSettings temperatureSettings = TemperatureSettings()
+		   );
+	
 	/**
 	 * Ends the data acquisition and closes all IO.
 	 **/
@@ -288,26 +293,23 @@ public:
 	/** 
 	 * Polls the accelerometer status register to check
 	 * if new data is available.
-	 * Output:    1 - New data available
-	 *            0 - No new data available
+	 * \returns true if data is available.
 	 **/
-	uint8_t accelAvailable();
+	bool accelAvailable();
     
 	/** 
 	 * Polls the gyroscope status register to check
 	 * if new data is available.
-	 * Output:    1 - New data available
-	 *            0 - No new data available
+	 * \returns true if data is available.
 	 **/
-	uint8_t gyroAvailable();
+	bool gyroAvailable();
     
 	/** 
 	 * Polls the temperature status register to check
 	 * if new data is available.
-	 * Output:    1 - New data available
-	 *            0 - No new data available
+	 * \returns true if data is available.
 	 **/
-	uint8_t tempAvailable();
+	bool tempAvailable();
     
 	/** 
 	 * Polls the magnetometer status register to check
@@ -315,29 +317,28 @@ public:
 	 * \param axis can be either X_AXIS, Y_AXIS, Z_AXIS, to check for new data
 	 *      on one specific axis. Or ALL_AXIS (default) to check for new data
 	 *      on all axes.
-	 * Output:    1 - New data available
-	 *            0 - No new data available
+	 * \returns true if data is available.
 	 **/
-	uint8_t magAvailable(lsm9ds1_axis axis = ALL_AXIS);
+        bool magAvailable(lsm9ds1_axis axis = ALL_AXIS);
     
 	/** 
 	 * Read a specific axis of the gyroscope.
 	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 * \returns A 16-bit signed integer with sensor data on requested axis.
 	 **/
 	int16_t readGyro(lsm9ds1_axis axis);
     
 	/**
 	 * Read a specific axis of the accelerometer.
 	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 * \returns A 16-bit signed integer with sensor data on requested axis.
 	 **/
 	int16_t readAccel(lsm9ds1_axis axis);
     
 	/**
 	 * Read a specific axis of the magnetometer.
 	 * \param axis can be any of X_AXIS, Y_AXIS, or Z_AXIS.
-	 * Output: A 16-bit signed integer with sensor data on requested axis.
+	 * \returns A 16-bit signed integer with sensor data on requested axis.
 	 **/
 	int16_t readMag(lsm9ds1_axis axis);
 
@@ -353,6 +354,7 @@ public:
 	 * This function reads in a signed 16-bit value and returns the scaled
 	 * DPS. This function relies on gScale and gRes being correct.
 	 * \param gyro A signed 16-bit raw reading from the gyroscope.
+	 * \returns Rotation in deg/s.
 	 **/
 	float calcGyro(int16_t gyro);
     
@@ -361,6 +363,7 @@ public:
 	 * This function reads in a signed 16-bit value and returns the scaled
 	 * g's. This function relies on aScale and aRes being correct.
 	 * \param accel A signed 16-bit raw reading from the accelerometer.
+	 * \returns Acceleration in m/s^2.
 	 **/
 	float calcAccel(int16_t accel);
     
@@ -369,6 +372,7 @@ public:
 	 * This function reads in a signed 16-bit value and returns the scaled
 	 * Gs. This function relies on mScale and mRes being correct.
 	 * \param mag A signed 16-bit raw reading from the magnetometer.
+	 * \returns Magnetic field strength in Gauss.
 	 **/
 	float calcMag(int16_t mag);
     
@@ -526,9 +530,7 @@ private:
 	// be set prior to calling this function.
 	void calcaRes();
     
-	//////////////////////
-	// Helper Functions //
-	//////////////////////
+	// Parameter check if they are valid and force default values if not.
 	void constrainScales();
     
 	// I2CwriteByte() -- Write a byte out of I2C to a register in the device
@@ -556,12 +558,15 @@ private:
 	//         all stored in the *dest array given.
 	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 
+	// Callback interface which is registered with the main program.
 	LSM9DS1callback* lsm9ds1Callback = nullptr;
 
-	// New data sample
+	// Callback function in this class context which is called by the
+	// static low level interrupt handler gpioISR.
 	void dataReady();
 
-	// callback from pigpio
+	// Static low level callback handler registered with from pigpio
+	// The userdata contains a pointer to this class instance.
 	static void gpioISR(int gpio, int level, uint32_t tick, void* userdata)
 	{
 		if (level) {
@@ -716,10 +721,10 @@ private:
 	// axis. Call readGyro(), readAccel(), and readMag() first, before using
 	// these variables!
 	// These values are the RAW signed 16-bit readings from the sensors.
-	int16_t gx, gy, gz; // x, y, and z axis readings of the gyroscope
-	int16_t ax, ay, az; // x, y, and z axis readings of the accelerometer
-	int16_t mx, my, mz; // x, y, and z axis readings of the magnetometer
-	int16_t temperature; // Chip temperature
+	int16_t gx = 0, gy = 0, gz = 0; // x, y, and z axis readings of the gyroscope
+	int16_t ax = 0, ay = 0, az = 0; // x, y, and z axis readings of the accelerometer
+	int16_t mx = 0, my = 0, mz = 0; // x, y, and z axis readings of the magnetometer
+	int16_t temperature = 0; // Chip temperature
 
 };
 
