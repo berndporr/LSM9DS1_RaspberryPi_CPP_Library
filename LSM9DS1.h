@@ -40,8 +40,6 @@ extern "C"
 #include <fcntl.h>
 }
 
-#include "gpio-sysfs.h"
-
 #include <thread>  
 
 static const char could_not_open_i2c[] = "Could not open I2C.\n";
@@ -91,20 +89,10 @@ struct DeviceSettings
  **/
 struct AccelSettings
 {
-	uint8_t enabled = true;
-	
 	/**
 	 * accel scale (in g) can be 2, 4, 8, or 16
 	 **/
 	uint8_t scale = 16;
-	
-	/**
-	 * accel sample rate (Hz) can be 1-6
-	 * 1 = 10 Hz    4 = 238 Hz
-	 * 2 = 50 Hz    5 = 476 Hz
-	 * 3 = 119 Hz   6 = 952 Hz
-	 **/
-	uint8_t sampleRate = 2;
 	
 	uint8_t enableX = true;
 	uint8_t enableY = true;
@@ -127,20 +115,18 @@ struct AccelSettings
  **/
 struct GyroSettings
 {
-	uint8_t enabled = true;
-
 	/**
 	 * gyro scale can be 245, 500, or 2000
 	 **/
 	uint16_t scale = 245;
 
 	/** 
-	 * gyro sample rate (Hz): value between 1-6
+	 * gyro & accelerometer sample rate (Hz): value between 1-6
 	 * 1 = 14.9    4 = 238
 	 * 2 = 59.5    5 = 476
 	 * 3 = 119     6 = 952
 	 **/
-	uint8_t sampleRate = 2;
+	uint8_t sampleRate = 1;
 	
 	uint8_t bandwidth = 0;
 	uint8_t lowPowerEnable = false;
@@ -287,8 +273,8 @@ public:
 	 * \param magSettings Magnetometer settings with default settings.
 	 * \param temperatureSettings Temperature sensor settings with default settings.
 	 **/
-	uint16_t begin(AccelSettings accelSettings = AccelSettings(),
-		       GyroSettings gyroSettings = GyroSettings(),
+	uint16_t begin(GyroSettings gyroSettings = GyroSettings(),
+		       AccelSettings accelSettings = AccelSettings(),
 		       MagSettings magSettings = MagSettings(),
 		       TemperatureSettings temperatureSettings = TemperatureSettings()
 		       );

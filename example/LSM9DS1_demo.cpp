@@ -18,12 +18,10 @@ class LSM9DS1printCallback : public LSM9DS1callback {
 
 int main(int argc, char *argv[]) {
     fprintf(stderr,"Press <RETURN> any time to stop the acquisition.\n");
-    AccelSettings accelSettings;
-    accelSettings.sampleRate = 1;
     LSM9DS1 imu;
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
-    imu.begin(accelSettings);
+    imu.begin();
     do {
 	sleep(1);
     } while (getchar() < 10);

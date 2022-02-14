@@ -15,8 +15,8 @@ add_subdirectory(example)
 
 # add_compile_options(-Wall -Wconversion -Wextra -pedantic)
 
-set(LIBSRC LSM9DS1.cpp)
-set(LIBINCLUDE LSM9DS1.h LSM9DS1_Registers.h LSM9DS1_Types.h gpio-sysfs.h)
+set(LIBSRC LSM9DS1.cpp gpio-sysfs.cpp)
+set(LIBINCLUDE LSM9DS1.h LSM9DS1_Registers.h LSM9DS1_Types.h)
 
 add_library(lsm9ds1
   SHARED

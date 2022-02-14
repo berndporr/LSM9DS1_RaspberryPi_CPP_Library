@@ -28,6 +28,7 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
+#include "gpio-sysfs.h"
 
 float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 
@@ -43,8 +44,8 @@ LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
 #endif
 }
 
-uint16_t LSM9DS1::begin(AccelSettings accelSettings,
-			GyroSettings gyroSettings,
+uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
+			AccelSettings accelSettings,
 			MagSettings magSettings,
 			TemperatureSettings temperatureSettings)
 {
@@ -89,15 +90,16 @@ uint16_t LSM9DS1::begin(AccelSettings accelSettings,
 
 void LSM9DS1::run(LSM9DS1* instance) {
 	fprintf(stderr,"Running\n");
+	// enables sysfs entry for the GPIO pin
+        gpio_export(instance->device.drdy_gpio);
+        // set to input
+        gpio_set_dir(instance->device.drdy_gpio,0);
+        // set interrupt detection to falling edge
+        gpio_set_edge(instance->device.drdy_gpio,"rising");
+        // get a file descriptor for the GPIO pin
+        int sysfs_fd = gpio_fd_open(instance->device.drdy_gpio);     
 	instance->running = true;
-	SysGPIO sysGPIO(instance->device.drdy_gpio);
-	sysGPIO.set_dir(false);
-	sysGPIO.set_edge(SysGPIO::falling);
 	while (instance->running) {
-		int ret = sysGPIO.interrupt(ISR_TIMEOUT);
-		if (ret<0) {
-                        fprintf(stderr,"Poll error %d\n",ret);
-                }
 		if (instance->lsm9ds1Callback) {
 			instance->readGyro();
 			instance->readAccel();
@@ -115,7 +117,12 @@ void LSM9DS1::run(LSM9DS1* instance) {
 			sample.mz = instance->calcMag(instance->mz);
 			instance->lsm9ds1Callback->hasSample(sample);
 		}
+		int ret = gpio_poll(sysfs_fd,1000);
+		if (ret < 1) {
+                        fprintf(stderr,"Poll error %d\n",ret);
+                }
 	}
+	gpio_fd_close(sysfs_fd);
 }
 
 void LSM9DS1::end() {
@@ -136,11 +143,7 @@ void LSM9DS1::initGyro()
 	// FS_G[1:0] - Gyroscope full-scale selection
 	// BW_G[1:0] - Gyroscope bandwidth selection
 
-	// To disable gyro, set sample rate bits to 0. We'll only set sample
-	// rate if the gyro is enabled.
-	if (gyro.enabled) {
-		tempRegValue = (gyro.sampleRate & 0x07) << 5;
-	}
+	tempRegValue = (gyro.sampleRate & 0x07) << 5;
 	switch (gyro.scale) {
         case 500:
 		tempRegValue |= (0x1 << 3);
@@ -193,6 +196,10 @@ void LSM9DS1::initGyro()
 	if (gyro.flipY) tempRegValue |= (1<<4);
 	if (gyro.flipZ) tempRegValue |= (1<<3);
 	xgWriteByte(ORIENT_CFG_G, tempRegValue);
+
+	// INT2_CTRL (0Dd)
+	// Enable data ready on the INT2 pin: INT2_DRDY_XL = 2
+	xgWriteByte(INT2_CTRL, 2);
 }
 
 void LSM9DS1::initAccel()
@@ -219,11 +226,8 @@ void LSM9DS1::initAccel()
 	// BW_SCAL_ODR - Bandwidth selection
 	// BW_XL[1:0] - Anti-aliasing filter bandwidth selection
 	tempRegValue = 0;
-	// To disable the accel, set the sampleRate bits to 0.
-	if (accel.enabled)
-		{
-			tempRegValue |= (accel.sampleRate & 0x07) << 5;
-		}
+	const int sampleRate = 1; // dummy
+	tempRegValue |= (sampleRate & 0x07) << 5;
 	switch (accel.scale)
 		{
 		case 4:
@@ -257,11 +261,6 @@ void LSM9DS1::initAccel()
 			tempRegValue |= (accel.highResBandwidth & 0x3) << 5;
 		}
 	xgWriteByte(CTRL_REG7_XL, tempRegValue);
-
-	// INT2_CTRL (0Dd)
-	// Enable data ready on the INT2 pin: INT2_DRDY_XL = 1
-	xgWriteByte(INT2_CTRL, 1);
-
 }
 
 void LSM9DS1::magOffset(uint8_t axis, int16_t offset)
@@ -585,7 +584,6 @@ void LSM9DS1::setAccelODR(uint8_t aRate)
 			temp &= 0x1F;
 			// Then shift in our new ODR bits:
 			temp |= ((aRate & 0x07) << 5);
-			accel.sampleRate = aRate & 0x07;
 			// And write the new register value back into CTRL_REG1_XM:
 			xgWriteByte(CTRL_REG6_XL, temp);
 		}

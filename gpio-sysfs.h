@@ -2,7 +2,7 @@
 #define GPIOSYSFS
 
 /* Copyright (c) 2011, RidgeRun
- * Copyright (c) 2014-2022, Bernd Porr
+ * Copyright (c) 2014, Bernd Porr
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -19,7 +19,7 @@
  *    names of its contributors may be used to endorse or promote products
  *    derived from this software without specific prior written permission.
  * 
- * THIS SOFTWARE IS PROVIDED BY RIDGERUN AND BERND PORR ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY RIDGERUN ''AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL RIDGERUN BE LIABLE FOR ANY
@@ -37,202 +37,57 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <poll.h>
 
-/**
- * Path to the gpio sys directory
- **/
+/****************************************************************
+ * Constants
+ ****************************************************************/
 #define SYSFS_GPIO_DIR "/sys/class/gpio"
 #define MAX_BUF 256
 
-class SysGPIO {
-public:
-	enum Edge {rising = 0, falling = 1, both = 2};
-
-	/**
-	 * Constructor exposes the GPIO pin.
-	 * \param theGPIO The GPIO pin being monitored
-	 **/
-	SysGPIO(unsigned int theGPIO) {
-		gpio = theGPIO;
-
-		int len;
-		char buf[MAX_BUF];
-		
-		errorNo = open(SYSFS_GPIO_DIR "/export", O_WRONLY);
-		if (errorNo < 0) {
-			return;
-		}
-		
-		len = snprintf(buf, sizeof(buf), "%d", gpio);
-		errorNo = write(errorNo, buf, len);
-		if (errorNo < 0) {
-			return;
-		}
-
-		close(errorNo);
-
-		errorNo = 0;
-	}
-
-	/**
-	 * Destructor hides the pin in sysfs.
-	 **/
-	~SysGPIO() {
-		int fd, len;
-		char buf[MAX_BUF];
-
-		return;
-		
-		fd = open(SYSFS_GPIO_DIR "/unexport", O_WRONLY);
-		if (fd < 0) {
-			return;
-		}
-		
-		len = snprintf(buf, sizeof(buf), "%d", gpio);
-		write(fd, buf, len);
-		close(fd);
-	}
-
-	/**
-	 * Setting the direction of the port.
-	 * \param out_flag If true it's an output
-	 * \returns Zero on success. Otherwise the error number.
-	 **/
-	int set_dir(bool out_flag) {
-		int fd;
-		char buf[MAX_BUF];
-		snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", gpio);
-		fd = open(buf, O_WRONLY);
-		if (fd < 0) {
-			return fd;
-		}
-		if (out_flag)
-			write(fd, "out", 4);
-		else
-			write(fd, "in", 3);
-		close(fd);
-		return 0;
-	}
-
-	/**
-	 * Setting the value of of the GPIO pin
-	 * \param value can be zero or one.
-	 * \returns Zero on success. Otherwise the error number.
-	 **/
-	int set_value(int value) {
-		int fd;
-		char buf[MAX_BUF];
-		
-		snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio);
-		fd = open(buf, O_WRONLY);
-		if (fd < 0) {
-			return fd;
-		}		
-		if (value)
-			write(fd, "1", 2);
-		else
-			write(fd, "0", 2);
-		close(fd);
-		return 0;
-	}
-
-	/**
-	 * Gets the value of the GPIO pin.
-	 * \returns The value (0 or 1) or the negative error code.
-	 **/
-	int get_value() {
-		int fd;
-		char buf[MAX_BUF];
-		char ch;
-		
-		snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio);
-		
-		fd = open(buf, O_RDONLY);
-		if (fd < 0) {
-			return fd;
-		}
-		
-		read(fd, &ch, 1);
-
-		int v;
-		
-		if (ch != '0') {
-			v = 1;
-		} else {
-			v = 0;
-		}
-		
-		close(fd);
-		return v;
-	}
-
-	/**
-	 * Sets the edge for IRQ handling.
-	 **/
-	int set_edge(Edge edge) {
-		int fd;
-		char buf[MAX_BUF];
-		
-		snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", gpio);
-		
-		fd = open(buf, O_WRONLY);
-		if (fd < 0) {
-			return fd;
-		}
-		
-		char const *edge_str[]={"rising\n", "falling\n", "both\n"};
-		write(fd, edge_str[edge], strlen(edge_str[edge])); 
-		close(fd);
-		return 0;
-	}
+/****************************************************************
+ * gpio_export
+ ****************************************************************/
+int gpio_export(unsigned int gpio);
 
 
-	/**
-	 * Waits for a change at the GPIO pin defined by gpio_set_edge()
-	 **/
-	int interrupt(int timeout) {
-		int fd;
-		char buf[MAX_BUF];
-		snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio);
-		fd = open(buf, O_RDONLY | O_NONBLOCK );
-		if (fd < 0) {
-			return fd;
-		}
-		
-		struct pollfd fdset[1];
-		int nfds = 1;
-		int rc;
-		  
-		memset((void*)fdset, 0, sizeof(fdset));
-		  
-		fdset[0].fd = fd;
-		fdset[0].events = POLLPRI;
-		
-		rc = poll(fdset, nfds, timeout);
-		
-		if (fdset[0].revents & POLLPRI) {
-			// dummy read
-			read(fdset[0].fd, buf, MAX_BUF);
-		}
-		close(fd);
-		return rc;
-	}
+/****************************************************************
+ * gpio_unexport
+ ****************************************************************/
+int gpio_unexport(unsigned int gpio);
 
-	/**
-	 * Returns the error code if anything went wrong in the constructor.
-	 * \returns error code (negative) or zero for success.
-	 **/
-	int getErrorNo() {
-		return errorNo;
-	}
+/****************************************************************
+ * gpio_set_dir
+ ****************************************************************/
+int gpio_set_dir(unsigned int gpio, unsigned int out_flag);
 
-private:
+/****************************************************************
+ * gpio_set_value
+ ****************************************************************/
+int gpio_set_value(unsigned int gpio, unsigned int value);
 
-	int gpio;
+/****************************************************************
+ * gpio_get_value
+ ****************************************************************/
+int gpio_get_value(unsigned int gpio, unsigned int *value);
 
-	int errorNo = 0;
+/****************************************************************
+ * gpio_set_edge
+ ****************************************************************/
 
-};
+int gpio_set_edge(unsigned int gpio, const char *edge);
+/****************************************************************
+ * gpio_fd_open
+ ****************************************************************/
+int gpio_fd_open(unsigned int gpio);
+
+/****************************************************************
+ * gpio_fd_close
+ ****************************************************************/
+int gpio_fd_close(int fd);
+
+/****************************************************************
+ * gpio_poll
+****************************************************************/
+int gpio_poll(int gpio_fd, int timeout);
 
 #endif
