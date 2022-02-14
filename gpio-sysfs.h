@@ -2,7 +2,7 @@
 #define GPIOSYSFS
 
 /* Copyright (c) 2011, RidgeRun
- * Copyright (c) 2014, Bernd Porr
+ * Copyright (c) 2014-2022, Bernd Porr
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -44,50 +44,68 @@
 #define SYSFS_GPIO_DIR "/sys/class/gpio"
 #define MAX_BUF 256
 
-/****************************************************************
- * gpio_export
- ****************************************************************/
-int gpio_export(unsigned int gpio);
+class SysGPIO {
 
+ public:
 
-/****************************************************************
- * gpio_unexport
- ****************************************************************/
-int gpio_unexport(unsigned int gpio);
+	SysGPIO(unsigned int gpioNumber) {
+		gpio = gpioNumber;
+	}
 
-/****************************************************************
- * gpio_set_dir
- ****************************************************************/
-int gpio_set_dir(unsigned int gpio, unsigned int out_flag);
+	/****************************************************************
+	 * Starts accesss to the GPIO port
+	 ****************************************************************/
+	int gpio_export();
+	
+	/****************************************************************
+	 * Stops access to the GPIO port
+	 ****************************************************************/
+	int gpio_unexport();
+	
+	/****************************************************************
+	 * Sets direction
+	 * \param out_flag is true for output
+	 ****************************************************************/
+	int gpio_set_dir(bool out_flag);
+	
+	/****************************************************************
+	 * Sets the value of a port. Can be one or Zero.
+	 ****************************************************************/
+	int gpio_set_value(unsigned int value);
+	
+	/****************************************************************
+	 * Gets the value of a port. Will be one or Zero.
+	 ****************************************************************/
+	int gpio_get_value(unsigned int *value);
+	
+	/****************************************************************
+	 * Sets the change detection on the port. 
+	 * \param edge can be "rising" or "falling".
+	 ****************************************************************/	
+	int gpio_set_edge(const char *edge);
 
-/****************************************************************
- * gpio_set_value
- ****************************************************************/
-int gpio_set_value(unsigned int gpio, unsigned int value);
+	/****************************************************************
+	 * Gets a file descriptor on the "value" of the port.
+	 ****************************************************************/
+	int gpio_fd_open();
+	
+	/****************************************************************
+	 * Closes the fd on "value" of the port.
+	 ****************************************************************/
+	int gpio_fd_close(int fd);
+	
+	/****************************************************************
+	 * Puts the current thread to sleep until a change is detected
+	 * on the file descriptor. Get the file descriptor
+	 * by calling gpio_fd_open.
+	 * \param gpio_fd file descriptor of value
+	 * \param timeout Timeout in ms.
+	 ****************************************************************/
+	int gpio_poll(int gpio_fd, int timeout);
 
-/****************************************************************
- * gpio_get_value
- ****************************************************************/
-int gpio_get_value(unsigned int gpio, unsigned int *value);
+ private:
 
-/****************************************************************
- * gpio_set_edge
- ****************************************************************/
-
-int gpio_set_edge(unsigned int gpio, const char *edge);
-/****************************************************************
- * gpio_fd_open
- ****************************************************************/
-int gpio_fd_open(unsigned int gpio);
-
-/****************************************************************
- * gpio_fd_close
- ****************************************************************/
-int gpio_fd_close(int fd);
-
-/****************************************************************
- * gpio_poll
-****************************************************************/
-int gpio_poll(int gpio_fd, int timeout);
+	int gpio;
+};
 
 #endif

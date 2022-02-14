@@ -91,13 +91,14 @@ uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
 void LSM9DS1::run(LSM9DS1* instance) {
 	fprintf(stderr,"Running\n");
 	// enables sysfs entry for the GPIO pin
-        gpio_export(instance->device.drdy_gpio);
+	SysGPIO dataReadyGPIO(instance->device.drdy_gpio);
+        dataReadyGPIO.gpio_export();
         // set to input
-        gpio_set_dir(instance->device.drdy_gpio,0);
+        dataReadyGPIO.gpio_set_dir(0);
         // set interrupt detection to falling edge
-        gpio_set_edge(instance->device.drdy_gpio,"rising");
+        dataReadyGPIO.gpio_set_edge("rising");
         // get a file descriptor for the GPIO pin
-        int sysfs_fd = gpio_fd_open(instance->device.drdy_gpio);     
+        int sysfs_fd = dataReadyGPIO.gpio_fd_open();     
 	instance->running = true;
 	while (instance->running) {
 		if (instance->lsm9ds1Callback) {
@@ -117,12 +118,12 @@ void LSM9DS1::run(LSM9DS1* instance) {
 			sample.mz = instance->calcMag(instance->mz);
 			instance->lsm9ds1Callback->hasSample(sample);
 		}
-		int ret = gpio_poll(sysfs_fd,1000);
+		int ret = dataReadyGPIO.gpio_poll(sysfs_fd,1000);
 		if (ret < 1) {
                         fprintf(stderr,"Poll error %d\n",ret);
                 }
 	}
-	gpio_fd_close(sysfs_fd);
+	dataReadyGPIO.gpio_fd_close(sysfs_fd);
 }
 
 void LSM9DS1::end() {
