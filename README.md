@@ -21,7 +21,7 @@ or make your own PCB (see the `pcbs` folder).
 ## Software requirement
 
 ```
-sudo apt-get install libi2c-dev
+sudo apt-get install libpigpio-dev
 ```
 
 ## Install

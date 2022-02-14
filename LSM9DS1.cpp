@@ -28,7 +28,6 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
-#include "gpio-sysfs.h"
 
 float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 
@@ -54,8 +53,20 @@ uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
 	mag = magSettings;
 	temp = temperatureSettings;
 
-	assert(nullptr == daqThread);
-	
+	if (device.initPIGPIO) {
+		int cfg = gpioCfgGetInternals();
+		cfg |= PI_CFG_NOSIGHANDLER;
+		gpioCfgSetInternals(cfg);
+		int r = gpioInitialise();
+		if (r < 0) {
+			char msg[] = "Cannot init pigpio.";
+#ifdef DEBUG
+			fprintf(stderr,"%s\n",msg);
+#endif
+			throw msg;
+		}
+	}
+
 	constrainScales();
 	// Once we have the scale values, we can calculate the resolution
 	// of each sensor. That's what these functions are for. One for each sensor
@@ -82,57 +93,37 @@ uint16_t LSM9DS1::begin(GyroSettings gyroSettings,
 	// Magnetometer initialization stuff:
 	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
 
-	daqThread = new std::thread(run,this);
+	gpioSetMode(device.drdy_gpio,PI_INPUT);
+	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
 	
 	return whoAmICombined;
 }
 
-
-void LSM9DS1::run(LSM9DS1* instance) {
-	fprintf(stderr,"Running\n");
-	// enables sysfs entry for the GPIO pin
-	SysGPIO dataReadyGPIO(instance->device.drdy_gpio);
-        dataReadyGPIO.gpio_export();
-        // set to input
-        dataReadyGPIO.gpio_set_dir(0);
-        // set interrupt detection to falling edge
-        dataReadyGPIO.gpio_set_edge("rising");
-        // get a file descriptor for the GPIO pin
-        int sysfs_fd = dataReadyGPIO.gpio_fd_open();     
-	instance->running = true;
-	while (instance->running) {
-		if (instance->lsm9ds1Callback) {
-			instance->readGyro();
-			instance->readAccel();
-			instance->readMag();
-			
-			LSM9DS1Sample sample;
-			sample.gx = instance->calcGyro(instance->gx);
-			sample.gy = instance->calcGyro(instance->gy);
-			sample.gz = instance->calcGyro(instance->gz);
-			sample.ax = instance->calcAccel(instance->ax);
-			sample.ay = instance->calcAccel(instance->ay);
-			sample.az = instance->calcAccel(instance->az);
-			sample.mx = instance->calcMag(instance->mx);
-			sample.my = instance->calcMag(instance->my);
-			sample.mz = instance->calcMag(instance->mz);
-			instance->lsm9ds1Callback->hasSample(sample);
-		}
-		int ret = dataReadyGPIO.gpio_poll(sysfs_fd,1000);
-		if (ret < 1) {
-                        fprintf(stderr,"Poll error %d\n",ret);
-                }
-	}
-	close(sysfs_fd);
-        dataReadyGPIO.gpio_unexport();
+void LSM9DS1::dataReady() {
+	if (!lsm9ds1Callback) return;
+	
+	readGyro();
+	readAccel();
+	readMag();
+	
+	LSM9DS1Sample sample;
+	sample.gx = calcGyro(gx);
+	sample.gy = calcGyro(gy);
+	sample.gz = calcGyro(gz);
+	sample.ax = calcAccel(ax);
+	sample.ay = calcAccel(ay);
+	sample.az = calcAccel(az);
+	sample.mx = calcMag(mx);
+	sample.my = calcMag(my);
+	sample.mz = calcMag(mz);
+	lsm9ds1Callback->hasSample(sample);
 }
 
 void LSM9DS1::end() {
-	running = false;
-	if (nullptr == daqThread) return;
-	daqThread->join();
-	delete daqThread;
-	daqThread = nullptr;
+	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
+	if (device.initPIGPIO) {
+		gpioTerminate();
+	}
 }
 
 void LSM9DS1::initGyro()
@@ -864,50 +855,51 @@ void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t *dest, uint8_t count)
 // i2c read and write protocols
 void LSM9DS1::I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 {
-	int fd = I2Copen(address);
-	uint8_t buf[2];
-	buf[0] = subAddress;
-	buf[1] = data;
-	int ret = write(fd, buf, 2);
-	close(fd);
-	if (ret != 2) {
+	int fd = i2cOpen(device.i2c_bus, address, 0);
+	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,ret);
+		fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,device.i2c_bus,address,subAddress);
 #endif
-		throw "Could not write to i2c.";
+		throw could_not_open_i2c;
 	}
+	i2cWriteByteData(fd, subAddress, data);
+	i2cClose(fd);
 }
 
 uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 {
-	int fd = I2Copen(address);
-	uint8_t buf[2];
-	buf[0] = subAddress;
-	write(fd, buf, 1);
-	int ret = read(fd, buf, 1);
-	close(fd);
-	if (ret < 0) {
+	int fd = i2cOpen(device.i2c_bus, address, 0);
+	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,ret);
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x\n",device.i2c_bus,address,subAddress);
+#endif
+		throw could_not_open_i2c;
+	}
+	int data; // `data` will store the register data
+	data = i2cReadByteData(fd, subAddress);
+	if (data < 0) {
+#ifdef DEBUG
+		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,data);
 #endif
 		throw "Could not read from i2c.";
 	}
-	return buf[0];
+	i2cClose(fd);
+	return data;           
 }
 
 uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count)
 {
-	int fd = I2Copen(address);
-	uint8_t buf[2];
-	buf[0] = subAddress;
-	write(fd, buf, 1);
-	int ret = read(fd, dest, count);
-	close(fd);
-	if (ret != count) {
+	int fd = i2cOpen(device.i2c_bus, address, 0);
+	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not read %d bytes from %02x,%02x,%02x. ret=%d.\n",count,device.i2c_bus,address,subAddress,ret);
+		fprintf(stderr,"Could not read %n byte(s) from %02x,%02x,%02x\n",count,device.i2c_bus,address,subAddress);
 #endif
-		throw "Could not read from i2c.";
+		throw could_not_open_i2c;
+	}
+	int ret = i2cReadI2CBlockData(fd,subAddress,(char*)dest,count);
+	i2cClose(fd);
+	if (ret != count) {
+		throw "Block read didn't work";
 	}
 	return ret;
 }
