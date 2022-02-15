@@ -41,7 +41,7 @@ sudo ldconfig
 
 ```
 cd example
-./LSM9DS1_demo
+sudo ./LSM9DS1_demo
 ```
 
 ## Documentation

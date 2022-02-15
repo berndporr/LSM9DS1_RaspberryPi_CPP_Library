@@ -1,4 +1,4 @@
-# Build & Run
+# Hardware
 
 Pin assignment is below: 
 
@@ -10,7 +10,8 @@ Pin assignment is below:
 |Pin5|SCL|
 |Pin15 (GPIO22)|INT2|
 
+# How to run
+
 ```
-make
-./LSM9DS1_demo
+sudo ./LSM9DS1_demo
 ```
