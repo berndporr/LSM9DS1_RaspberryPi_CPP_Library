@@ -67,7 +67,6 @@ void LSM9DS1::begin(GyroSettings gyroSettings,
 		}
 	}
 
-	constrainScales();
 	// Once we have the scale values, we can calculate the resolution
 	// of each sensor. That's what these functions are for. One for each sensor
 	calcgRes(); // Calculate DPS / ADC tick, stored in gRes variable
@@ -459,7 +458,7 @@ float LSM9DS1::calcMag(int16_t mag)
 	return mRes * mag;
 }
 
-void LSM9DS1::setGyroScale(uint16_t gScl)
+void LSM9DS1::setGyroScale(GyroSettings::Scale gScl)
 {
 	// Read current value of CTRL_REG1_G:
 	uint8_t ctrl1RegValue = xgReadByte(CTRL_REG1_G);
@@ -467,16 +466,16 @@ void LSM9DS1::setGyroScale(uint16_t gScl)
 	ctrl1RegValue &= 0xE7;
 	switch (gScl)
 		{
-		case 500:
+		case GyroSettings::G_SCALE_500DPS:
 			ctrl1RegValue |= (0x1 << 3);
-			gyro.scale = 500;
+			gyro.scale = gScl;
 			break;
-		case 2000:
+		case GyroSettings::G_SCALE_2000DPS:
 			ctrl1RegValue |= (0x3 << 3);
-			gyro.scale = 2000;
+			gyro.scale = gScl;
 			break;
 		default: // Otherwise we'll set it to 245 dps (0x0 << 4)
-			gyro.scale = 245;
+			gyro.scale = GyroSettings::G_SCALE_245DPS;
 			break;
 		}
 	xgWriteByte(CTRL_REG1_G, ctrl1RegValue);
@@ -484,7 +483,7 @@ void LSM9DS1::setGyroScale(uint16_t gScl)
 	calcgRes();
 }
 
-void LSM9DS1::setAccelScale(uint8_t aScl)
+void LSM9DS1::setAccelScale(AccelSettings::Scale aScl)
 {
 	// We need to preserve the other bytes in CTRL_REG6_XL. So, first read it:
 	uint8_t tempRegValue = xgReadByte(CTRL_REG6_XL);
@@ -493,20 +492,20 @@ void LSM9DS1::setAccelScale(uint8_t aScl)
 
 	switch (aScl)
 		{
-		case 4:
+		case AccelSettings::A_SCALE_4G:
 			tempRegValue |= (0x2 << 3);
-			accel.scale = 4;
+			accel.scale = aScl;
 			break;
-		case 8:
+		case AccelSettings::A_SCALE_8G:
 			tempRegValue |= (0x3 << 3);
-			accel.scale = 8;
+			accel.scale = aScl;
 			break;
-		case 16:
+		case AccelSettings::A_SCALE_16G:
 			tempRegValue |= (0x1 << 3);
-			accel.scale = 16;
+			accel.scale = aScl;
 			break;
 		default: // Otherwise it'll be set to 2g (0x0 << 3)
-			accel.scale = 2;
+			accel.scale = AccelSettings::A_SCALE_2G;
 			break;
 		}
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
@@ -515,7 +514,7 @@ void LSM9DS1::setAccelScale(uint8_t aScl)
 	calcaRes();
 }
 
-void LSM9DS1::setMagScale(uint8_t mScl)
+void LSM9DS1::setMagScale(MagSettings::Scale mScl)
 {
 	// We need to preserve the other bytes in CTRL_REG6_XM. So, first read it:
 	uint8_t temp = mReadByte(CTRL_REG2_M);
@@ -524,20 +523,20 @@ void LSM9DS1::setMagScale(uint8_t mScl)
 
 	switch (mScl)
 		{
-		case 8:
+		case MagSettings::M_SCALE_8GS:
 			temp |= (0x1 << 5);
-			mag.scale = 8;
+			mag.scale = mScl;
 			break;
-		case 12:
+		case MagSettings::M_SCALE_12GS:
 			temp |= (0x2 << 5);
-			mag.scale = 12;
+			mag.scale = mScl;
 			break;
-		case 16:
+		case MagSettings::M_SCALE_16GS:
 			temp |= (0x3 << 5);
-			mag.scale = 16;
+			mag.scale = mScl;
 			break;
 		default: // Otherwise we'll default to 4 gauss (00)
-			mag.scale = 4;
+			mag.scale = MagSettings::M_SCALE_4GS;
 			break;
 		}
 
@@ -551,18 +550,19 @@ void LSM9DS1::setMagScale(uint8_t mScl)
 	calcmRes();
 }
 
-void LSM9DS1::setGyroODR(uint8_t gRate)
+void LSM9DS1::setGyroODR(GyroSettings::SampleRate gRate)
 {
 	// Only do this if gRate is not 0 (which would disable the gyro)
 	if ((gRate & 0x07) != 0)
 		{
-			// We need to preserve the other bytes in CTRL_REG1_G. So, first read it:
+			// We need to preserve the other bytes in CTRL_REG1_G.
+			// So, first read it:
 			uint8_t temp = xgReadByte(CTRL_REG1_G);
 			// Then mask out the gyro ODR bits:
 			temp &= 0xFF^(0x7 << 5);
 			temp |= (gRate & 0x07) << 5;
 			// Update our settings struct
-			gyro.sampleRate = gRate & 0x07;
+			gyro.sampleRate = gRate;
 			// And write the new register value back into CTRL_REG1_G:
 			xgWriteByte(CTRL_REG1_G, temp);
 		}
@@ -584,7 +584,7 @@ void LSM9DS1::setAccelODR(uint8_t aRate)
 		}
 }
 
-void LSM9DS1::setMagODR(uint8_t mRate)
+void LSM9DS1::setMagODR(MagSettings::SampleRate mRate)
 {
 	// We need to preserve the other bytes in CTRL_REG5_XM. So, first read it:
 	uint8_t temp = mReadByte(CTRL_REG1_M);
@@ -592,7 +592,7 @@ void LSM9DS1::setMagODR(uint8_t mRate)
 	temp &= 0xFF^(0x7 << 2);
 	// Then shift in our new ODR bits:
 	temp |= ((mRate & 0x07) << 2);
-	mag.sampleRate = mRate & 0x07;
+	mag.sampleRate = mRate;
 	// And write the new register value back into CTRL_REG5_XM:
 	mWriteByte(CTRL_REG1_M, temp);
 }
@@ -801,24 +801,6 @@ void LSM9DS1::setFIFO(fifoMode_type fifoMode, uint8_t fifoThs)
 uint8_t LSM9DS1::getFIFOSamples()
 {
 	return (xgReadByte(FIFO_SRC) & 0x3F);
-}
-
-void LSM9DS1::constrainScales()
-{
-	if ((gyro.scale != 245) && (gyro.scale != 500) &&
-	    (gyro.scale != 2000)) {
-		gyro.scale = 245;
-	}
-
-	if ((accel.scale != 2) && (accel.scale != 4) &&
-	    (accel.scale != 8) && (accel.scale != 16)) {
-		accel.scale = 2;
-	}
-
-	if ((mag.scale != 4) && (mag.scale != 8) &&
-	    (mag.scale != 12) && (mag.scale != 16)) {
-		mag.scale = 4;
-	}
 }
 
 void LSM9DS1::xgWriteByte(uint8_t subAddress, uint8_t data)

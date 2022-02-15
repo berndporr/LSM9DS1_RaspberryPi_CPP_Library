@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     LSM9DS1printCallback callback;
     imu.setCallback(&callback);
     GyroSettings gyroSettings;
-    gyroSettings.sampleRate = 1; // 14.9Hz for acc and gyr
+    gyroSettings.sampleRate = GyroSettings::G_ODR_14_9; // 14.9Hz for acc and gyr
     imu.begin(gyroSettings);
     do {
 	sleep(1);

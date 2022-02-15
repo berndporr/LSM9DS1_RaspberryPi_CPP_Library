@@ -79,21 +79,41 @@ struct DeviceSettings
 struct AccelSettings
 {
 	/**
-	 * accel scale (in g) can be 2, 4, 8, or 16
+	 * defines all possible FSR's of the accelerometer
 	 **/
-	uint8_t scale = 16;
-	
-	uint8_t enableX = true;
-	uint8_t enableY = true;
-	uint8_t enableZ = true;
+	enum Scale
+		{
+			A_SCALE_2G = 2,
+			A_SCALE_16G = 16,
+			A_SCALE_4G = 4,
+			A_SCALE_8G = 8
+		};
 
 	/**
-	 * Accel cutoff freqeuncy can be any value between -1 - 3.
-	 * -1 = bandwidth determined by sample rate
-	 * 0 = 408 Hz   2 = 105 Hz
-	 * 1 = 211 Hz   3 = 50 Hz
+	 * accel scale (in g) can be 2, 4, 8, or 16
 	 **/
-	int8_t  bandwidth = -1;
+	Scale scale = A_SCALE_16G;
+	
+	uint8_t enableX = true; //!< Enables accelerometer's X axis
+	uint8_t enableY = true; //!< Enables accelerometer's Y axis
+	uint8_t enableZ = true; //!< Enables accelerometer's Z axis
+
+	/**
+	 * Defines all possible anti-aliasing filter rates of the accelerometer
+	 **/
+	enum Abw
+		{
+			A_ABW_408 = 0,		//!< 408 Hz (0x0)
+			A_ABW_211 = 1,		//!< 211 Hz (0x1)
+			A_ABW_105 = 2,		//!< 105 Hz (0x2)
+			A_ABW_50  = 3,		//!<  50 Hz (0x3)
+			A_ABW_OFF = -1          //!< no cutoff
+		};
+
+	/**
+	 * Accel cutoff freqeuncy
+	 **/
+	Abw bandwidth = A_ABW_OFF;
 	
 	uint8_t highResEnable = false;
 	uint8_t highResBandwidth = 0;
@@ -105,18 +125,42 @@ struct AccelSettings
 struct GyroSettings
 {
 	/**
+	 * Gyro_scale defines the possible full-scale ranges of the gyroscope
+	 **/
+	enum Scale
+		{
+			G_SCALE_245DPS = 245,   //!< 245 degrees per second
+			G_SCALE_500DPS = 500,	//!< 500 dps
+			G_SCALE_2000DPS = 2000	//!< 2000 dps
+		};
+
+	/**
 	 * gyro scale can be 245, 500, or 2000
 	 **/
-	uint16_t scale = 245;
+	Scale scale = G_SCALE_245DPS;
 
-	/** 
-	 * gyro & accelerometer sample rate (Hz): value between 1-6
-	 * 1 = 14.9    4 = 238
-	 * 2 = 59.5    5 = 476
-	 * 3 = 119     6 = 952
+	/**
+	 * Gyro & Acc sampling rates.
 	 **/
-	uint8_t sampleRate = 1;
+	enum SampleRate
+		{
+			G_ODR_14_9 = 1,	//!< 14.9 Hz (1)
+			G_ODR_59_5 = 2,	//!< 59.5 Hz (2)
+			G_ODR_119 = 3,	//!< 119 Hz (3)
+			G_ODR_238 = 4,	//!< 238 Hz (4)
+			G_ODR_476 = 5,	//!< 476 Hz (5)
+			G_ODR_952 = 6	//!< 952 Hz (6)
+		};
 	
+	/** 
+	 * Gyro & Accelerometer sample rate.
+	 **/
+        SampleRate sampleRate = G_ODR_14_9;
+	
+	uint8_t enableX = true; //!< X axis enabled
+	uint8_t enableY = true; //!< Y axis enabled
+	uint8_t enableZ = true; //!< Z axis enabled
+
 	uint8_t bandwidth = 0;
 	uint8_t lowPowerEnable = false;
 	uint8_t HPFEnable = false;	
@@ -125,9 +169,6 @@ struct GyroSettings
 	uint8_t flipY = false;
 	uint8_t flipZ = false;
 	uint8_t orientation = 0;
-	uint8_t enableX = true;
-	uint8_t enableY = true;
-	uint8_t enableZ = true;
 	uint8_t latchInterrupt = true;
 };
 
@@ -137,16 +178,39 @@ struct GyroSettings
 struct MagSettings
 {
 	uint8_t enabled = true;
-	uint8_t scale = 4;
+
+	/**
+	 * Defines all possible FSR's of the magnetometer
+	 **/
+	enum Scale
+		{
+			M_SCALE_4GS = 4, 	//!< 4Gs
+			M_SCALE_8GS = 8,	//!< 8Gs
+			M_SCALE_12GS = 12,	//!< 12Gs
+			M_SCALE_16GS = 16,	//!< 16Gs
+		};
+
+	Scale scale = M_SCALE_16GS;
 	
 	/**
-	 * mag data rate can be 0-7
-	 * 0 = 0.625 Hz  4 = 10 Hz
-	 * 1 = 1.25 Hz   5 = 20 Hz
-	 * 2 = 2.5 Hz    6 = 40 Hz
-	 * 3 = 5 Hz      7 = 80 Hz
-	 **/	
-	uint8_t sampleRate = 7;
+	 * Defines all possible output data rates of the magnetometer
+	 **/
+       	enum SampleRate
+		{
+			M_ODR_0625,	// 0.625 Hz (0)
+			M_ODR_125,	// 1.25 Hz (1)
+			M_ODR_250,	// 2.5 Hz (2)
+			M_ODR_5,	// 5 Hz (3)
+			M_ODR_10,	// 10 Hz (4)
+			M_ODR_20,	// 20 Hz (5)
+			M_ODR_40,	// 40 Hz (6)
+			M_ODR_80	// 80 Hz (7)
+		};
+
+	/**
+	 * Output data rate of the magnetometer.
+	 **/
+	SampleRate sampleRate = M_ODR_80;
 	
 	uint8_t tempCompensationEnable = false;
 
@@ -377,6 +441,26 @@ public:
 	float calcMag(int16_t mag);
     
 	/** 
+	 * Set the full-scale range of the gyroscope.
+	 * This function can be called to set the scale of the gyroscope to 
+	 * 245, 500, or 200 degrees per second.
+	 * \param gScl The desired gyroscope scale.
+	 **/
+	void setGyroScale(GyroSettings::Scale gScl);
+
+	/**
+	 * Set the full-scale range of the accelerometer.
+	 * \param The desired accelerometer scale.
+	 **/
+	void setAccelScale(AccelSettings::Scale aScl);
+    
+	/** 
+	 * Set the full-scale range of the magnetometer.
+	 * The desired magnetometer scale.
+	 **/
+	void setMagScale(MagSettings::Scale mScl);
+    
+	/** 
 	 * Get contents of Gyroscope interrupt source register
 	 **/
 	uint8_t getGyroIntSrc();
@@ -530,9 +614,6 @@ private:
 	// be set prior to calling this function.
 	void calcaRes();
     
-	// Parameter check if they are valid and force default values if not.
-	void constrainScales();
-    
 	// I2CwriteByte() -- Write a byte out of I2C to a register in the device
 	// Input:
 	//    - address = The 7-bit I2C address of the slave device.
@@ -574,34 +655,10 @@ private:
 		}
 	}
 	
-	// setGyroScale() -- Set the full-scale range of the gyroscope.
-	// This function can be called to set the scale of the gyroscope to 
-	// 245, 500, or 200 degrees per second.
-	// Input:
-	//     - gScl = The desired gyroscope scale. Must be one of three possible
-	//        values from the gyro_scale.
-	void setGyroScale(uint16_t gScl);
-    
-	// setAccelScale() -- Set the full-scale range of the accelerometer.
-	// This function can be called to set the scale of the accelerometer to
-	// 2, 4, 6, 8, or 16 g's.
-	// Input:
-	//     - aScl = The desired accelerometer scale. Must be one of five possible
-	//        values from the accel_scale.
-	void setAccelScale(uint8_t aScl);
-    
-	// setMagScale() -- Set the full-scale range of the magnetometer.
-	// This function can be called to set the scale of the magnetometer to
-	// 2, 4, 8, or 12 Gs.
-	// Input:
-	//     - mScl = The desired magnetometer scale. Must be one of four possible
-	//        values from the mag_scale.
-	void setMagScale(uint8_t mScl);
-    
 	// setGyroODR() -- Set the output data rate and bandwidth of the gyroscope
 	// Input:
 	//    - gRate = The desired output rate and cutoff frequency of the gyro.
-	void setGyroODR(uint8_t gRate);
+	void setGyroODR(GyroSettings::SampleRate gRate);
     
 	// setAccelODR() -- Set the output data rate of the accelerometer
 	// Input:
@@ -611,7 +668,7 @@ private:
 	// setMagODR() -- Set the output data rate of the magnetometer
 	// Input:
 	//    - mRate = The desired output rate of the mag.
-	void setMagODR(uint8_t mRate);
+	void setMagODR(MagSettings::SampleRate mRate);
     
 	// configInactivity() -- Configure inactivity interrupt parameters
 	// Input:
