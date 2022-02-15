@@ -19,6 +19,9 @@ var classLSM9DS1 =
     [ "readAccel", "classLSM9DS1.html#acbe3bfc0b8db7fe3f77893d22c394594", null ],
     [ "readGyro", "classLSM9DS1.html#adc1b37609a6c850328b16da4f911cefd", null ],
     [ "readMag", "classLSM9DS1.html#a615fd3ab32a9af833ef9899663100330", null ],
+    [ "setAccelScale", "classLSM9DS1.html#acaee2a632dde4e2d9d3ecbd1cbebf4fe", null ],
     [ "setCallback", "classLSM9DS1.html#a3102ea02c253af39e3b43ee55b94d716", null ],
+    [ "setGyroScale", "classLSM9DS1.html#a71abda68a516580bf911c1c9b0d24643", null ],
+    [ "setMagScale", "classLSM9DS1.html#a6aeb6f61c0ab1f2ce72450850241dc04", null ],
     [ "tempAvailable", "classLSM9DS1.html#ad67be7463a42fa5b7cbcdad1215f0078", null ]
 ];

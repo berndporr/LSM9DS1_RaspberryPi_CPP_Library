@@ -142,6 +142,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7d0b0740497b1a10cd3e46a282a143ec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a7d0b0740497b1a10cd3e46a282a143ec">calcMag</a> (int16_t mag)</td></tr>
 <tr class="memdesc:a7d0b0740497b1a10cd3e46a282a143ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from RAW signed 16-bit value to Gauss (Gs) This function reads in a signed 16-bit value and returns the scaled Gs.  <a href="classLSM9DS1.html#a7d0b0740497b1a10cd3e46a282a143ec">More...</a><br /></td></tr>
 <tr class="separator:a7d0b0740497b1a10cd3e46a282a143ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71abda68a516580bf911c1c9b0d24643"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a71abda68a516580bf911c1c9b0d24643">setGyroScale</a> (<a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">GyroSettings::Scale</a> gScl)</td></tr>
+<tr class="memdesc:a71abda68a516580bf911c1c9b0d24643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the full-scale range of the gyroscope.  <a href="classLSM9DS1.html#a71abda68a516580bf911c1c9b0d24643">More...</a><br /></td></tr>
+<tr class="separator:a71abda68a516580bf911c1c9b0d24643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaee2a632dde4e2d9d3ecbd1cbebf4fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#acaee2a632dde4e2d9d3ecbd1cbebf4fe">setAccelScale</a> (<a class="el" href="structAccelSettings.html#ac0ff203344487d5f3e1ddd5fab15642d">AccelSettings::Scale</a> aScl)</td></tr>
+<tr class="memdesc:acaee2a632dde4e2d9d3ecbd1cbebf4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the full-scale range of the accelerometer.  <a href="classLSM9DS1.html#acaee2a632dde4e2d9d3ecbd1cbebf4fe">More...</a><br /></td></tr>
+<tr class="separator:acaee2a632dde4e2d9d3ecbd1cbebf4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aeb6f61c0ab1f2ce72450850241dc04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#a6aeb6f61c0ab1f2ce72450850241dc04">setMagScale</a> (<a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">MagSettings::Scale</a> mScl)</td></tr>
+<tr class="memdesc:a6aeb6f61c0ab1f2ce72450850241dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the full-scale range of the magnetometer.  <a href="classLSM9DS1.html#a6aeb6f61c0ab1f2ce72450850241dc04">More...</a><br /></td></tr>
+<tr class="separator:a6aeb6f61c0ab1f2ce72450850241dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaba6696754df62a411a6a190100f9ca3"><td class="memItemLeft" align="right" valign="top"><a id="aaba6696754df62a411a6a190100f9ca3"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLSM9DS1.html#aaba6696754df62a411a6a190100f9ca3">getGyroIntSrc</a> ()</td></tr>
 <tr class="memdesc:aaba6696754df62a411a6a190100f9ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get contents of Gyroscope interrupt source register. <br /></td></tr>
@@ -511,6 +520,32 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
+<a id="acaee2a632dde4e2d9d3ecbd1cbebf4fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaee2a632dde4e2d9d3ecbd1cbebf4fe">&#9670;&nbsp;</a></span>setAccelScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LSM9DS1::setAccelScale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAccelSettings.html#ac0ff203344487d5f3e1ddd5fab15642d">AccelSettings::Scale</a>&#160;</td>
+          <td class="paramname"><em>aScl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the full-scale range of the accelerometer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">The</td><td>desired accelerometer scale. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a3102ea02c253af39e3b43ee55b94d716"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3102ea02c253af39e3b43ee55b94d716">&#9670;&nbsp;</a></span>setCallback()</h2>
 
@@ -542,6 +577,53 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a71abda68a516580bf911c1c9b0d24643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71abda68a516580bf911c1c9b0d24643">&#9670;&nbsp;</a></span>setGyroScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LSM9DS1::setGyroScale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">GyroSettings::Scale</a>&#160;</td>
+          <td class="paramname"><em>gScl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the full-scale range of the gyroscope. </p>
+<p>This function can be called to set the scale of the gyroscope to 245, 500, or 200 degrees per second. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gScl</td><td>The desired gyroscope scale. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6aeb6f61c0ab1f2ce72450850241dc04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aeb6f61c0ab1f2ce72450850241dc04">&#9670;&nbsp;</a></span>setMagScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LSM9DS1::setMagScale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">MagSettings::Scale</a>&#160;</td>
+          <td class="paramname"><em>mScl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the full-scale range of the magnetometer. </p>
+<p>The desired magnetometer scale. </p>
 
 </div>
 </div>

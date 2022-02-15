@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gyrosettings_50',['GyroSettings',['../structGyroSettings.html',1,'']]]
+  ['gyrosettings_75',['GyroSettings',['../structGyroSettings.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bandwidth_81',['bandwidth',['../structAccelSettings.html#a31f4ef0e5b2b363b9575cc9fa022ed6b',1,'AccelSettings']]]
+  ['bandwidth_109',['bandwidth',['../structAccelSettings.html#aae3fa029e37e6b86fa9d36f6bc38eda9',1,'AccelSettings']]]
 ];

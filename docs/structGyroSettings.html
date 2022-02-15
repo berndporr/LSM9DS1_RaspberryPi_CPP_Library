@@ -82,6 +82,7 @@ $(document).ready(function(){initNavTree('structGyroSettings.html',''); initResi
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structGyroSettings-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,16 +95,49 @@ $(document).ready(function(){initNavTree('structGyroSettings.html',''); initResi
 
 <p><code>#include &lt;<a class="el" href="LSM9DS1_8h_source.html">LSM9DS1.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ad4b72cfc7b1b3314f59818df6692e2e2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">Scale</a> { <a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a">G_SCALE_245DPS</a> = 245, 
+<a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2a4915f5e247d9efff7c465d6bc90fc190">G_SCALE_500DPS</a> = 500, 
+<a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2a2824faf19a37e74c46b0d0aa352acf5c">G_SCALE_2000DPS</a> = 2000
+ }</td></tr>
+<tr class="memdesc:ad4b72cfc7b1b3314f59818df6692e2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyro_scale defines the possible full-scale ranges of the gyroscope.  <a href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">More...</a><br /></td></tr>
+<tr class="separator:ad4b72cfc7b1b3314f59818df6692e2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a056358d9bfbc274f537c64ad59f015f7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7">SampleRate</a> { <br />
+&#160;&#160;<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40">G_ODR_14_9</a> = 1, 
+<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7ada784a2d1cc220109dc1f37faf5fc75e">G_ODR_59_5</a> = 2, 
+<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7a04d193baf5af0526e182c24f653adba4">G_ODR_119</a> = 3, 
+<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7a995c6630504abefaccdd1a364468446a">G_ODR_238</a> = 4, 
+<br />
+&#160;&#160;<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7a454d4a251e73882ba5c143770ee204dc">G_ODR_476</a> = 5, 
+<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7adcdcb9d4cb3d14419045ce7a56e6983d">G_ODR_952</a> = 6
+<br />
+ }</td></tr>
+<tr class="memdesc:a056358d9bfbc274f537c64ad59f015f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyro &amp; Acc sampling rates.  <a href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7">More...</a><br /></td></tr>
+<tr class="separator:a056358d9bfbc274f537c64ad59f015f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac63334e41a4101acbcdea759168e71b2"><td class="memItemLeft" align="right" valign="top"><a id="ac63334e41a4101acbcdea759168e71b2"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#ac63334e41a4101acbcdea759168e71b2">scale</a> = 245</td></tr>
-<tr class="memdesc:ac63334e41a4101acbcdea759168e71b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">gyro scale can be 245, 500, or 2000 <br /></td></tr>
-<tr class="separator:ac63334e41a4101acbcdea759168e71b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71d425f2e80cc819a7f1f797143f046f"><td class="memItemLeft" align="right" valign="top"><a id="a71d425f2e80cc819a7f1f797143f046f"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#a71d425f2e80cc819a7f1f797143f046f">sampleRate</a> = 1</td></tr>
-<tr class="memdesc:a71d425f2e80cc819a7f1f797143f046f"><td class="mdescLeft">&#160;</td><td class="mdescRight">gyro &amp; accelerometer sample rate (Hz): value between 1-6 1 = 14.9 4 = 238 2 = 59.5 5 = 476 3 = 119 6 = 952 <br /></td></tr>
-<tr class="separator:a71d425f2e80cc819a7f1f797143f046f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad619c27e693000f0cfff5410a970c490"><td class="memItemLeft" align="right" valign="top"><a id="ad619c27e693000f0cfff5410a970c490"></a>
+<a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">Scale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#ad619c27e693000f0cfff5410a970c490">scale</a> = <a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a">G_SCALE_245DPS</a></td></tr>
+<tr class="memdesc:ad619c27e693000f0cfff5410a970c490"><td class="mdescLeft">&#160;</td><td class="mdescRight">gyro scale can be 245, 500, or 2000 <br /></td></tr>
+<tr class="separator:ad619c27e693000f0cfff5410a970c490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a922ffe8bd100784d5d46191e49d6949c"><td class="memItemLeft" align="right" valign="top"><a id="a922ffe8bd100784d5d46191e49d6949c"></a>
+<a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7">SampleRate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#a922ffe8bd100784d5d46191e49d6949c">sampleRate</a> = <a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40">G_ODR_14_9</a></td></tr>
+<tr class="memdesc:a922ffe8bd100784d5d46191e49d6949c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyro &amp; Accelerometer sample rate. <br /></td></tr>
+<tr class="separator:a922ffe8bd100784d5d46191e49d6949c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7af9c0398a36d39066ade327c614d2c"><td class="memItemLeft" align="right" valign="top"><a id="ae7af9c0398a36d39066ade327c614d2c"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#ae7af9c0398a36d39066ade327c614d2c">enableX</a> = true</td></tr>
+<tr class="memdesc:ae7af9c0398a36d39066ade327c614d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X axis enabled. <br /></td></tr>
+<tr class="separator:ae7af9c0398a36d39066ade327c614d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a968e29228bf49773f74843bf9fe02685"><td class="memItemLeft" align="right" valign="top"><a id="a968e29228bf49773f74843bf9fe02685"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#a968e29228bf49773f74843bf9fe02685">enableY</a> = true</td></tr>
+<tr class="memdesc:a968e29228bf49773f74843bf9fe02685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y axis enabled. <br /></td></tr>
+<tr class="separator:a968e29228bf49773f74843bf9fe02685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b4985b86aabe0637b0864c99222574a"><td class="memItemLeft" align="right" valign="top"><a id="a2b4985b86aabe0637b0864c99222574a"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGyroSettings.html#a2b4985b86aabe0637b0864c99222574a">enableZ</a> = true</td></tr>
+<tr class="memdesc:a2b4985b86aabe0637b0864c99222574a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z axis enabled. <br /></td></tr>
+<tr class="separator:a2b4985b86aabe0637b0864c99222574a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad71429ec425e9683a36cae25d557ed83"><td class="memItemLeft" align="right" valign="top"><a id="ad71429ec425e9683a36cae25d557ed83"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>bandwidth</b> = 0</td></tr>
 <tr class="separator:ad71429ec425e9683a36cae25d557ed83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,22 +162,68 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>flipZ</b> = false<
 <tr class="memitem:ab5b1a8fe833d7f67bdc7d6b19b0e8331"><td class="memItemLeft" align="right" valign="top"><a id="ab5b1a8fe833d7f67bdc7d6b19b0e8331"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>orientation</b> = 0</td></tr>
 <tr class="separator:ab5b1a8fe833d7f67bdc7d6b19b0e8331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7af9c0398a36d39066ade327c614d2c"><td class="memItemLeft" align="right" valign="top"><a id="ae7af9c0398a36d39066ade327c614d2c"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>enableX</b> = true</td></tr>
-<tr class="separator:ae7af9c0398a36d39066ade327c614d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a968e29228bf49773f74843bf9fe02685"><td class="memItemLeft" align="right" valign="top"><a id="a968e29228bf49773f74843bf9fe02685"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>enableY</b> = true</td></tr>
-<tr class="separator:a968e29228bf49773f74843bf9fe02685"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4985b86aabe0637b0864c99222574a"><td class="memItemLeft" align="right" valign="top"><a id="a2b4985b86aabe0637b0864c99222574a"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>enableZ</b> = true</td></tr>
-<tr class="separator:a2b4985b86aabe0637b0864c99222574a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32eba43879c7fdc1cbad6a5c4df6b508"><td class="memItemLeft" align="right" valign="top"><a id="a32eba43879c7fdc1cbad6a5c4df6b508"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>latchInterrupt</b> = true</td></tr>
 <tr class="separator:a32eba43879c7fdc1cbad6a5c4df6b508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Gyroscope settings with default values. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a056358d9bfbc274f537c64ad59f015f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a056358d9bfbc274f537c64ad59f015f7">&#9670;&nbsp;</a></span>SampleRate</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structGyroSettings.html#a056358d9bfbc274f537c64ad59f015f7">GyroSettings::SampleRate</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gyro &amp; Acc sampling rates. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40"></a>G_ODR_14_9&#160;</td><td class="fielddoc"><p>14.9 Hz (1) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7ada784a2d1cc220109dc1f37faf5fc75e"></a>G_ODR_59_5&#160;</td><td class="fielddoc"><p>59.5 Hz (2) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7a04d193baf5af0526e182c24f653adba4"></a>G_ODR_119&#160;</td><td class="fielddoc"><p>119 Hz (3) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7a995c6630504abefaccdd1a364468446a"></a>G_ODR_238&#160;</td><td class="fielddoc"><p>238 Hz (4) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7a454d4a251e73882ba5c143770ee204dc"></a>G_ODR_476&#160;</td><td class="fielddoc"><p>476 Hz (5) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056358d9bfbc274f537c64ad59f015f7adcdcb9d4cb3d14419045ce7a56e6983d"></a>G_ODR_952&#160;</td><td class="fielddoc"><p>952 Hz (6) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ad4b72cfc7b1b3314f59818df6692e2e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b72cfc7b1b3314f59818df6692e2e2">&#9670;&nbsp;</a></span>Scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structGyroSettings.html#ad4b72cfc7b1b3314f59818df6692e2e2">GyroSettings::Scale</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gyro_scale defines the possible full-scale ranges of the gyroscope. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a"></a>G_SCALE_245DPS&#160;</td><td class="fielddoc"><p>245 degrees per second </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad4b72cfc7b1b3314f59818df6692e2e2a4915f5e247d9efff7c465d6bc90fc190"></a>G_SCALE_500DPS&#160;</td><td class="fielddoc"><p>500 dps </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad4b72cfc7b1b3314f59818df6692e2e2a2824faf19a37e74c46b0d0aa352acf5c"></a>G_SCALE_2000DPS&#160;</td><td class="fielddoc"><p>2000 dps </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="LSM9DS1_8h_source.html">LSM9DS1.h</a></li>
 </ul>
 </div><!-- contents -->

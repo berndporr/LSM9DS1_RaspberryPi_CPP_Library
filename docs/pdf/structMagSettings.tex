@@ -9,18 +9,40 @@ Magnetometer settings with default values.
 
 {\ttfamily \#include $<$L\+S\+M9\+D\+S1.\+h$>$}
 
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}{Scale}} \{ \mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937a9d366d9106c7315b5409eadcc4598eaa}{M\+\_\+\+S\+C\+A\+L\+E\+\_\+4\+GS}} = 4, 
+\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937ad821c54da551fa925d731f944ece29c4}{M\+\_\+\+S\+C\+A\+L\+E\+\_\+8\+GS}} = 8, 
+\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937af5a22d2dff6ca6006a6bda427fd7b8ff}{M\+\_\+\+S\+C\+A\+L\+E\+\_\+12\+GS}} = 12, 
+\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273}{M\+\_\+\+S\+C\+A\+L\+E\+\_\+16\+GS}} = 16
+ \}
+\begin{DoxyCompactList}\small\item\em Defines all possible F\+SR\textquotesingle{}s of the magnetometer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structMagSettings_aae6fd3e8779a9e8f77c290148c2eea3a}\label{structMagSettings_aae6fd3e8779a9e8f77c290148c2eea3a}} 
+enum \mbox{\hyperlink{structMagSettings_aae6fd3e8779a9e8f77c290148c2eea3a}{Sample\+Rate}} \{ \newline
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+0625}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+125}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+250}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+5}, 
+\newline
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+10}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+20}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+40}, 
+{\bfseries M\+\_\+\+O\+D\+R\+\_\+80}
+ \}
+\begin{DoxyCompactList}\small\item\em Defines all possible output data rates of the magnetometer. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{structMagSettings_a308c561165a1fa96fd780f8ee36ae749}\label{structMagSettings_a308c561165a1fa96fd780f8ee36ae749}} 
 uint8\+\_\+t {\bfseries enabled} = true
 \item 
-\mbox{\Hypertarget{structMagSettings_a1264023278b772e7b247d37159bfe65a}\label{structMagSettings_a1264023278b772e7b247d37159bfe65a}} 
-uint8\+\_\+t {\bfseries scale} = 4
+\mbox{\Hypertarget{structMagSettings_aa8429bbbdc0670f4a3c9dff07545d856}\label{structMagSettings_aa8429bbbdc0670f4a3c9dff07545d856}} 
+\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}{Scale}} {\bfseries scale} = \mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273}{M\+\_\+\+S\+C\+A\+L\+E\+\_\+16\+GS}}
 \item 
-\mbox{\Hypertarget{structMagSettings_a7be03e886dae2a17bda2285b2a839125}\label{structMagSettings_a7be03e886dae2a17bda2285b2a839125}} 
-uint8\+\_\+t \mbox{\hyperlink{structMagSettings_a7be03e886dae2a17bda2285b2a839125}{sample\+Rate}} = 7
-\begin{DoxyCompactList}\small\item\em mag data rate can be 0-\/7 0 = 0.\+625 Hz 4 = 10 Hz 1 = 1.\+25 Hz 5 = 20 Hz 2 = 2.\+5 Hz 6 = 40 Hz 3 = 5 Hz 7 = 80 Hz \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structMagSettings_a77ce5bc663dadc1f5cc656a6721946a1}\label{structMagSettings_a77ce5bc663dadc1f5cc656a6721946a1}} 
+\mbox{\hyperlink{structMagSettings_aae6fd3e8779a9e8f77c290148c2eea3a}{Sample\+Rate}} \mbox{\hyperlink{structMagSettings_a77ce5bc663dadc1f5cc656a6721946a1}{sample\+Rate}} = M\+\_\+\+O\+D\+R\+\_\+80
+\begin{DoxyCompactList}\small\item\em Output data rate of the magnetometer. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structMagSettings_a2d07cb80ac268bec5e96c56d551439b7}\label{structMagSettings_a2d07cb80ac268bec5e96c56d551439b7}} 
 uint8\+\_\+t {\bfseries temp\+Compensation\+Enable} = false
 \item 
@@ -37,6 +59,37 @@ uint8\+\_\+t {\bfseries low\+Power\+Enable} = false
 
 \doxysubsection{Detailed Description}
 Magnetometer settings with default values. 
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}\label{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}} 
+\index{MagSettings@{MagSettings}!Scale@{Scale}}
+\index{Scale@{Scale}!MagSettings@{MagSettings}}
+\doxysubsubsection{\texorpdfstring{Scale}{Scale}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}{Mag\+Settings\+::\+Scale}}}
+
+
+
+Defines all possible F\+SR\textquotesingle{}s of the magnetometer. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\_SCALE\_4GS@{M\_SCALE\_4GS}!MagSettings@{MagSettings}}\index{MagSettings@{MagSettings}!M\_SCALE\_4GS@{M\_SCALE\_4GS}}}\mbox{\Hypertarget{structMagSettings_a77cd563fbb237f628d0b9e95206e5937a9d366d9106c7315b5409eadcc4598eaa}\label{structMagSettings_a77cd563fbb237f628d0b9e95206e5937a9d366d9106c7315b5409eadcc4598eaa}} 
+M\+\_\+\+S\+C\+A\+L\+E\+\_\+4\+GS&4Gs \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\_SCALE\_8GS@{M\_SCALE\_8GS}!MagSettings@{MagSettings}}\index{MagSettings@{MagSettings}!M\_SCALE\_8GS@{M\_SCALE\_8GS}}}\mbox{\Hypertarget{structMagSettings_a77cd563fbb237f628d0b9e95206e5937ad821c54da551fa925d731f944ece29c4}\label{structMagSettings_a77cd563fbb237f628d0b9e95206e5937ad821c54da551fa925d731f944ece29c4}} 
+M\+\_\+\+S\+C\+A\+L\+E\+\_\+8\+GS&8Gs \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\_SCALE\_12GS@{M\_SCALE\_12GS}!MagSettings@{MagSettings}}\index{MagSettings@{MagSettings}!M\_SCALE\_12GS@{M\_SCALE\_12GS}}}\mbox{\Hypertarget{structMagSettings_a77cd563fbb237f628d0b9e95206e5937af5a22d2dff6ca6006a6bda427fd7b8ff}\label{structMagSettings_a77cd563fbb237f628d0b9e95206e5937af5a22d2dff6ca6006a6bda427fd7b8ff}} 
+M\+\_\+\+S\+C\+A\+L\+E\+\_\+12\+GS&12Gs \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\_SCALE\_16GS@{M\_SCALE\_16GS}!MagSettings@{MagSettings}}\index{MagSettings@{MagSettings}!M\_SCALE\_16GS@{M\_SCALE\_16GS}}}\mbox{\Hypertarget{structMagSettings_a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273}\label{structMagSettings_a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273}} 
+M\+\_\+\+S\+C\+A\+L\+E\+\_\+16\+GS&16Gs \\
+\hline
+
+\end{DoxyEnumFields}
+
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

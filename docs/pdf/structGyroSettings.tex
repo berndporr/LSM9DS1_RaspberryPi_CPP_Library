@@ -9,15 +9,42 @@ Gyroscope settings with default values.
 
 {\ttfamily \#include $<$L\+S\+M9\+D\+S1.\+h$>$}
 
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}{Scale}} \{ \mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a}{G\+\_\+\+S\+C\+A\+L\+E\+\_\+245\+D\+PS}} = 245, 
+\mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a4915f5e247d9efff7c465d6bc90fc190}{G\+\_\+\+S\+C\+A\+L\+E\+\_\+500\+D\+PS}} = 500, 
+\mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a2824faf19a37e74c46b0d0aa352acf5c}{G\+\_\+\+S\+C\+A\+L\+E\+\_\+2000\+D\+PS}} = 2000
+ \}
+\begin{DoxyCompactList}\small\item\em Gyro\+\_\+scale defines the possible full-\/scale ranges of the gyroscope. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7}{Sample\+Rate}} \{ \newline
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40}{G\+\_\+\+O\+D\+R\+\_\+14\+\_\+9}} = 1, 
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7ada784a2d1cc220109dc1f37faf5fc75e}{G\+\_\+\+O\+D\+R\+\_\+59\+\_\+5}} = 2, 
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a04d193baf5af0526e182c24f653adba4}{G\+\_\+\+O\+D\+R\+\_\+119}} = 3, 
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a995c6630504abefaccdd1a364468446a}{G\+\_\+\+O\+D\+R\+\_\+238}} = 4, 
+\newline
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a454d4a251e73882ba5c143770ee204dc}{G\+\_\+\+O\+D\+R\+\_\+476}} = 5, 
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7adcdcb9d4cb3d14419045ce7a56e6983d}{G\+\_\+\+O\+D\+R\+\_\+952}} = 6
+ \}
+\begin{DoxyCompactList}\small\item\em Gyro \& Acc sampling rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structGyroSettings_ac63334e41a4101acbcdea759168e71b2}\label{structGyroSettings_ac63334e41a4101acbcdea759168e71b2}} 
-uint16\+\_\+t \mbox{\hyperlink{structGyroSettings_ac63334e41a4101acbcdea759168e71b2}{scale}} = 245
+\mbox{\Hypertarget{structGyroSettings_ad619c27e693000f0cfff5410a970c490}\label{structGyroSettings_ad619c27e693000f0cfff5410a970c490}} 
+\mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}{Scale}} \mbox{\hyperlink{structGyroSettings_ad619c27e693000f0cfff5410a970c490}{scale}} = \mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a}{G\+\_\+\+S\+C\+A\+L\+E\+\_\+245\+D\+PS}}
 \begin{DoxyCompactList}\small\item\em gyro scale can be 245, 500, or 2000 \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structGyroSettings_a71d425f2e80cc819a7f1f797143f046f}\label{structGyroSettings_a71d425f2e80cc819a7f1f797143f046f}} 
-uint8\+\_\+t \mbox{\hyperlink{structGyroSettings_a71d425f2e80cc819a7f1f797143f046f}{sample\+Rate}} = 1
-\begin{DoxyCompactList}\small\item\em gyro \& accelerometer sample rate (Hz)\+: value between 1-\/6 1 = 14.\+9 4 = 238 2 = 59.\+5 5 = 476 3 = 119 6 = 952 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structGyroSettings_a922ffe8bd100784d5d46191e49d6949c}\label{structGyroSettings_a922ffe8bd100784d5d46191e49d6949c}} 
+\mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7}{Sample\+Rate}} \mbox{\hyperlink{structGyroSettings_a922ffe8bd100784d5d46191e49d6949c}{sample\+Rate}} = \mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40}{G\+\_\+\+O\+D\+R\+\_\+14\+\_\+9}}
+\begin{DoxyCompactList}\small\item\em Gyro \& Accelerometer sample rate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structGyroSettings_ae7af9c0398a36d39066ade327c614d2c}\label{structGyroSettings_ae7af9c0398a36d39066ade327c614d2c}} 
+uint8\+\_\+t \mbox{\hyperlink{structGyroSettings_ae7af9c0398a36d39066ade327c614d2c}{enableX}} = true
+\begin{DoxyCompactList}\small\item\em X axis enabled. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structGyroSettings_a968e29228bf49773f74843bf9fe02685}\label{structGyroSettings_a968e29228bf49773f74843bf9fe02685}} 
+uint8\+\_\+t \mbox{\hyperlink{structGyroSettings_a968e29228bf49773f74843bf9fe02685}{enableY}} = true
+\begin{DoxyCompactList}\small\item\em Y axis enabled. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structGyroSettings_a2b4985b86aabe0637b0864c99222574a}\label{structGyroSettings_a2b4985b86aabe0637b0864c99222574a}} 
+uint8\+\_\+t \mbox{\hyperlink{structGyroSettings_a2b4985b86aabe0637b0864c99222574a}{enableZ}} = true
+\begin{DoxyCompactList}\small\item\em Z axis enabled. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structGyroSettings_ad71429ec425e9683a36cae25d557ed83}\label{structGyroSettings_ad71429ec425e9683a36cae25d557ed83}} 
 uint8\+\_\+t {\bfseries bandwidth} = 0
 \item 
@@ -42,15 +69,6 @@ uint8\+\_\+t {\bfseries flipZ} = false
 \mbox{\Hypertarget{structGyroSettings_ab5b1a8fe833d7f67bdc7d6b19b0e8331}\label{structGyroSettings_ab5b1a8fe833d7f67bdc7d6b19b0e8331}} 
 uint8\+\_\+t {\bfseries orientation} = 0
 \item 
-\mbox{\Hypertarget{structGyroSettings_ae7af9c0398a36d39066ade327c614d2c}\label{structGyroSettings_ae7af9c0398a36d39066ade327c614d2c}} 
-uint8\+\_\+t {\bfseries enableX} = true
-\item 
-\mbox{\Hypertarget{structGyroSettings_a968e29228bf49773f74843bf9fe02685}\label{structGyroSettings_a968e29228bf49773f74843bf9fe02685}} 
-uint8\+\_\+t {\bfseries enableY} = true
-\item 
-\mbox{\Hypertarget{structGyroSettings_a2b4985b86aabe0637b0864c99222574a}\label{structGyroSettings_a2b4985b86aabe0637b0864c99222574a}} 
-uint8\+\_\+t {\bfseries enableZ} = true
-\item 
 \mbox{\Hypertarget{structGyroSettings_a32eba43879c7fdc1cbad6a5c4df6b508}\label{structGyroSettings_a32eba43879c7fdc1cbad6a5c4df6b508}} 
 uint8\+\_\+t {\bfseries latch\+Interrupt} = true
 \end{DoxyCompactItemize}
@@ -58,6 +76,69 @@ uint8\+\_\+t {\bfseries latch\+Interrupt} = true
 
 \doxysubsection{Detailed Description}
 Gyroscope settings with default values. 
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7}} 
+\index{GyroSettings@{GyroSettings}!SampleRate@{SampleRate}}
+\index{SampleRate@{SampleRate}!GyroSettings@{GyroSettings}}
+\doxysubsubsection{\texorpdfstring{SampleRate}{SampleRate}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7}{Gyro\+Settings\+::\+Sample\+Rate}}}
+
+
+
+Gyro \& Acc sampling rates. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_14\_9@{G\_ODR\_14\_9}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_14\_9@{G\_ODR\_14\_9}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a562cd5494c167b2b36d62b7683878e40}} 
+G\+\_\+\+O\+D\+R\+\_\+14\+\_\+9&14.\+9 Hz (1) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_59\_5@{G\_ODR\_59\_5}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_59\_5@{G\_ODR\_59\_5}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7ada784a2d1cc220109dc1f37faf5fc75e}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7ada784a2d1cc220109dc1f37faf5fc75e}} 
+G\+\_\+\+O\+D\+R\+\_\+59\+\_\+5&59.\+5 Hz (2) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_119@{G\_ODR\_119}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_119@{G\_ODR\_119}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a04d193baf5af0526e182c24f653adba4}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a04d193baf5af0526e182c24f653adba4}} 
+G\+\_\+\+O\+D\+R\+\_\+119&119 Hz (3) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_238@{G\_ODR\_238}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_238@{G\_ODR\_238}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a995c6630504abefaccdd1a364468446a}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a995c6630504abefaccdd1a364468446a}} 
+G\+\_\+\+O\+D\+R\+\_\+238&238 Hz (4) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_476@{G\_ODR\_476}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_476@{G\_ODR\_476}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a454d4a251e73882ba5c143770ee204dc}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7a454d4a251e73882ba5c143770ee204dc}} 
+G\+\_\+\+O\+D\+R\+\_\+476&476 Hz (5) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_ODR\_952@{G\_ODR\_952}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_ODR\_952@{G\_ODR\_952}}}\mbox{\Hypertarget{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7adcdcb9d4cb3d14419045ce7a56e6983d}\label{structGyroSettings_a056358d9bfbc274f537c64ad59f015f7adcdcb9d4cb3d14419045ce7a56e6983d}} 
+G\+\_\+\+O\+D\+R\+\_\+952&952 Hz (6) \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}\label{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}} 
+\index{GyroSettings@{GyroSettings}!Scale@{Scale}}
+\index{Scale@{Scale}!GyroSettings@{GyroSettings}}
+\doxysubsubsection{\texorpdfstring{Scale}{Scale}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}{Gyro\+Settings\+::\+Scale}}}
+
+
+
+Gyro\+\_\+scale defines the possible full-\/scale ranges of the gyroscope. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_SCALE\_245DPS@{G\_SCALE\_245DPS}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_SCALE\_245DPS@{G\_SCALE\_245DPS}}}\mbox{\Hypertarget{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a}\label{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a9bb3c3f6aae62e3c63774a8d6d683c3a}} 
+G\+\_\+\+S\+C\+A\+L\+E\+\_\+245\+D\+PS&245 degrees per second \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_SCALE\_500DPS@{G\_SCALE\_500DPS}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_SCALE\_500DPS@{G\_SCALE\_500DPS}}}\mbox{\Hypertarget{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a4915f5e247d9efff7c465d6bc90fc190}\label{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a4915f5e247d9efff7c465d6bc90fc190}} 
+G\+\_\+\+S\+C\+A\+L\+E\+\_\+500\+D\+PS&500 dps \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\_SCALE\_2000DPS@{G\_SCALE\_2000DPS}!GyroSettings@{GyroSettings}}\index{GyroSettings@{GyroSettings}!G\_SCALE\_2000DPS@{G\_SCALE\_2000DPS}}}\mbox{\Hypertarget{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a2824faf19a37e74c46b0d0aa352acf5c}\label{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2a2824faf19a37e74c46b0d0aa352acf5c}} 
+G\+\_\+\+S\+C\+A\+L\+E\+\_\+2000\+D\+PS&2000 dps \\
+\hline
+
+\end{DoxyEnumFields}
+
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
