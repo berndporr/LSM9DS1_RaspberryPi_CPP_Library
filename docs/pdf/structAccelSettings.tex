@@ -9,23 +9,43 @@ Accelerometer settings with default values.
 
 {\ttfamily \#include $<$L\+S\+M9\+D\+S1.\+h$>$}
 
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}\label{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}} 
+enum \mbox{\hyperlink{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}{Scale}} \{ {\bfseries A\+\_\+\+S\+C\+A\+L\+E\+\_\+2G} = 2, 
+{\bfseries A\+\_\+\+S\+C\+A\+L\+E\+\_\+16G} = 16, 
+{\bfseries A\+\_\+\+S\+C\+A\+L\+E\+\_\+4G} = 4, 
+{\bfseries A\+\_\+\+S\+C\+A\+L\+E\+\_\+8G} = 8
+ \}
+\begin{DoxyCompactList}\small\item\em defines all possible F\+SR\textquotesingle{}s of the accelerometer \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18f}{Abw}} \{ \newline
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18face51d69b84b07ca405f72bed13a9731e}{A\+\_\+\+A\+B\+W\+\_\+408}} = 0, 
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faa89beb086506101f873c3804c0f10ee6}{A\+\_\+\+A\+B\+W\+\_\+211}} = 1, 
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa42b7213c91bb092ad6d6928d3222a3dd}{A\+\_\+\+A\+B\+W\+\_\+105}} = 2, 
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa2b3e8f727828e6ad4cdc923343da9ef1}{A\+\_\+\+A\+B\+W\+\_\+50}} = 3, 
+\newline
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faca0957c2947daa5c4a37b488c3d095c8}{A\+\_\+\+A\+B\+W\+\_\+\+O\+FF}} = -\/1
+ \}
+\begin{DoxyCompactList}\small\item\em Defines all possible anti-\/aliasing filter rates of the accelerometer. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}\label{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}} 
-uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_aa7fb05b892db954711f994f0e4aaa22b}{scale}} = 16
+\mbox{\Hypertarget{structAccelSettings_a26da12d9d6e545a3cb70bd6f4fbabffe}\label{structAccelSettings_a26da12d9d6e545a3cb70bd6f4fbabffe}} 
+\mbox{\hyperlink{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}{Scale}} \mbox{\hyperlink{structAccelSettings_a26da12d9d6e545a3cb70bd6f4fbabffe}{scale}} = A\+\_\+\+S\+C\+A\+L\+E\+\_\+16G
 \begin{DoxyCompactList}\small\item\em accel scale (in g) can be 2, 4, 8, or 16 \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structAccelSettings_a8bf34ff635af7dbf3092a97f69553ebc}\label{structAccelSettings_a8bf34ff635af7dbf3092a97f69553ebc}} 
-uint8\+\_\+t {\bfseries enableX} = true
-\item 
+uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_a8bf34ff635af7dbf3092a97f69553ebc}{enableX}} = true
+\begin{DoxyCompactList}\small\item\em Enables accelerometer\textquotesingle{}s X axis. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structAccelSettings_a08a80d20c2097924b886d7b33a3ced13}\label{structAccelSettings_a08a80d20c2097924b886d7b33a3ced13}} 
-uint8\+\_\+t {\bfseries enableY} = true
-\item 
+uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_a08a80d20c2097924b886d7b33a3ced13}{enableY}} = true
+\begin{DoxyCompactList}\small\item\em Enables accelerometer\textquotesingle{}s Y axis. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structAccelSettings_ada2c1a0b933519b3a31c5949776eb4d1}\label{structAccelSettings_ada2c1a0b933519b3a31c5949776eb4d1}} 
-uint8\+\_\+t {\bfseries enableZ} = true
-\item 
-int8\+\_\+t \mbox{\hyperlink{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}{bandwidth}} = -\/1
-\begin{DoxyCompactList}\small\item\em Accel cutoff freqeuncy can be any value between -\/1 -\/ 3. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structAccelSettings_ada2c1a0b933519b3a31c5949776eb4d1}{enableZ}} = true
+\begin{DoxyCompactList}\small\item\em Enables accelerometer\textquotesingle{}s Z axis. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structAccelSettings_aae3fa029e37e6b86fa9d36f6bc38eda9}\label{structAccelSettings_aae3fa029e37e6b86fa9d36f6bc38eda9}} 
+\mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18f}{Abw}} \mbox{\hyperlink{structAccelSettings_aae3fa029e37e6b86fa9d36f6bc38eda9}{bandwidth}} = \mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faca0957c2947daa5c4a37b488c3d095c8}{A\+\_\+\+A\+B\+W\+\_\+\+O\+FF}}
+\begin{DoxyCompactList}\small\item\em Accel cutoff freqeuncy. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structAccelSettings_a74a1c9d4aa1b6d22401c8a2953d07fd9}\label{structAccelSettings_a74a1c9d4aa1b6d22401c8a2953d07fd9}} 
 uint8\+\_\+t {\bfseries high\+Res\+Enable} = false
 \item 
@@ -37,18 +57,40 @@ uint8\+\_\+t {\bfseries high\+Res\+Bandwidth} = 0
 \doxysubsection{Detailed Description}
 Accelerometer settings with default values. 
 
-\doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}\label{structAccelSettings_a31f4ef0e5b2b363b9575cc9fa022ed6b}} 
-\index{AccelSettings@{AccelSettings}!bandwidth@{bandwidth}}
-\index{bandwidth@{bandwidth}!AccelSettings@{AccelSettings}}
-\doxysubsubsection{\texorpdfstring{bandwidth}{bandwidth}}
-{\footnotesize\ttfamily int8\+\_\+t Accel\+Settings\+::bandwidth = -\/1}
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18f}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18f}} 
+\index{AccelSettings@{AccelSettings}!Abw@{Abw}}
+\index{Abw@{Abw}!AccelSettings@{AccelSettings}}
+\doxysubsubsection{\texorpdfstring{Abw}{Abw}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18f}{Accel\+Settings\+::\+Abw}}}
 
 
 
-Accel cutoff freqeuncy can be any value between -\/1 -\/ 3. 
+Defines all possible anti-\/aliasing filter rates of the accelerometer. 
 
--\/1 = bandwidth determined by sample rate 0 = 408 Hz 2 = 105 Hz 1 = 211 Hz 3 = 50 Hz 
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\_ABW\_408@{A\_ABW\_408}!AccelSettings@{AccelSettings}}\index{AccelSettings@{AccelSettings}!A\_ABW\_408@{A\_ABW\_408}}}\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18face51d69b84b07ca405f72bed13a9731e}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18face51d69b84b07ca405f72bed13a9731e}} 
+A\+\_\+\+A\+B\+W\+\_\+408&408 Hz (0x0) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\_ABW\_211@{A\_ABW\_211}!AccelSettings@{AccelSettings}}\index{AccelSettings@{AccelSettings}!A\_ABW\_211@{A\_ABW\_211}}}\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faa89beb086506101f873c3804c0f10ee6}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faa89beb086506101f873c3804c0f10ee6}} 
+A\+\_\+\+A\+B\+W\+\_\+211&211 Hz (0x1) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\_ABW\_105@{A\_ABW\_105}!AccelSettings@{AccelSettings}}\index{AccelSettings@{AccelSettings}!A\_ABW\_105@{A\_ABW\_105}}}\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa42b7213c91bb092ad6d6928d3222a3dd}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa42b7213c91bb092ad6d6928d3222a3dd}} 
+A\+\_\+\+A\+B\+W\+\_\+105&105 Hz (0x2) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\_ABW\_50@{A\_ABW\_50}!AccelSettings@{AccelSettings}}\index{AccelSettings@{AccelSettings}!A\_ABW\_50@{A\_ABW\_50}}}\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa2b3e8f727828e6ad4cdc923343da9ef1}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18fa2b3e8f727828e6ad4cdc923343da9ef1}} 
+A\+\_\+\+A\+B\+W\+\_\+50&50 Hz (0x3) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\_ABW\_OFF@{A\_ABW\_OFF}!AccelSettings@{AccelSettings}}\index{AccelSettings@{AccelSettings}!A\_ABW\_OFF@{A\_ABW\_OFF}}}\mbox{\Hypertarget{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faca0957c2947daa5c4a37b488c3d095c8}\label{structAccelSettings_a7a8df1b6f8b4041c96c613bfee1da18faca0957c2947daa5c4a37b488c3d095c8}} 
+A\+\_\+\+A\+B\+W\+\_\+\+O\+FF&no cutoff \\
+\hline
+
+\end{DoxyEnumFields}
+
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

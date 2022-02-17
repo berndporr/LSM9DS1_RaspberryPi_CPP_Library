@@ -43,6 +43,12 @@ float \mbox{\hyperlink{classLSM9DS1_a54e2a7888b67b47cf0dd986c5b91a3c5}{calc\+Acc
 \begin{DoxyCompactList}\small\item\em Convert from R\+AW signed 16-\/bit value to gravity (g\textquotesingle{}s). \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{classLSM9DS1_a7d0b0740497b1a10cd3e46a282a143ec}{calc\+Mag}} (int16\+\_\+t mag)
 \begin{DoxyCompactList}\small\item\em Convert from R\+AW signed 16-\/bit value to Gauss (Gs) This function reads in a signed 16-\/bit value and returns the scaled Gs. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLSM9DS1_a71abda68a516580bf911c1c9b0d24643}{set\+Gyro\+Scale}} (\mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}{Gyro\+Settings\+::\+Scale}} g\+Scl)
+\begin{DoxyCompactList}\small\item\em Set the full-\/scale range of the gyroscope. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLSM9DS1_acaee2a632dde4e2d9d3ecbd1cbebf4fe}{set\+Accel\+Scale}} (\mbox{\hyperlink{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}{Accel\+Settings\+::\+Scale}} a\+Scl)
+\begin{DoxyCompactList}\small\item\em Set the full-\/scale range of the accelerometer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLSM9DS1_a6aeb6f61c0ab1f2ce72450850241dc04}{set\+Mag\+Scale}} (\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}{Mag\+Settings\+::\+Scale}} m\+Scl)
+\begin{DoxyCompactList}\small\item\em Set the full-\/scale range of the magnetometer. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classLSM9DS1_aaba6696754df62a411a6a190100f9ca3}\label{classLSM9DS1_aaba6696754df62a411a6a190100f9ca3}} 
 uint8\+\_\+t \mbox{\hyperlink{classLSM9DS1_aaba6696754df62a411a6a190100f9ca3}{get\+Gyro\+Int\+Src}} ()
 \begin{DoxyCompactList}\small\item\em Get contents of Gyroscope interrupt source register. \end{DoxyCompactList}\item 
@@ -274,6 +280,21 @@ Read a specific axis of the magnetometer.
 \begin{DoxyReturn}{Returns}
 A 16-\/bit signed integer with sensor data on requested axis. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classLSM9DS1_acaee2a632dde4e2d9d3ecbd1cbebf4fe}\label{classLSM9DS1_acaee2a632dde4e2d9d3ecbd1cbebf4fe}} 
+\index{LSM9DS1@{LSM9DS1}!setAccelScale@{setAccelScale}}
+\index{setAccelScale@{setAccelScale}!LSM9DS1@{LSM9DS1}}
+\doxysubsubsection{\texorpdfstring{setAccelScale()}{setAccelScale()}}
+{\footnotesize\ttfamily void L\+S\+M9\+D\+S1\+::set\+Accel\+Scale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAccelSettings_ac0ff203344487d5f3e1ddd5fab15642d}{Accel\+Settings\+::\+Scale}}}]{a\+Scl }\end{DoxyParamCaption})}
+
+
+
+Set the full-\/scale range of the accelerometer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & desired accelerometer scale. \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classLSM9DS1_a3102ea02c253af39e3b43ee55b94d716}\label{classLSM9DS1_a3102ea02c253af39e3b43ee55b94d716}} 
 \index{LSM9DS1@{LSM9DS1}!setCallback@{setCallback}}
 \index{setCallback@{setCallback}!LSM9DS1@{LSM9DS1}}
@@ -289,7 +310,32 @@ Sets the callback which receives the samples at the sampling rate.
 {\em cb} & Callback interface. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}\label{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}} 
+\mbox{\Hypertarget{classLSM9DS1_a71abda68a516580bf911c1c9b0d24643}\label{classLSM9DS1_a71abda68a516580bf911c1c9b0d24643}} 
+\index{LSM9DS1@{LSM9DS1}!setGyroScale@{setGyroScale}}
+\index{setGyroScale@{setGyroScale}!LSM9DS1@{LSM9DS1}}
+\doxysubsubsection{\texorpdfstring{setGyroScale()}{setGyroScale()}}
+{\footnotesize\ttfamily void L\+S\+M9\+D\+S1\+::set\+Gyro\+Scale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGyroSettings_ad4b72cfc7b1b3314f59818df6692e2e2}{Gyro\+Settings\+::\+Scale}}}]{g\+Scl }\end{DoxyParamCaption})}
+
+
+
+Set the full-\/scale range of the gyroscope. 
+
+This function can be called to set the scale of the gyroscope to 245, 500, or 200 degrees per second. 
+\begin{DoxyParams}{Parameters}
+{\em g\+Scl} & The desired gyroscope scale. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classLSM9DS1_a6aeb6f61c0ab1f2ce72450850241dc04}\label{classLSM9DS1_a6aeb6f61c0ab1f2ce72450850241dc04}} 
+\index{LSM9DS1@{LSM9DS1}!setMagScale@{setMagScale}}
+\index{setMagScale@{setMagScale}!LSM9DS1@{LSM9DS1}}
+\doxysubsubsection{\texorpdfstring{setMagScale()}{setMagScale()}}
+{\footnotesize\ttfamily void L\+S\+M9\+D\+S1\+::set\+Mag\+Scale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMagSettings_a77cd563fbb237f628d0b9e95206e5937}{Mag\+Settings\+::\+Scale}}}]{m\+Scl }\end{DoxyParamCaption})}
+
+
+
+Set the full-\/scale range of the magnetometer. 
+
+The desired magnetometer scale. \mbox{\Hypertarget{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}\label{classLSM9DS1_ad67be7463a42fa5b7cbcdad1215f0078}} 
 \index{LSM9DS1@{LSM9DS1}!tempAvailable@{tempAvailable}}
 \index{tempAvailable@{tempAvailable}!LSM9DS1@{LSM9DS1}}
 \doxysubsubsection{\texorpdfstring{tempAvailable()}{tempAvailable()}}

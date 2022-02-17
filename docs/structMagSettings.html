@@ -82,6 +82,7 @@ $(document).ready(function(){initNavTree('structMagSettings.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structMagSettings-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,18 +95,42 @@ $(document).ready(function(){initNavTree('structMagSettings.html',''); initResiz
 
 <p><code>#include &lt;<a class="el" href="LSM9DS1_8h_source.html">LSM9DS1.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a77cd563fbb237f628d0b9e95206e5937"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">Scale</a> { <a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937a9d366d9106c7315b5409eadcc4598eaa">M_SCALE_4GS</a> = 4, 
+<a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937ad821c54da551fa925d731f944ece29c4">M_SCALE_8GS</a> = 8, 
+<a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937af5a22d2dff6ca6006a6bda427fd7b8ff">M_SCALE_12GS</a> = 12, 
+<a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273">M_SCALE_16GS</a> = 16
+ }</td></tr>
+<tr class="memdesc:a77cd563fbb237f628d0b9e95206e5937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all possible FSR's of the magnetometer.  <a href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">More...</a><br /></td></tr>
+<tr class="separator:a77cd563fbb237f628d0b9e95206e5937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae6fd3e8779a9e8f77c290148c2eea3a"><td class="memItemLeft" align="right" valign="top"><a id="aae6fd3e8779a9e8f77c290148c2eea3a"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMagSettings.html#aae6fd3e8779a9e8f77c290148c2eea3a">SampleRate</a> { <br />
+&#160;&#160;<b>M_ODR_0625</b>, 
+<b>M_ODR_125</b>, 
+<b>M_ODR_250</b>, 
+<b>M_ODR_5</b>, 
+<br />
+&#160;&#160;<b>M_ODR_10</b>, 
+<b>M_ODR_20</b>, 
+<b>M_ODR_40</b>, 
+<b>M_ODR_80</b>
+<br />
+ }</td></tr>
+<tr class="memdesc:aae6fd3e8779a9e8f77c290148c2eea3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all possible output data rates of the magnetometer. <br /></td></tr>
+<tr class="separator:aae6fd3e8779a9e8f77c290148c2eea3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a308c561165a1fa96fd780f8ee36ae749"><td class="memItemLeft" align="right" valign="top"><a id="a308c561165a1fa96fd780f8ee36ae749"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>enabled</b> = true</td></tr>
 <tr class="separator:a308c561165a1fa96fd780f8ee36ae749"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1264023278b772e7b247d37159bfe65a"><td class="memItemLeft" align="right" valign="top"><a id="a1264023278b772e7b247d37159bfe65a"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> = 4</td></tr>
-<tr class="separator:a1264023278b772e7b247d37159bfe65a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be03e886dae2a17bda2285b2a839125"><td class="memItemLeft" align="right" valign="top"><a id="a7be03e886dae2a17bda2285b2a839125"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMagSettings.html#a7be03e886dae2a17bda2285b2a839125">sampleRate</a> = 7</td></tr>
-<tr class="memdesc:a7be03e886dae2a17bda2285b2a839125"><td class="mdescLeft">&#160;</td><td class="mdescRight">mag data rate can be 0-7 0 = 0.625 Hz 4 = 10 Hz 1 = 1.25 Hz 5 = 20 Hz 2 = 2.5 Hz 6 = 40 Hz 3 = 5 Hz 7 = 80 Hz <br /></td></tr>
-<tr class="separator:a7be03e886dae2a17bda2285b2a839125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8429bbbdc0670f4a3c9dff07545d856"><td class="memItemLeft" align="right" valign="top"><a id="aa8429bbbdc0670f4a3c9dff07545d856"></a>
+<a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">Scale</a>&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> = <a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273">M_SCALE_16GS</a></td></tr>
+<tr class="separator:aa8429bbbdc0670f4a3c9dff07545d856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77ce5bc663dadc1f5cc656a6721946a1"><td class="memItemLeft" align="right" valign="top"><a id="a77ce5bc663dadc1f5cc656a6721946a1"></a>
+<a class="el" href="structMagSettings.html#aae6fd3e8779a9e8f77c290148c2eea3a">SampleRate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMagSettings.html#a77ce5bc663dadc1f5cc656a6721946a1">sampleRate</a> = M_ODR_80</td></tr>
+<tr class="memdesc:a77ce5bc663dadc1f5cc656a6721946a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output data rate of the magnetometer. <br /></td></tr>
+<tr class="separator:a77ce5bc663dadc1f5cc656a6721946a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d07cb80ac268bec5e96c56d551439b7"><td class="memItemLeft" align="right" valign="top"><a id="a2d07cb80ac268bec5e96c56d551439b7"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>tempCompensationEnable</b> = false</td></tr>
 <tr class="separator:a2d07cb80ac268bec5e96c56d551439b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,7 +147,34 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>lowPowerEnable</b>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Magnetometer settings with default values. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a77cd563fbb237f628d0b9e95206e5937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77cd563fbb237f628d0b9e95206e5937">&#9670;&nbsp;</a></span>Scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structMagSettings.html#a77cd563fbb237f628d0b9e95206e5937">MagSettings::Scale</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines all possible FSR's of the magnetometer. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a77cd563fbb237f628d0b9e95206e5937a9d366d9106c7315b5409eadcc4598eaa"></a>M_SCALE_4GS&#160;</td><td class="fielddoc"><p>4Gs </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a77cd563fbb237f628d0b9e95206e5937ad821c54da551fa925d731f944ece29c4"></a>M_SCALE_8GS&#160;</td><td class="fielddoc"><p>8Gs </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a77cd563fbb237f628d0b9e95206e5937af5a22d2dff6ca6006a6bda427fd7b8ff"></a>M_SCALE_12GS&#160;</td><td class="fielddoc"><p>12Gs </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a77cd563fbb237f628d0b9e95206e5937adf18f57ef6f8ccd9bb76fbde4b297273"></a>M_SCALE_16GS&#160;</td><td class="fielddoc"><p>16Gs </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="LSM9DS1_8h_source.html">LSM9DS1.h</a></li>
 </ul>
 </div><!-- contents -->
