@@ -25,6 +25,7 @@ Distributed as-is; no warranty is given.
 #include <time.h>
 #include <unistd.h>
 #include <assert.h>
+#include <math.h>
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
@@ -114,7 +115,7 @@ void LSM9DS1::dataReady() {
 	sample.mx = calcMag(mx);
 	sample.my = calcMag(my);
 	sample.mz = calcMag(mz);
-	sample.temperature = temperature/16 + 25;
+	sample.temperature = round(((float)temperature/16.0f + 25.0f)*10.0f)/10.0f;
 	lsm9ds1Callback->hasSample(sample);
 }
 
