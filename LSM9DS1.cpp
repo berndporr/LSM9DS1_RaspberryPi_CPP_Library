@@ -54,20 +54,6 @@ void LSM9DS1::begin(GyroSettings gyroSettings,
 	mag = magSettings;
 	temp = temperatureSettings;
 
-	if (device.initPIGPIO) {
-		int cfg = gpioCfgGetInternals();
-		cfg |= PI_CFG_NOSIGHANDLER;
-		gpioCfgSetInternals(cfg);
-		int r = gpioInitialise();
-		if (r < 0) {
-			char msg[] = "Cannot init pigpio.";
-#ifdef DEBUG
-			fprintf(stderr,"%s\n",msg);
-#endif
-			throw msg;
-		}
-	}
-
 	// Once we have the scale values, we can calculate the resolution
 	// of each sensor. That's what these functions are for. One for each sensor
 	calcgRes(); // Calculate DPS / ADC tick, stored in gRes variable
@@ -93,8 +79,13 @@ void LSM9DS1::begin(GyroSettings gyroSettings,
 	// Magnetometer initialization stuff:
 	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
 
-	gpioSetMode(device.drdy_gpio,PI_INPUT);
-	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,ISR_TIMEOUT,gpioISR,(void*)this);
+	chipDRDY = gpiod_chip_open_by_number(settings.drdy_chip);
+	pinDRDY = gpiod_chip_get_line(chipDRDY,settings.drdy_gpio);
+	int ret = gpiod_line_request_rising_edge_events(pinDRDY, "Consumer");
+	if (ret < 0) {
+	    throw "Could not request event for IRQ.";
+	}
+	thr = std::thread(&LSM9DS1::worker,this);
 }
 
 void LSM9DS1::dataReady() {

@@ -25,7 +25,7 @@ set_target_properties(lsm9ds1 PROPERTIES
   SOVERSION 2
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1 pigpio)
+target_link_libraries(lsm9ds1 gpiod)
 
 install(TARGETS lsm9ds1 EXPORT lsm9ds1-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -42,7 +42,7 @@ add_library(lsm9ds1_static
 set_target_properties(lsm9ds1_static PROPERTIES
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(lsm9ds1_static pigpio)
+target_link_libraries(lsm9ds1_static gpiod)
 
 install(TARGETS lsm9ds1_static EXPORT lsm9ds1_static-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
