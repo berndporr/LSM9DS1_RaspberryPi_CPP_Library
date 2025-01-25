@@ -111,11 +111,18 @@ void LSM9DS1::dataReady() {
 }
 
 void LSM9DS1::end() {
-    if (!running) return;
     running = false;
-    thr.join();
-    gpiod_line_release(pinDRDY);
-    gpiod_chip_close(chipDRDY);
+    if (thr.joinable()) {
+	thr.join();
+    }
+    if (NULL != pinDRDY) {
+	gpiod_line_release(pinDRDY);
+    }
+    if (NULL != chipDRDY) {
+	gpiod_chip_close(chipDRDY);
+    }
+    pinDRDY = NULL;
+    chipDRDY = NULL;
 }
 
 void LSM9DS1::initGyro()

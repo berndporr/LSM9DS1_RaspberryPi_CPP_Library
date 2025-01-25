@@ -672,10 +672,14 @@ private:
 	    running = true;
 	    while (running) {
 		const struct timespec ts = { 1, 0 };
-		gpiod_line_event_wait(pinDRDY, &ts);
-		struct gpiod_line_event event;
-		gpiod_line_event_read(pinDRDY, &event);
-		dataReady();
+		int r = gpiod_line_event_wait(pinDRDY, &ts);
+		if (1 == r) {
+		    struct gpiod_line_event event;
+		    gpiod_line_event_read(pinDRDY, &event);
+		    dataReady();
+		} else {
+		    running = false;
+		}
 	    }
 	}
 	
