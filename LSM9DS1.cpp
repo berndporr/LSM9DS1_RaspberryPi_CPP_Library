@@ -882,8 +882,8 @@ uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * des
 	char tmp[32];
 	tmp[0] = subAddress;
 	write(fd,&tmp,1);
-        long int r = read(fd, dest, 2);
-        if (r < 0) {
+        long int r = read(fd, dest, count);
+        if ( (r < 0) || (count != r) ) {
 	    throw "Could not read from i2c.";
         }
 	close(fd);
