@@ -28,6 +28,14 @@ Distributed as-is; no warranty is given.
 #include <stdint.h>
 #include <thread>
 #include <gpiod.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+
+
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
 
@@ -611,6 +619,21 @@ private:
     // This function will set the value of the aRes variable. aScale must
     // be set prior to calling this function.
     void calcaRes();
+
+    // Opens the i2c dev
+    int i2cOpen(int bus, int address) {
+	char gpioFilename[20];
+	snprintf(gpioFilename, 19, "/dev/i2c-%d", bus);
+	const int fd_i2c = open(gpioFilename, O_RDWR);
+	if (fd_i2c < 0) {
+	    return fd_i2c;
+	}
+	const int r = ioctl(fd_i2c, I2C_SLAVE, address);
+	if (r < 0) {
+	    return -1;
+	}
+	return fd_i2c;
+    }
     
     // I2CwriteByte() -- Write a byte out of I2C to a register in the device
     // Input:

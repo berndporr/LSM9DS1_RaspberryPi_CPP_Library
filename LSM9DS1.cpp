@@ -45,9 +45,9 @@ LSM9DS1::LSM9DS1(DeviceSettings deviceSettings) {
 }
 
 void LSM9DS1::begin(GyroSettings gyroSettings,
-			AccelSettings accelSettings,
-			MagSettings magSettings,
-			TemperatureSettings temperatureSettings)
+		    AccelSettings accelSettings,
+		    MagSettings magSettings,
+		    TemperatureSettings temperatureSettings)
 {
 	accel = accelSettings;
 	gyro = gyroSettings;
@@ -79,8 +79,8 @@ void LSM9DS1::begin(GyroSettings gyroSettings,
 	// Magnetometer initialization stuff:
 	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
 
-	chipDRDY = gpiod_chip_open_by_number(settings.drdy_chip);
-	pinDRDY = gpiod_chip_get_line(chipDRDY,settings.drdy_gpio);
+	chipDRDY = gpiod_chip_open_by_number(device.drdy_chip);
+	pinDRDY = gpiod_chip_get_line(chipDRDY,device.drdy_gpio);
 	int ret = gpiod_line_request_rising_edge_events(pinDRDY, "Consumer");
 	if (ret < 0) {
 	    throw "Could not request event for IRQ.";
@@ -111,10 +111,11 @@ void LSM9DS1::dataReady() {
 }
 
 void LSM9DS1::end() {
-	gpioSetISRFuncEx(device.drdy_gpio,RISING_EDGE,-1,NULL,(void*)this);
-	if (device.initPIGPIO) {
-		gpioTerminate();
-	}
+    if (!running) return;
+    running = false;
+    thr.join();
+    gpiod_line_release(pinDRDY);
+    gpiod_chip_close(chipDRDY);
 }
 
 void LSM9DS1::initGyro()
@@ -831,51 +832,53 @@ void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t *dest, uint8_t count)
 // i2c read and write protocols
 void LSM9DS1::I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address);
 	if (fd < 0) {
 #ifdef DEBUG
-		fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,device.i2c_bus,address,subAddress);
+	    fprintf(stderr,"Could not write %02x to %02x,%02x,%02x\n",data,device.i2c_bus,address,subAddress);
 #endif
-		throw could_not_open_i2c;
+	    throw could_not_open_i2c;
 	}
-	i2cWriteByteData(fd, subAddress, data);
-	i2cClose(fd);
+	uint8_t tmp[3];
+	tmp[0] = subAddress;
+	tmp[1] = data;
+	long int r = write(fd,&tmp,2);
+        if (r < 0) {
+                throw "Could not write to i2c.";
+        }
+	close(fd);
 }
 
 uint8_t LSM9DS1::I2CreadByte(uint8_t address, uint8_t subAddress)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address);
 	if (fd < 0) {
-#ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x\n",device.i2c_bus,address,subAddress);
-#endif
 		throw could_not_open_i2c;
 	}
-	int data; // `data` will store the register data
-	data = i2cReadByteData(fd, subAddress);
-	if (data < 0) {
-#ifdef DEBUG
-		fprintf(stderr,"Could not read byte from %02x,%02x,%02x. ret=%d.\n",device.i2c_bus,address,subAddress,data);
-#endif
-		throw "Could not read from i2c.";
-	}
-	i2cClose(fd);
-	return data;           
+	uint8_t tmp[2];
+	tmp[0] = subAddress;
+	write(fd,&tmp,1);
+        long int r = read(fd, tmp, 1);
+        if (r < 0) {
+	    throw "Could not read from i2c.";
+        }
+	close(fd);
+        return tmp[0];
 }
 
 uint8_t LSM9DS1::I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count)
 {
-	int fd = i2cOpen(device.i2c_bus, address, 0);
+	int fd = i2cOpen(device.i2c_bus, address);
 	if (fd < 0) {
-#ifdef DEBUG
-		fprintf(stderr,"Could not read %n byte(s) from %02x,%02x,%02x\n",count,device.i2c_bus,address,subAddress);
-#endif
 		throw could_not_open_i2c;
 	}
-	int ret = i2cReadI2CBlockData(fd,subAddress,(char*)dest,count);
-	i2cClose(fd);
-	if (ret != count) {
-		throw "Block read didn't work";
-	}
-	return ret;
+	char tmp[32];
+	tmp[0] = subAddress;
+	write(fd,&tmp,1);
+        long int r = read(fd, dest, 2);
+        if (r < 0) {
+	    throw "Could not read from i2c.";
+        }
+	close(fd);
+	return r;
 }
